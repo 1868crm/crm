@@ -348,6 +348,7 @@ html{scrollbar-gutter:stable}
 .j-layout{display:grid;grid-template-columns:196px 1fr;gap:16px;align-items:start}
 .j-left{display:flex;flex-direction:column;gap:10px}
 .j-right{display:flex;flex-direction:column;gap:12px}
+.cprod-blocked{opacity:.55;cursor:not-allowed}
 .cprod-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .cprod-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:560px){.cprod-grid{grid-template-columns:minmax(0,1fr)}}
@@ -783,6 +784,7 @@ function ovdSanitize(){
     let id=safeId(c.id);if(!id||seen.has(id)){id=uid();if(c.id!=null&&!seen.has(String(c.id)))cm[c.id]=id}seen.add(id);c.id=id;
     ['company','finops','siren','ape','effectif','street','street2','zip','city','address','tva','serverUrl','version','commercial','group','clientNotes'].forEach(k=>str(c,k));dat(c,'createdAt');
     if(c.company==null)c.company='';
+        clKelioPriority(c); // les KELIO priment sur OPTIMA et PRIMA (mise en conformité au chargement)
     if(c.gestionnaires!=null){const g=parseInt(c.gestionnaires,10);if(g>=1&&g!==5)c.gestionnaires=Math.min(g,9999);else delete c.gestionnaires} // compteur de gestionnaires : 5 = valeur de base, non stocké
     if(c.logo!=null&&!(typeof c.logo==='string'&&/^(?:data:image\/(?:png|jpe?g|gif|webp|svg\+xml);base64,[A-Za-z0-9+\/=]+|https?:\/\/[^\s"'<>`\\]+)$/i.test(c.logo)))c.logo=null; // logo : image intégrée ou lien web sans caractère de rupture, sinon ignoré
     c.contacts=(Array.isArray(c.contacts)?c.contacts:[]).filter(obj);c.contacts.forEach(t=>['name','firstName','role','email','phone'].forEach(k=>str(t,k)));
@@ -1135,18 +1137,18 @@ function clEffBucket(c){ // tranche d'effectif : 100 à 250 inclut 100 et 250, 2
 }
 const SEG_GTA=['gta','gtapro','planification','planificationpro','activite','activitepro'];
 const SEG_SIRH=['keliohrpro','entretien','formation','ndf','ats','atspro','actuetdoc'];
-function clSegments(c){ // GTA : GTA, PLANIFICATION, ACTIVITÉS (et leurs versions PRO) ; SIRH : KELIO HR PRO, ENTRETIEN, FORMATION, NDF, ATS, ACTUS ET DOCS ; matériel : au moins un terminal
-  const have=c.products||{};let gta=false,sirh=false;
-  (S.products||[]).forEach(p=>{if(!have[p.id])return;const k=modCanon(p.name);if(SEG_GTA.includes(k))gta=true;if(SEG_SIRH.includes(k))sirh=true});
-  return{gta,sirh,both:gta&&sirh,hw:hwTotal(c)>0};
+function clSegments(c){ // GTA : GTA, PLANIFICATION, ACTIVITÉS (et leurs versions PRO) ; SIRH : KELIO HR PRO, ENTRETIEN, FORMATION, NDF, ATS, ACTUS ET DOCS ; matériel : au moins un terminal ; ACCES : le module ACCES
+  const have=c.products||{};let gta=false,sirh=false,acces=false,kelio=false;const KEL=[modCanon('KELIO'),modCanon('KELIO HR'),modCanon('KELIO HR PRO')];
+  (S.products||[]).forEach(p=>{if(!have[p.id])return;const k=modCanon(p.name);if(SEG_GTA.includes(k))gta=true;if(SEG_SIRH.includes(k))sirh=true;if(k===modCanon('ACCES'))acces=true;if(KEL.includes(k))kelio=true}); // modCanon retire le « s » final : on compare à la forme normalisée du module
+  return{gta,sirh,both:gta&&sirh,hw:hwTotal(c)>0,acces,kelio};
 }
 function clExtraFilterSelects(){ // filtres de la liste : Département, Effectif, Offre
   const dc={};let none=0;S.clients.forEach(c=>{const d=clDeptCode(c);if(d)dc[d]=(dc[d]||0)+1;else none++});
   const depts=Object.entries(dc).sort((a,b)=>a[0].localeCompare(b[0],'fr',{numeric:true}));
-  const sg=[['gta','GTA'],['sirh','SIRH'],['both','GTA + SIRH'],['hw','Avec du matériel']];
+  const sg=[['gta','GTA'],['sirh','SIRH'],['both','GTA + SIRH'],['hw','Avec du matériel'],['acces','Avec ACCES'],['kelio','Avec KELIO / HR / HR PRO']];
   return`<select class="cl-filter-select ${clFilter.dept?'active':''}" onchange="clSetFilter('dept',this.value)" title="Département d'après le code postal"><option value="">Département</option>${depts.map(([c,n])=>`<option value="${c}" ${clFilter.dept===c?'selected':''}>${c} · ${esc(clDeptName(c))} (${n})</option>`).join('')}${none?`<option value="none" ${clFilter.dept==='none'?'selected':''}>Non renseigné (${none})</option>`:''}</select>
       <select class="cl-filter-select ${clFilter.eff?'active':''}" onchange="clSetFilter('eff',this.value)" title="Nombre de collaborateurs"><option value="">Effectif</option>${EFF_BUCKETS.map(([k,l])=>`<option value="${k}" ${clFilter.eff===k?'selected':''}>${l}</option>`).join('')}</select>
-      <select class="cl-filter-select ${clFilter.segment?'active':''}" onchange="clSetFilter('segment',this.value)" title="Offre : GTA, SIRH ou matériel"><option value="">Offre</option>${sg.map(([k,l])=>`<option value="${k}" ${clFilter.segment===k?'selected':''}>${l}</option>`).join('')}</select>`;
+      <select class="cl-filter-select ${clFilter.segment?'active':''}" onchange="clSetFilter('segment',this.value)" title="Offre : GTA, SIRH, matériel ou ACCES"><option value="">Offre</option>${sg.map(([k,l])=>`<option value="${k}" ${clFilter.segment===k?'selected':''}>${l}</option>`).join('')}</select>`;
 }
 function homeExtraStatsHtml(){ // trois cartes du tableau de bord (même base que les autres : tous les clients du portefeuille)
   const L=S.clients,total=L.length;
@@ -1163,15 +1165,15 @@ function homeExtraStatsHtml(){ // trois cartes du tableau de bord (même base qu
   const effRows=EFF_BUCKETS.filter(([k])=>k!=='none'||ec.none).map(([k,l])=>[l,ec[k]||0]);
   const effKey=Object.fromEntries(EFF_BUCKETS.map(([k,l])=>[l,k]));
   // 3) offre
-  const sg={gta:0,sirh:0,both:0,hw:0};L.forEach(c=>{const s=clSegments(c);if(s.gta)sg.gta++;if(s.sirh)sg.sirh++;if(s.both)sg.both++;if(s.hw)sg.hw++});
-  const offRows=[['GTA',sg.gta],['SIRH',sg.sirh],['GTA + SIRH (les deux)',sg.both],['Avec du matériel',sg.hw]];
-  const offKey={'GTA':'gta','SIRH':'sirh','GTA + SIRH (les deux)':'both','Avec du matériel':'hw'};
-  const offColor={'GTA':'var(--accent)','SIRH':'#10b981','GTA + SIRH (les deux)':'#a855f7','Avec du matériel':'#f59e0b'};
+  const sg={gta:0,sirh:0,both:0,hw:0,acces:0};L.forEach(c=>{const s=clSegments(c);if(s.gta)sg.gta++;if(s.sirh)sg.sirh++;if(s.both)sg.both++;if(s.hw)sg.hw++;if(s.acces)sg.acces++});
+  const offRows=[['GTA',sg.gta],['SIRH',sg.sirh],['GTA + SIRH (les deux)',sg.both],['Avec du matériel',sg.hw],['Avec ACCES',sg.acces]];
+  const offKey={'GTA':'gta','SIRH':'sirh','GTA + SIRH (les deux)':'both','Avec du matériel':'hw','Avec ACCES':'acces'};
+  const offColor={'GTA':'var(--accent)','SIRH':'#10b981','GTA + SIRH (les deux)':'#a855f7','Avec du matériel':'#f59e0b','Avec ACCES':'#06b6d4'};
   return`<div class="home-stats-sub">Provenance, taille et offre</div>
     <div class="home-cards-grid">
       <div class="pb" id="hs-dept"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-b">📍</div>Provenance par département</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(deptRows,null,deptClick,false,total)}</div></div>
       <div class="pb" id="hs-eff"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-p">👥</div>Collaborateurs</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(effRows,null,l=>`homeGoFiltered('eff','${effKey[l]}')`,false,total)}</div></div>
-      <div class="pb" id="hs-offre"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-w">🧭</div>Offre : GTA, SIRH, matériel</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(offRows,l=>offColor[l],l=>`homeGoFiltered('segment','${offKey[l]}')`,false,total)}</div></div>
+      <div class="pb" id="hs-offre"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-w">🧭</div>Offre : GTA, SIRH, matériel, ACCES</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(offRows,l=>offColor[l],l=>`homeGoFiltered('segment','${offKey[l]}')`,false,total)}</div></div>
     </div>`;
 }
 function rHome(){
@@ -1181,6 +1183,8 @@ function rHome(){
 
   // ── Portefeuille clients ──
   const totalClients=S.clients.length;
+ const kelioClients=S.clients.filter(c=>clSegments(c).kelio).length; // la tuile « Clients » compte ceux qui ont KELIO, KELIO HR ou KELIO HR PRO
+ const kelioNewMonth=S.clients.filter(c=>clSegments(c).kelio&&c.createdAt&&c.createdAt.slice(0,7)===today().slice(0,7)).length;
   const prospectsCount=S.clients.filter(isProspect).length;
   const renewalCount=S.clients.filter(clNeedsRenewal).length;
   const resiliatedCount=S.clients.filter(clIsResilie).length;
@@ -1200,25 +1204,22 @@ function rHome(){
   const saasColors={'SaaS':'var(--accent)','OnPremise':'#8a94a8'};
   const saasPct=totalClients?Math.round(saasCount/totalClients*100):0;
 
-  // Les 5 dernières années en individuel, le reste regroupé par tranches de 5 ans (ex. 2017-2021, 2012-2016…)
-  const curYear_=parseInt(td_.slice(0,4),10),recentCutoff_=curYear_-4;
-  const yearBuckets={};
-  S.clients.forEach(c=>{
-    const yStr=(clLatestSignature(c)||'').slice(0,4); if(!yStr)return;
-    const y=parseInt(yStr,10);
-    let label;
-    if(y>=recentCutoff_){ label=yStr; }
-    else{ const idx=Math.floor((recentCutoff_-1-y)/5),end=recentCutoff_-1-idx*5,start=end-4; label=`${start}-${end}`; }
-    yearBuckets[label]=(yearBuckets[label]||0)+1;
-  });
-  const topYears=Object.entries(yearBuckets).sort((a,b)=>b[0].localeCompare(a[0])); // les plus récentes en premier
+  // Les années 2020 et suivantes en détail ; tout ce qui a été signé avant 2020 est regroupé dans une dernière ligne « Avant 2020 »
+ const yearBuckets={};
+ S.clients.forEach(c=>{
+ const yStr=(clLatestSignature(c)||'').slice(0,4); if(!yStr)return;
+ const label=parseInt(yStr,10)>=2020?yStr:'Avant 2020';
+ yearBuckets[label]=(yearBuckets[label]||0)+1;
+ });
+ const topYears=Object.entries(yearBuckets).sort((a,b)=>a[0]==='Avant 2020'?1:b[0]==='Avant 2020'?-1:b[0].localeCompare(a[0])); // années récentes en premier, « Avant 2020 » en dernier
 
   const versionCounts={};
   S.clients.forEach(c=>{ const v=versionMajor(c.version); if(v) versionCounts[v]=(versionCounts[v]||0)+1; });
-  const topVersions=Object.entries(versionCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const vnum=s=>(String(s).match(/\d+/g)||[]).map(Number); // « V5.2 » → [5,2] : tri dans le sens des versions, de la plus récente à la plus ancienne (V10.0 > V5.2 > V5.0 > V4.9)
+ const topVersions=Object.entries(versionCounts).sort((a,b)=>{const x=vnum(a[0]),y=vnum(b[0]);for(let i=0;i<Math.max(x.length,y.length);i++){const d=(y[i]||0)-(x[i]||0);if(d)return d}return b[0].localeCompare(a[0],'fr',{numeric:true})});
 
   const moduleList=S.products||[];
-  const moduleCounts=moduleList.map(p=>[p.name||'(sans nom)',S.clients.filter(c=>c.products&&c.products[p.id]).length]).sort((a,b)=>b[1]-a[1]);
+  const moduleCounts=moduleList.map(p=>[p.name||'(sans nom)',S.clients.filter(c=>c.products&&c.products[p.id]).length]); // même ordre que la liste des modules de la fiche client (pas de tri par nombre de clients)
 
   // ── Contrats ──
   let allContracts=[];
@@ -1249,7 +1250,7 @@ function rHome(){
 
     <div class="home-stats-sub">${portefeuilleLabel()} clients</div>
     <div class="home-kpi-grid">
-      <div class="sc" onclick="navigate('clients')"><div class="sc-lbl">Clients</div><div class="sc-val">${totalClients}</div><div class="sc-sub">${newThisMonth?`<strong>+${newThisMonth}</strong> ce mois-ci`:'dans votre portefeuille'}</div></div>
+      <div class="sc" onclick="homeGoFiltered('segment','kelio')" title="Voir les clients concernés"><div class="sc-lbl">Clients</div><div class="sc-val">${kelioClients}</div><div class="sc-sub">avec KELIO, KELIO HR ou KELIO HR PRO${kelioNewMonth?` · <strong>+${kelioNewMonth}</strong> ce mois-ci`:''}</div></div>
       <div class="sc" onclick="homeGoFiltered('prospects',true)" title="Voir les clients concernés"><div class="sc-lbl">Prospects</div><div class="sc-val">${prospectsCount}</div><div class="sc-sub">${totalClients?Math.round(prospectsCount/totalClients*100):0}% du portefeuille</div></div>
       <div class="sc" onclick="homeGoFiltered('renewal',true)" title="Voir les clients concernés"><div class="sc-lbl">Renouvelables</div><div class="sc-val">${renewalCount}</div><div class="sc-sub">contrat signé il y a +3 ans</div></div>
       ${resiliatedCount>0?`<div class="sc" onclick="homeGoFiltered('contractStatus','resilie')" title="Voir les clients concernés"><div class="sc-lbl">Résiliés</div><div class="sc-val">${resiliatedCount}</div><div class="sc-sub">client${resiliatedCount>1?'s':''} dont tous les contrats sont résiliés</div></div>`:''}
@@ -1259,7 +1260,7 @@ function rHome(){
       <div class="pb"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-b">🚦</div>Priorité</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(prioCounts,l=>prioColors[l],l=>{const map={'IMPORTANT':'forte','NORMAL':'moyenne','FAIBLE':'faible'};return `homeGoFiltered('priority','${map[l]}')`},false,totalClients)}</div></div>
       <div class="pb"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-p">☁</div>SaaS / OnPremise</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(saasRows,l=>saasColors[l],l=>`homeGoFiltered('server','${l==='SaaS'?'saas':'onpremise'}')`,false,totalClients)}</div></div>
       <div class="pb"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-w">🔢</div>Versions</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(topVersions,null,l=>`homeGoFiltered('version','${jsAttr(l)}')`,false,totalClients)}</div></div>
-      <div class="pb"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-b">📅</div>Clients signés par année</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(topYears,null,l=>`homeGoFiltered('signYear','${jsAttr(l)}')`,false,totalClients)}</div></div>
+      <div class="pb"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-b">📅</div>Clients signés par année</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(topYears,null,l=>`homeGoFiltered('signYear','${l==='Avant 2020'?'lt2020':jsAttr(l)}')`,false,totalClients)}</div></div>
     </div>
 
     ${homeExtraStatsHtml()}
@@ -1647,7 +1648,7 @@ function clFiltered(){
     if(clFilter.signYear){
       const sy=(clLatestSignature(c)||'').slice(0,4);
       if(!sy) return false;
-      if(clFilter.signYear.includes('-')){ const[ya,yb]=clFilter.signYear.split('-'); if(sy<ya||sy>yb) return false; }
+      if(clFilter.signYear==='lt2020'){ if(sy>='2020') return false; } else if(clFilter.signYear.includes('-')){ const[ya,yb]=clFilter.signYear.split('-'); if(sy<ya||sy>yb) return false; }
       else if(sy!==clFilter.signYear) return false;
     }
     if(clFilter.contractStatus==='actif'&&!hasContractEtat(c,'active')) return false;
@@ -2386,6 +2387,14 @@ function sanitizeNoteHtml(html){ // notes importées : on retire tout ce qui pou
     }})});
   return doc.body.innerHTML;
 }
+const KEL_NAMES=['kelio','keliohr','keliohrpro'],KEL_LOW=['optima','prima'];
+function clKelioActive(c){return !!(c&&c.products&&(S.products||[]).some(p=>KEL_NAMES.includes(impNorm(p.name))&&c.products[p.id]))}
+function clKelioBlocked(c,p){return KEL_LOW.includes(impNorm(p.name))&&clKelioActive(c)}
+function clKelioPriority(c){ // désactive OPTIMA / PRIMA si le client a un KELIO ; renvoie true si quelque chose a été désactivé
+  if(!clKelioActive(c))return false;let ch=false;
+  (S.products||[]).forEach(p=>{if(KEL_LOW.includes(impNorm(p.name))&&c.products[p.id]){c.products[p.id]=false;ch=true}});
+  return ch;
+}
 function clMergePrefill(ex,pre){
   if(!ex)return pre;
   const m={...ex,contacts:(ex.contacts||[]).map(x=>({...x}))};
@@ -2900,10 +2909,10 @@ function buildClientProducts(clientId){
  const q=(c.moduleQty&&c.moduleQty[p.id])||0,has=!!c.products[p.id];
  return`<div class="cprod-item ${has?'has-it':''}" onclick="modQtyForm('${clientId}','${p.id}')" title="${esc(modQtySet(p).tip)}"><span class="cprod-name" title="${esc(p.name)}">${esc(p.name)}</span>${has?`<span class="cprod-status" style="color:var(--success)">✓ ${q?esc(String(q)):'Possède'}</span>`:'<span class="cprod-status" style="color:var(--text-sub)">Non acquis</span>'}</div>`;
  }
- const hasIt=!!c.products[p.id];
-    return`<div class="cprod-item ${hasIt?'has-it':''}" onclick="toggleClientProd('${clientId}','${p.id}')">
-      <span class="cprod-name" title="${esc(p.name)}">${esc(p.name)}</span>
-      ${hasIt?'<span class="cprod-status" style="color:var(--success)">✓ Possède</span>':'<span class="cprod-status" style="color:var(--text-sub)">Non acquis</span>'}
+ const hasIt=!!c.products[p.id],blocked=!hasIt&&clKelioBlocked(c,p);
+ return`<div class="cprod-item ${hasIt?'has-it':''}${blocked?' cprod-blocked':''}" onclick="toggleClientProd('${clientId}','${p.id}')"${blocked?' title="OPTIMA et PRIMA ne se cochent pas quand le client a KELIO, KELIO HR ou KELIO HR PRO (les KELIO priment)"':''}>
+ <span class="cprod-name" title="${esc(p.name)}">${esc(p.name)}</span>
+ ${hasIt?'<span class="cprod-status" style="color:var(--success)">✓ Possède</span>':blocked?'<span class="cprod-status" style="color:var(--text-sub)">Indisponible · KELIO</span>':'<span class="cprod-status" style="color:var(--text-sub)">Non acquis</span>'}
     </div>`;
   }).join('')}${gestTile(c)}</div>`;
 }
@@ -2919,14 +2928,17 @@ function setClientProdVariant(clientId,baseId,proId,which){ // Normal ou Pro (ex
 function toggleClientProd(clientId,prodId){
   const c=S.clients.find(x=>x.id===clientId);if(!c)return;
   if(!c.products)c.products={};
-  c.products[prodId]=!c.products[prodId];
-  if(c.products[prodId]){ // groupes exclusifs : un seul module actif parmi KELIO / KELIO HR / KELIO HR PRO
+  const me0=S.products.find(x=>x.id===prodId);
+ if(me0&&!c.products[prodId]&&clKelioBlocked(c,me0)){toast('⚠ '+me0.name+' ne peut pas être activé : le client a KELIO, KELIO HR ou KELIO HR PRO (les KELIO priment).');return}
+ c.products[prodId]=!c.products[prodId];
+ if(c.products[prodId]){ // groupes exclusifs : un seul module actif parmi KELIO / KELIO HR / KELIO HR PRO
     const me=S.products.find(x=>x.id===prodId);
     const grp=me&&EXCLUSIVE_MODULES.find(g=>g.includes(impNorm(me.name)));
     if(grp)S.products.forEach(x=>{if(x.id!==prodId&&grp.includes(impNorm(x.name)))c.products[x.id]=false});
-  }
-  save();
-  // Refresh just the product section
+ if(clKelioPriority(c))toast('OPTIMA / PRIMA désactivé automatiquement : les KELIO priment.');
+ }
+ save();
+ // Refresh just the product section
   const sec=document.getElementById('client-prods-sec');
   if(sec)sec.innerHTML=buildClientProducts(clientId);
 }
