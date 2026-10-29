@@ -101,7 +101,7 @@ html{scrollbar-gutter:stable}
 .eyebrow{font-size:.71rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-sub);margin-bottom:5px;display:flex;align-items:center;gap:8px}
 .eyebrow::before{content:'';width:18px;height:2px;background:var(--grad);border-radius:1px}
 .ptitle{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;line-height:1.1;letter-spacing:-.025em}
-#vw-client-detail{max-width:1200px;margin-left:auto;margin-right:auto}
+#vw-client-detail{max-width:1400px;margin-left:auto;margin-right:auto}
 .cl-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 32px;align-items:stretch;min-width:0}
 .cl-cols>.pb{min-width:0}
 .cl-cols{grid-template-columns:minmax(0,1fr)}
@@ -821,6 +821,29 @@ function load(){ // aucune lecture du navigateur : la base est chargée depuis u
 function save(){ // en mémoire seulement : rien n'est enregistré dans le navigateur
  ctrHebAll(); // contrat sans hébergeur d'un client OnPremise → « OnPremise »
 }
+const KCM_A=[46, 51, 180, 195, 127, 85, 186, 138, 53, 217, 9, 225, 145, 221, 212, 75, 32, 185, 27, 242, 48, 153, 98, 69, 135, 130, 0, 225, 78, 235, 43, 223],KCM_B=[36, 74, 192, 97, 104, 222, 13, 26, 118, 143, 76, 81, 83, 44, 141, 149, 186, 131, 98, 50, 211, 168, 238, 5, 208, 183, 242, 254, 244, 176, 227, 173];
+async function kcmKey(salt,usage){ // clé AES-256 dérivée (HKDF) : une clé différente pour chaque fichier
+ const base=await crypto.subtle.importKey('raw',Uint8Array.from(KCM_A,(v,i)=>v^KCM_B[i]),'HKDF',false,['deriveKey']);
+ return crypto.subtle.deriveKey({name:'HKDF',hash:'SHA-256',salt,info:new TextEncoder().encode('kelio-crm-mobile-v1')},base,{name:'AES-GCM',length:256},false,usage);
+}
+async function kcmOpen(u8){ // fichier bdd-crm-mobile : « KCM » + version + options + sel + IV + données chiffrées (AES-GCM)
+ if(!(window.crypto&&crypto.subtle))throw new Error('Le chiffrement n’est pas disponible dans ce navigateur : ouvrez cette page en https://.');
+ if(u8.length<50||u8[0]!==75||u8[1]!==67||u8[2]!==77)throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile.');
+ if(u8[3]!==1)throw new Error('Version de fichier non prise en charge : mettez à jour le CRM mobile.');
+ let pt;
+ try{
+  const salt=u8.slice(5,21),iv=u8.slice(21,33),head=u8.slice(0,33),key=await kcmKey(salt,['decrypt']);
+  pt=new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv,additionalData:head},key,u8.slice(33)));
+ }catch(e){throw new Error('Fichier illisible ou modifié : exportez-le à nouveau depuis le CRM (Clients › Export › Export mobile).')}
+ let txt;
+ if(u8[4]&1){
+  if(typeof DecompressionStream==='undefined')throw new Error('Ce navigateur ne sait pas lire ce fichier (décompression indisponible).');
+  txt=await new Response(new Blob([pt]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+ }else txt=new TextDecoder().decode(pt);
+ const o=JSON.parse(txt);
+ if(!o||o.app!=='kelio-crm-mobile'||!o.data||!Array.isArray(o.data.clients))throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile.');
+ return o.data;
+}
 const XLS_MAXCELL=32000;
 const XLS_SKIP=['fileData'];
 const XLS_NUM=['amount','price','lat','lon','gestionnaires'];
@@ -1113,6 +1136,7 @@ function sbarRows(items,colorFn,clickFn,multi,total){ // items : [[label,count],
   }).join('');
   return `<div class="${multi?'sbar-multi':'sbar-list'}">${rows}</div>`;
 }
+function homeOpenFinops(){homeGoFiltered('ids',S.clients.filter(c=>!isProspect(c)).map(c=>c.id))}
 function homeGoFiltered(key,val){ // depuis le tableau de bord : ouvre la liste clients avec UN SEUL filtre actif (les autres remis à zéro)
   clSearch='';
   clFilter={priority:'',group:'',renewal:false,server:'',prospects:false,version:'',contractStatus:'',contractType:'',hebergeur:'',signYear:'',commercial:'',alerts:false,modules:[],dept:'',eff:'',segment:'',ids:null};
@@ -1138,14 +1162,14 @@ function clEffBucket(c){ // tranche d'effectif : 100 à 250 inclut 100 et 250, 2
 const SEG_GTA=['gta','gtapro','planification','planificationpro','activite','activitepro'];
 const SEG_SIRH=['keliohrpro','entretien','formation','ndf','ats','atspro','actuetdoc'];
 function clSegments(c){ // GTA : GTA, PLANIFICATION, ACTIVITÉS (et leurs versions PRO) ; SIRH : KELIO HR PRO, ENTRETIEN, FORMATION, NDF, ATS, ACTUS ET DOCS ; matériel : au moins un terminal ; ACCES : le module ACCES
-  const have=c.products||{};let gta=false,sirh=false,acces=false,kelio=false;const KEL=[modCanon('KELIO'),modCanon('KELIO HR'),modCanon('KELIO HR PRO')];
-  (S.products||[]).forEach(p=>{if(!have[p.id])return;const k=modCanon(p.name);if(SEG_GTA.includes(k))gta=true;if(SEG_SIRH.includes(k))sirh=true;if(k===modCanon('ACCES'))acces=true;if(KEL.includes(k))kelio=true}); // modCanon retire le « s » final : on compare à la forme normalisée du module
-  return{gta,sirh,both:gta&&sirh,hw:hwTotal(c)>0,acces,kelio};
+  const have=c.products||{};let gta=false,sirh=false,acces=false;
+  (S.products||[]).forEach(p=>{if(!have[p.id])return;const k=modCanon(p.name);if(SEG_GTA.includes(k))gta=true;if(SEG_SIRH.includes(k))sirh=true;if(k===modCanon('ACCES'))acces=true}); // modCanon retire le « s » final : on compare à la forme normalisée du module
+  return{gta,sirh,both:gta&&sirh,hw:hwTotal(c)>0,acces};
 }
 function clExtraFilterSelects(){ // filtres de la liste : Département, Effectif, Offre
   const dc={};let none=0;S.clients.forEach(c=>{const d=clDeptCode(c);if(d)dc[d]=(dc[d]||0)+1;else none++});
   const depts=Object.entries(dc).sort((a,b)=>a[0].localeCompare(b[0],'fr',{numeric:true}));
-  const sg=[['gta','GTA'],['sirh','SIRH'],['both','GTA + SIRH'],['hw','Avec du matériel'],['acces','Avec ACCES'],['kelio','Avec KELIO / HR / HR PRO']];
+  const sg=[['gta','GTA'],['sirh','SIRH'],['both','GTA + SIRH'],['hw','Avec du matériel'],['acces','Avec ACCES']];
   return`<select class="cl-filter-select ${clFilter.dept?'active':''}" onchange="clSetFilter('dept',this.value)" title="Département d'après le code postal"><option value="">Département</option>${depts.map(([c,n])=>`<option value="${c}" ${clFilter.dept===c?'selected':''}>${c} · ${esc(clDeptName(c))} (${n})</option>`).join('')}${none?`<option value="none" ${clFilter.dept==='none'?'selected':''}>Non renseigné (${none})</option>`:''}</select>
       <select class="cl-filter-select ${clFilter.eff?'active':''}" onchange="clSetFilter('eff',this.value)" title="Nombre de collaborateurs"><option value="">Effectif</option>${EFF_BUCKETS.map(([k,l])=>`<option value="${k}" ${clFilter.eff===k?'selected':''}>${l}</option>`).join('')}</select>
       <select class="cl-filter-select ${clFilter.segment?'active':''}" onchange="clSetFilter('segment',this.value)" title="Offre : GTA, SIRH, matériel ou ACCES"><option value="">Offre</option>${sg.map(([k,l])=>`<option value="${k}" ${clFilter.segment===k?'selected':''}>${l}</option>`).join('')}</select>`;
@@ -1183,8 +1207,8 @@ function rHome(){
 
   // ── Portefeuille clients ──
   const totalClients=S.clients.length;
- const kelioClients=S.clients.filter(c=>clSegments(c).kelio).length; // la tuile « Clients » compte ceux qui ont KELIO, KELIO HR ou KELIO HR PRO
- const kelioNewMonth=S.clients.filter(c=>clSegments(c).kelio&&c.createdAt&&c.createdAt.slice(0,7)===today().slice(0,7)).length;
+ const finopsClients=S.clients.filter(c=>!isProspect(c)).length; // la tuile « Clients » compte les fiches qui ont un numéro FinOps (les autres sont des prospects)
+ const finopsNewMonth=S.clients.filter(c=>!isProspect(c)&&c.createdAt&&c.createdAt.slice(0,7)===today().slice(0,7)).length;
   const prospectsCount=S.clients.filter(isProspect).length;
   const renewalCount=S.clients.filter(clNeedsRenewal).length;
   const resiliatedCount=S.clients.filter(clIsResilie).length;
@@ -1250,7 +1274,7 @@ function rHome(){
 
     <div class="home-stats-sub">${portefeuilleLabel()} clients</div>
     <div class="home-kpi-grid">
-      <div class="sc" onclick="homeGoFiltered('segment','kelio')" title="Voir les clients concernés"><div class="sc-lbl">Clients</div><div class="sc-val">${kelioClients}</div><div class="sc-sub">avec KELIO, KELIO HR ou KELIO HR PRO${kelioNewMonth?` · <strong>+${kelioNewMonth}</strong> ce mois-ci`:''}</div></div>
+      <div class="sc" onclick="homeOpenFinops()" title="Voir les clients concernés"><div class="sc-lbl">Clients</div><div class="sc-val">${finopsClients}</div><div class="sc-sub">${finopsNewMonth?`<strong>+${finopsNewMonth}</strong> ce mois-ci`:'dans votre portefeuille'}</div></div>
       <div class="sc" onclick="homeGoFiltered('prospects',true)" title="Voir les clients concernés"><div class="sc-lbl">Prospects</div><div class="sc-val">${prospectsCount}</div><div class="sc-sub">${totalClients?Math.round(prospectsCount/totalClients*100):0}% du portefeuille</div></div>
       <div class="sc" onclick="homeGoFiltered('renewal',true)" title="Voir les clients concernés"><div class="sc-lbl">Renouvelables</div><div class="sc-val">${renewalCount}</div><div class="sc-sub">contrat signé il y a +3 ans</div></div>
       ${resiliatedCount>0?`<div class="sc" onclick="homeGoFiltered('contractStatus','resilie')" title="Voir les clients concernés"><div class="sc-lbl">Résiliés</div><div class="sc-val">${resiliatedCount}</div><div class="sc-sub">client${resiliatedCount>1?'s':''} dont tous les contrats sont résiliés</div></div>`:''}
@@ -1279,7 +1303,7 @@ function rHome(){
       <div class="pb"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-p">🌐</div>Hébergeurs</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(topHeb,null,l=>`homeGoFiltered('hebergeur','${jsAttr(l)}')`,false,totalContracts)}</div></div>
     </div>
 
-  <div class="mob-reload no-desktop"><button type="button" class="btn btn-g" onclick="mobReload()">↻ Recharger ma base</button><div class="mob-reload-sub">Remplace les données affichées par un autre fichier de sauvegarde (.xlsx ou .json) choisi dans les fichiers de votre téléphone.</div></div>
+  <div class="mob-reload no-desktop"><button type="button" class="btn btn-g" onclick="mobReload()">↻ Recharger ma base</button><div class="mob-reload-sub">Remplace les données affichées par un autre fichier bdd-crm-mobile choisi dans les fichiers de votre téléphone.</div></div>
   </div>`;
   function tick(){const now=new Date();const c=document.getElementById('h-clock');const d=document.getElementById('h-date');if(c)c.textContent=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});if(d){const ds=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});d.textContent=ds.charAt(0).toUpperCase()+ds.slice(1)}}
   tick();clk=setInterval(tick,1000);
@@ -3032,7 +3056,7 @@ function obRestoreApply(data){
 function obMobileLoad(err){
   OB={phase:'mobile-load',manual:false};obOpen();
   obCard({ico:'📂',title:'Bienvenue dans Kelio CRM',lead:'Chargez votre base pour commencer.',
-    help:'Choisissez votre fichier de sauvegarde Kelio CRM (<strong>.xlsx</strong>) dans les fichiers de votre téléphone. <strong>Rien n’est enregistré dans le navigateur</strong> : à chaque ouverture, il faudra recharger votre fichier.',
+    help:'Choisissez votre fichier <strong>bdd-crm-mobile</strong> (exporté depuis le CRM : <em>Clients › Export › Export mobile</em>) dans les fichiers de votre téléphone. <strong>Rien n’est enregistré dans le navigateur</strong> : à chaque ouverture, il faudra recharger votre fichier.',
     body:err?`<div class="ob-box" style="border-color:var(--danger);color:var(--danger)">${esc(err)}</div>`:'',
     actions:'<button class="btn btn-p ob-go" style="flex:1;justify-content:center" onclick="mobPick()">📂 Charger ma base</button>'});
 }
@@ -3043,30 +3067,31 @@ function obMobileDone(name,n){
     actions:`<button class="btn btn-p ob-go" style="flex:1;justify-content:center" onclick="obClose();navigate('home')">Accéder à mon tableau de bord →</button>`});
 }
 function mobPick(){
-  let f=obId('mob-fi');
-  if(!f){f=document.createElement('input');f.type='file';f.id='mob-fi';f.accept='.xlsx,.json,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/json';f.style.display='none';f.onchange=mobFileChosen;document.body.appendChild(f)}
-  f.value='';f.click();
+ let f=obId('mob-fi');
+ if(!f){f=document.createElement('input');f.type='file';f.id='mob-fi';f.style.display='none';f.onchange=mobFileChosen;document.body.appendChild(f)} // aucun filtre d'extension : le fichier bdd-crm-mobile est reconnu à son contenu
+ f.value='';f.click();
 }
 function mobReload(){mobPick()}
 async function mobFileChosen(ev){
-  const f=ev.target.files[0];ev.target.value='';if(!f)return;
-  const first=!!(OB&&OB.phase==='mobile-load');
-  if(!first&&!confirm('Remplacer les données affichées par « '+f.name+' » ? (les modifications faites ici ne sont pas conservées)'))return;
-  try{
-    let data;
-    if(/\.json$/i.test(f.name))data=JSON.parse(await f.text());
-    else{
-      if(typeof XLSX==='undefined')throw new Error('Le lecteur Excel n\'est pas disponible (connexion internet nécessaire la première fois). Réessayez en ligne.');
-      const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});
-      xlsCheckBackup(wb);
-      data=parseXlsWorkbook(wb);
-    }
-    obRestoreApply(data);save();
-    const n=(S.clients||[]).length;
-    if(first)obMobileDone(f.name,n);else{toast(`✅ Base rechargée : ${n} client${n>1?'s':''}`);navigate('home')}
-  }catch(e){
-    if(first)obMobileLoad(e.message||'Fichier illisible');else alert('Chargement impossible : '+(e.message||'fichier illisible'));
+ const f=ev.target.files[0];ev.target.value='';if(!f)return;
+ const first=!!(OB&&OB.phase==='mobile-load');
+ if(!first&&!confirm('Remplacer les données affichées par « '+f.name+' » ? (les modifications faites ici ne sont pas conservées)'))return;
+ try{
+  const buf=await f.arrayBuffer(),u8=new Uint8Array(buf);let data;
+  if(u8[0]===75&&u8[1]===67&&u8[2]===77)data=await kcmOpen(u8); // fichier bdd-crm-mobile (export mobile du CRM)
+  else if(/\.json$/i.test(f.name))data=JSON.parse(new TextDecoder().decode(u8));
+  else{
+   if(typeof XLSX==='undefined')throw new Error('Le lecteur Excel n\'est pas disponible (connexion internet nécessaire la première fois). Réessayez en ligne.');
+   const wb=XLSX.read(buf,{type:'array'});
+   xlsCheckBackup(wb);
+   data=parseXlsWorkbook(wb);
   }
+  obRestoreApply(data);save();
+  const n=(S.clients||[]).length;
+  if(first)obMobileDone(f.name,n);else{toast(`✅ Base rechargée : ${n} client${n>1?'s':''}`);navigate('home')}
+ }catch(e){
+  if(first)obMobileLoad(e.message||'Fichier illisible');else alert('Chargement impossible : '+(e.message||'fichier illisible'));
+ }
 }
 function smartOn(){const v=S.settings&&S.settings.smartOn;return v===true||v==='true'||v==='TRUE'||v===1||v==='1'}
 function applySmartMenu(){const n=document.getElementById('ni-smart');if(n)n.style.display=(smartOn()&&!mobOn())?'':'none'}
