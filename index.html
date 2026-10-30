@@ -7,8 +7,6 @@
 <title>CRM mobile</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
 
-
-  <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
@@ -21,22 +19,21 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
-  <!-- MapLibre GL : rendu des cartes vectorielles MapTiler (modèle dataviz-v4), intégré à Leaflet -->
+
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js"></script>
   <script>
-  // Secours si unpkg est indisponible : même bibliothèques via jsDelivr
+
   (function(){
     function load(u,cb){var s=document.createElement('script');s.src=u;s.onload=cb;document.head.appendChild(s)}
     var plug='https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js';
     if(!window.maplibregl)load('https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js',function(){if(!(window.L&&L.maplibreGL))load(plug)});
     else if(!(window.L&&L.maplibreGL))load(plug);
   })();
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<style>
+</script>
+  <style>
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -81,7 +78,6 @@ html{scrollbar-gutter:stable}
 #layout{display:flex;min-height:100vh;max-width:100vw;overflow-x:clip}
 #sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:0;left:0;height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:60;transition:background .3s,border-color .3s}
 .sb-logo{padding:26px 20px 20px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--border)}
-.sb-icon{width:34px;height:34px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:800;color:#fff}
 .sb-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
 .ni{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:var(--rx-sm);cursor:pointer;transition:all .16s var(--ease);font-size:.875rem;font-weight:500;color:var(--text-sub);border:1px solid transparent;user-select:none}
 .ni:hover{background:var(--accent-soft);color:var(--text)}
@@ -90,10 +86,6 @@ html{scrollbar-gutter:stable}
 .ni:hover svg,.ni.on svg{stroke:var(--accent)}
 .ni-lbl{flex:1}
 .nc{background:var(--accent-soft);color:var(--accent);font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:10px}
-.save-row{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--rx-sm);background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all .15s}
-.save-row:hover{border-color:var(--border-hi)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.save-info{flex:1;min-width:0}
 #content{margin-left:var(--sidebar-w);flex:1;min-height:100vh;min-width:0;max-width:100%;box-sizing:border-box}
 .pg{padding:36px 40px 80px;animation:pgIn .22s var(--ease) both;min-width:0;box-sizing:border-box;width:100%}
 @keyframes pgIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
@@ -105,14 +97,50 @@ html{scrollbar-gutter:stable}
 .cl-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 32px;align-items:stretch;min-width:0}
 .cl-cols>.pb{min-width:0}
 .cl-cols{grid-template-columns:minmax(0,1fr)}
-.bcrumb{font-size:.8rem;color:var(--text-sub);margin-top:4px;display:flex;align-items:center;gap:5px}
-.bcrumb a{color:var(--accent);cursor:pointer}
-.h-hero{text-align:center;padding:6px 0 10px}
-.h-date{font-size:.95rem;font-weight:500;letter-spacing:.02em;color:var(--text-sub);margin-bottom:2px}
-.h-clock{font-family:'Figtree',sans-serif;font-size:3.5rem;line-height:1;letter-spacing:-.04em;font-weight:300;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;user-select:none}
-.h-greet{font-family:'Figtree',sans-serif;font-size:.9rem;font-weight:400;color:var(--text);margin-top:2px}
-.h-greet em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:600}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+  .hh{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(250px,290px);gap:26px;align-items:center;padding:28px 32px;border-radius:24px;border:1px solid var(--border-hi);background:linear-gradient(135deg,var(--accent-soft),transparent 55%),var(--card);overflow:hidden;isolation:isolate;box-shadow:0 18px 50px -30px var(--accent-glow)}
+  .hh::before,.hh::after{content:"";position:absolute;border-radius:50%;filter:blur(48px);z-index:-1;animation:hhFloat 16s ease-in-out infinite;transition:background .8s}
+  .hh::before{width:320px;height:320px;left:-90px;top:-130px;background:var(--hh1);opacity:.5}
+  .hh::after{width:280px;height:280px;right:-70px;bottom:-140px;background:var(--hh2);opacity:.5;animation-delay:-8s}
+  [data-theme="light"] .hh::before,[data-theme="light"] .hh::after{opacity:.3}
+  .hh[data-tod=dawn]{--hh1:#ffb340;--hh2:#ff6f91}
+  .hh[data-tod=day]{--hh1:#38c3ff;--hh2:#4272ff}
+  .hh[data-tod=dusk]{--hh1:#ff7a59;--hh2:#9456ff}
+  .hh[data-tod=night]{--hh1:#4272ff;--hh2:#9456ff}
+  .hh[data-wx=rain]{--hh2:#5b86b8}.hh[data-wx=storm]{--hh2:#7a5fb0}.hh[data-wx=snow]{--hh1:#a5d8ff}.hh[data-wx=sun]{--hh1:#ffc14d}
+  @keyframes hhFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24px,16px) scale(1.08)}}
+  .hh-eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:.74rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text-sub)}
+  .hh-eyebrow i{width:4px;height:4px;border-radius:50%;background:var(--text-sub);opacity:.6}
+  .hh-title{font-family:'Syne','Figtree',sans-serif;font-size:2.15rem;line-height:1.12;font-weight:700;letter-spacing:-.025em;margin:8px 0 6px;color:var(--text)}
+  .hh-name{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hh-emo{display:inline-block;transform-origin:70% 70%;animation:hhWave 3.2s ease-in-out 1}
+  @keyframes hhWave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(14deg)}20%,40%{transform:rotate(-8deg)}50%{transform:rotate(10deg)}}
+  .hh-sub{font-size:.95rem;color:var(--text-sub);margin-bottom:14px}
+  .hh-sub a{color:var(--accent)}
+  .hh-pills{display:flex;flex-wrap:wrap;gap:8px}
+  .hh-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;border:1px solid var(--border-hi);background:color-mix(in srgb,var(--card) 70%,transparent);backdrop-filter:blur(8px);font-size:.82rem;color:var(--text);cursor:pointer;transition:all .15s;font-family:inherit}
+  .hh-pill:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 6px 18px -10px var(--accent-glow)}
+  .hh-pill b{font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hh-time{font-family:'Figtree',sans-serif;font-size:3.6rem;line-height:1;font-weight:300;letter-spacing:-.045em;font-variant-numeric:tabular-nums;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;user-select:none;white-space:nowrap}
+  .hh-time sup{font-size:1.05rem;font-weight:500;letter-spacing:0;margin-left:3px;opacity:.65;vertical-align:top;position:relative;top:.35rem}
+  .hh-time .hh-c{display:inline-block;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:hhBlink 1.4s ease-in-out infinite;margin:0 .03em}
+  @keyframes hhBlink{50%{opacity:.35}}
+  .hh-wx{min-width:250px;padding:14px 16px;border-radius:18px;border:1px solid var(--border-hi);background:color-mix(in srgb,var(--card) 72%,transparent);backdrop-filter:blur(10px)}
+  .wx-main{display:flex;align-items:center;gap:12px}
+  .wx-ico{font-size:2.5rem;line-height:1;animation:hhFloatY 5s ease-in-out infinite}
+  @keyframes hhFloatY{50%{transform:translateY(-4px)}}
+  .wx-t{font-size:2.1rem;font-weight:600;letter-spacing:-.03em;line-height:1}
+  .wx-d{display:flex;flex-direction:column;min-width:0}
+  .wx-d b{font-size:.88rem}.wx-d span{font-size:.75rem;color:var(--text-sub)}
+  .wx-row{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:10px;font-size:.74rem;color:var(--text-sub)}
+  .wx-days{display:flex;gap:6px;margin-top:10px;padding-top:9px;border-top:1px dashed var(--border-hi)}
+  .wx-day{flex:1;text-align:center;font-size:.72rem;color:var(--text-sub);line-height:1.5}.wx-day b{display:block;color:var(--text);font-weight:600;text-transform:capitalize}
+  .wx-msg{font-size:.82rem;color:var(--text-sub);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .wx-msg button{font-family:inherit}
+  @media(max-width:1180px){.hh{grid-template-columns:auto minmax(0,1fr);gap:18px 22px}.hh-l{grid-column:1/-1}.hh-wx{min-width:0}}
+  @media(max-width:600px){.hh{padding:16px 16px;gap:12px 14px;border-radius:20px}.hh-title{font-size:1.45rem;margin:6px 0 4px}.hh-sub{font-size:.85rem;margin-bottom:10px}.hh-eyebrow{font-size:.66rem;gap:7px}.hh-pill{padding:6px 11px;font-size:.78rem}
+   .hh-time{font-size:2.3rem}.hh-time sup{font-size:.8rem;top:.25rem}.hh-wx{padding:10px 12px;border-radius:14px}.wx-ico{font-size:1.7rem}.wx-t{font-size:1.5rem}.wx-d b{font-size:.8rem}.wx-d span{font-size:.68rem}.wx-main{gap:8px}
+   .wx-days{display:none}.wx-row{margin-top:6px;font-size:.68rem;gap:3px 9px}.wx-row span:nth-child(n+4){display:none}}
+  @media(prefers-reduced-motion:reduce){.hh::before,.hh::after,.wx-ico,.hh-emo,.hh-time .hh-c{animation:none}}
 .sc{background:var(--card);border:1px solid var(--border);border-radius:var(--rx);padding:20px 22px;cursor:pointer;transition:border-color .18s,transform .18s,box-shadow .18s;position:relative;overflow:hidden}
 .sc:hover{border-color:var(--border-hi);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.22)}
 .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .22s var(--ease)}
@@ -122,8 +150,6 @@ html{scrollbar-gutter:stable}
 .sc-sub{font-size:.77rem;color:var(--text-sub);margin-top:6px}
 .sc-sub strong{color:var(--warning);font-weight:600}
 .pb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.home-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
-.home-row2{grid-template-columns:1fr}
 .home-stats-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .home-stats-sub{font-size:.78rem;font-weight:500;color:var(--text-sub);text-transform:uppercase;letter-spacing:.08em;margin:22px 0 12px}
 .home-stats-sub:first-of-type{margin-top:0}
@@ -153,9 +179,6 @@ html{scrollbar-gutter:stable}
 .pb-body{padding:6px 6px 4px}
 .pi{padding:9px 10px;border-radius:var(--rx-sm);cursor:pointer;transition:background .14s}
 .pi:hover{background:var(--card-hi)}
-.pi-cl{display:flex;align-items:center;gap:10px}
-.pi-n{font-size:.84rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
-.pi-m{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:.73rem;color:var(--text-sub)}
 .pb-foot{padding:10px 12px;border-top:1px solid var(--border)}
 .p-empty{padding:20px 12px;text-align:center;color:var(--text-sub);font-size:.8rem;font-style:italic}
 .frow{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px}
@@ -168,9 +191,6 @@ html{scrollbar-gutter:stable}
 .ir::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);opacity:0;transition:opacity .14s}
 .ir:hover{border-color:var(--border-hi);background:var(--card-hi);transform:translateX(2px)}
 .ir:hover::before{opacity:1}
-.ir.s-relancer::before,.ir.s-relancer:hover::before{background:var(--warning);opacity:1}
-.ir.s-acceptee::before,.ir.s-acceptee:hover::before{background:var(--success);opacity:1}
-.ir.s-refusee::before,.ir.s-refusee:hover::before{background:var(--danger);opacity:.7}
 .ir.done{opacity:.55}
 .ir.done .ir-n{text-decoration:line-through}
 .ir-main{flex:1;min-width:0}
@@ -185,7 +205,6 @@ html{scrollbar-gutter:stable}
 .cp-moyenne{color:#7D9AFF}
 .cp-faible{color:var(--text-sub)}
 .cp-forte::before,.cp-moyenne::before,.cp-faible::before{display:none}
-.prio-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:16px}
 .prio-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
 .pp{padding:11px 6px;border-radius:var(--rx-sm);border:2px solid var(--border);cursor:pointer;text-align:center;transition:all .15s;font-size:.78rem;font-weight:700;color:var(--text-sub)}
 .pp:hover{border-color:var(--border-hi)}
@@ -205,8 +224,6 @@ html{scrollbar-gutter:stable}
 .tag.tag-alert{background:rgba(255,107,122,.15);color:#ff8f9a;border-color:rgba(255,107,122,.32);font-weight:700}
 .tag.tag-saas,.group-tag.tag-saas{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-soft)}
 .group-tag{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:600;background:var(--purple-soft);color:var(--purple);border:1px solid var(--purple-soft);white-space:nowrap;flex-shrink:0}
-.bt-forte{background:rgba(255,148,128,.15);color:#FF9480}
-.bt-moyenne{background:rgba(125,154,255,.15);color:#7D9AFF}
 .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:var(--rx-sm);font-family:'Figtree',sans-serif;font-size:.875rem;font-weight:600;cursor:pointer;border:none;transition:all .17s var(--ease);white-space:nowrap}
 .btn-p{background:var(--grad);color:#fff;border:1px solid transparent;box-shadow:0 4px 16px var(--accent-glow)}
 .btn-p:hover{filter:brightness(1.08);transform:translateY(-1px)}
@@ -235,9 +252,8 @@ html{scrollbar-gutter:stable}
 .fg{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
 .fg:last-child{margin-bottom:0}
 .fl{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-sub)}
-.fi,.fs,.ft{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px 13px;border-radius:var(--rx-sm);font-family:'Figtree',sans-serif;font-size:.9rem;transition:border-color .14s,box-shadow .14s;width:100%;outline:none}
-.fi:focus,.fs:focus,.ft:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-.ft{resize:vertical;min-height:86px}
+.fi,.fs{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px 13px;border-radius:var(--rx-sm);font-family:'Figtree',sans-serif;font-size:.9rem;transition:border-color .14s,box-shadow .14s;width:100%;outline:none}
+.fi:focus,.fs:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .fs option{background:var(--surface);color:var(--text)}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 @media(max-width:460px){.f2{grid-template-columns:1fr}}
@@ -253,24 +269,11 @@ html{scrollbar-gutter:stable}
 .cl-card-id{flex:1;min-width:0}
 .cl-card-name{font-weight:600;font-size:.92rem;line-height:1.25;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
 .cl-card-loc{font-size:.76rem;color:var(--text-sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
-.cl-card-act{display:flex;gap:4px;flex-shrink:0;opacity:0;transition:opacity .14s}
-.cl-card:hover .cl-card-act,.cl-card:focus-within .cl-card-act{opacity:1}
-@media(hover:none){.cl-card-act{opacity:1}}
 .cl-card-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:.72rem}
 .cl-card-badges .group-tag,.cl-card-badges .tag{max-width:100%;overflow:hidden;text-overflow:ellipsis}
-.cl-card-ct{font-size:.8rem;min-width:0}
-.cl-ct-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cl-ct-role{color:var(--text-sub)}
-.cl-ct-links{display:flex;gap:4px 12px;flex-wrap:wrap;margin-top:3px;font-size:.76rem}
-.cl-ct-links a{color:var(--text-sub);text-decoration:none;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cl-ct-links a:hover{color:var(--accent);text-decoration:underline}
 .cl-card-ids{font-size:.74rem;color:var(--text-sub);line-height:1.5}
 .cl-card-ids b{color:var(--text);font-weight:600}
 .cl-card-ids b.eff-alert{color:var(--danger);font-weight:700}
-.cl-card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:9px;border-top:1px solid var(--border);font-size:.76rem;color:var(--text-sub)}
-.cl-card-foot b{color:var(--text)}
-.cl-muted{color:var(--text-sub);opacity:.7}
-.cl-late{color:var(--danger);font-weight:700}
 .cl-search-wrap{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border);border-radius:var(--rx-sm);padding:9px 14px;flex:0 1 280px;min-width:200px;transition:border-color .15s,box-shadow .15s}
 .cl-search-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .cl-search-inp{background:transparent;border:none;color:var(--text);font-family:'Figtree',sans-serif;font-size:.88rem;outline:none;flex:1;min-width:0}
@@ -278,24 +281,12 @@ html{scrollbar-gutter:stable}
 .cl-filters{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
 .cl-filter-select{background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:22px;font-family:'Figtree',sans-serif;font-size:.86rem;font-weight:500;cursor:pointer;outline:none;transition:border-color .14s;appearance:none;-webkit-appearance:none}
 .cl-filter-select:focus,.cl-filter-select.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
-.cl-sort-select{background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:20px;font-family:'Figtree',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;outline:none}
-.cl-filter-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:.75rem;font-weight:600;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent);cursor:pointer}
-.cl-filter-tag:hover{background:var(--danger-soft);color:var(--danger);border-color:var(--danger)}
-.cl-check{width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;margin-top:14px}
-.bulk-bar{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--accent);border-radius:var(--rx);padding:14px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 8px 32px var(--accent-glow);z-index:50;}
-.bulk-count{font-weight:700;font-size:.88rem;color:var(--accent);white-space:nowrap}
-.bulk-sep{width:1px;height:20px;background:var(--border)}
-.cl-select-row{display:flex;align-items:center;gap:10px;padding:8px 17px;font-size:.8rem;color:var(--text-sub);cursor:pointer;user-select:none}
-.cl-select-row:hover{color:var(--text)}
-.cl-results{font-size:.78rem;color:var(--text-sub);padding:2px 0}
 .cl-hero{position:relative;background:var(--card);border:1px solid var(--border);border-radius:var(--rx);padding:24px 140px 24px 26px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:18px 14px;margin-bottom:22px}
 .cld-del{position:absolute;top:24px;right:26px}
 .cld-id{grid-column:1;grid-row:1}
 .cld-actions{grid-column:2;grid-row:1;justify-self:end;align-self:start}
-.cl-av{width:60px;height:60px;border-radius:16px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;flex-shrink:0}
 .cld-id{display:flex;align-items:flex-start;gap:16px;min-width:0}
 .cl-cn{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:700;letter-spacing:-.02em;margin-bottom:3px}
-.cl-ca{color:var(--text-sub);font-size:.88rem;line-height:1.6}
 .cld-badges{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px}
 .cld-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .cld-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:8px;background:var(--card-hi);border:1px solid var(--border);font-size:.76rem;color:var(--text-sub);white-space:nowrap}
@@ -332,22 +323,17 @@ html{scrollbar-gutter:stable}
 .cl-cols>.pb>.cld-panel-body{flex:1}
 .cld-panel-body{padding:14px 16px 12px}
 .ico-w{background:var(--warning-soft)}
-.sec-h{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-sub);margin:26px 0 12px;display:flex;align-items:center;gap:10px}
-.sec-h::after{content:'';flex:1;height:1px;background:var(--border)}
 .ct-acts{display:flex;gap:6px;flex-shrink:0}
 .ct-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rx);padding:13px 16px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;transition:border-color .14s}
 .ct-card:hover{border-color:var(--border-hi)}
 .ct-nm{font-weight:600;font-size:.88rem}
 .ct-me{font-size:.77rem;color:var(--text-sub);margin-top:3px;line-height:1.7}
+#vw-options{max-width:1500px;margin-left:auto;margin-right:auto}
 .tg-grp{display:flex;border:1px solid var(--border);border-radius:var(--rx-sm);overflow:hidden}
 .tog{padding:10px 15px;font-size:.875rem;font-weight:600;cursor:pointer;border:none;font-family:'Figtree',sans-serif;transition:all .14s;background:transparent;color:var(--text-sub)}
 .tog.on{background:var(--grad);color:#fff}
-.at-pip{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .ctr{background:var(--bg);border:1px solid var(--border);border-radius:var(--rx-sm);padding:13px;margin-bottom:7px}
 .ctr-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-sub)}
-.j-layout{display:grid;grid-template-columns:196px 1fr;gap:16px;align-items:start}
-.j-left{display:flex;flex-direction:column;gap:10px}
-.j-right{display:flex;flex-direction:column;gap:12px}
 .cprod-blocked{opacity:.55;cursor:not-allowed}
 .cprod-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .cprod-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -364,23 +350,6 @@ html{scrollbar-gutter:stable}
 .cprod-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cprod-status{font-size:.74rem;font-weight:600;white-space:nowrap;flex-shrink:0}
 .cprod-name{font-size:.88rem;font-weight:500}
-.prod-pick-list{display:flex;flex-direction:column;gap:5px;margin-top:6px;max-height:180px;overflow-y:auto}
-.prod-pick-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--rx-sm);background:var(--bg);border:1px solid var(--border);cursor:pointer;transition:all .13s}
-.prod-pick-item:hover{border-color:var(--border-hi)}
-.prod-pick-item.sel{border-color:var(--purple);background:var(--purple-soft)}
-.prod-pick-item input[type=checkbox]{accent-color:var(--purple);cursor:pointer;width:15px;height:15px}
-.sync-ok{background:var(--success-soft);border-color:var(--success);color:var(--success)}
-.sync-warn{background:var(--warning-soft);border-color:var(--warning);color:var(--warning)}
-.sync-err{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
-.sync-pulse{animation:pulse 1.4s ease-in-out infinite}
-.fb-setup-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rx);padding:20px;margin-bottom:12px}
-.fb-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
-.fb-step:last-child{margin-bottom:0}
-.fb-num{width:24px;height:24px;border-radius:50%;background:var(--grad);color:#fff;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.fb-step-text{font-size:.84rem;line-height:1.6;color:var(--text-sub)}
-.fb-step-text strong{color:var(--text)}
-.fb-step-text a{color:var(--accent)}
-.fb-step-text code{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:.82rem;color:var(--text)}
 .empty{text-align:center;padding:60px 20px;color:var(--text-sub)}
 .empty-i{font-size:2.6rem;margin-bottom:10px;opacity:.45}
 .empty-t{font-size:.9rem;margin-bottom:14px}
@@ -405,27 +374,17 @@ html{scrollbar-gutter:stable}
 .map-leg-ring{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:5px;border:3px solid;box-sizing:border-box;vertical-align:-2px;background:#fff}
 .map-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px}
 .map-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--text-sub)}
-.map-leg-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:4px;border:1.5px solid rgba(255,255,255,.4)}
 .map-geo-bar{background:var(--accent-soft);border:1px solid var(--accent);border-radius:var(--rx-sm);padding:8px 14px;font-size:.8rem;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .leaflet-popup-content-wrapper{background:var(--surface)!important;border:1px solid var(--border-hi)!important;border-radius:10px!important;box-shadow:0 8px 32px rgba(0,0,0,.4)!important;color:var(--text)!important}
 .leaflet-popup-tip{background:var(--surface)!important}
 .map-popup-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:6px}
 .map-popup-meta{font-size:.78rem;color:var(--text-sub);line-height:1.8}
 .map-popup-btn{display:inline-flex;align-items:center;margin-top:10px;padding:6px 14px;background:var(--grad);color:#fff;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:'Figtree',sans-serif}
-.logo-upload-area{display:flex;align-items:center;gap:14px;margin-top:4px}
-.logo-thumb-wrap{cursor:pointer;transition:all .15s;display:inline-block;border-radius:var(--rx-sm)}
-.logo-thumb-wrap>div{border:2px solid var(--border)}
-.logo-thumb-wrap:hover{transform:scale(1.04)}
-.logo-thumb-wrap:hover>div{border-color:var(--accent)}
-.logo-placeholder{width:72px;height:72px;border-radius:var(--rx-sm);background:var(--card-hi);border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4rem;flex-shrink:0;transition:all .15s}
-.logo-placeholder:hover{border-color:var(--accent);background:var(--accent-soft)}
-.logo-hint{font-size:.78rem;color:var(--text-sub);line-height:1.6}
 .note-editor{width:100%;min-height:160px;max-height:260px;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-radius:var(--rx);padding:14px;font-family:'Figtree',sans-serif;font-size:.92rem;line-height:1.75;color:var(--text);outline:none;transition:border-color .14s,box-shadow .14s}
 .note-editor:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .note-editor:empty::before{content:attr(data-placeholder);color:var(--text-sub);font-style:italic;opacity:.6;pointer-events:none}
 .note-editor b,.note-editor strong{font-weight:700}
 .note-editor u{text-decoration:underline}
-.kb-card-logo{width:22px;height:22px;border-radius:4px;object-fit:cover;flex-shrink:0;background:#fff}
 #ob{position:fixed;inset:0;z-index:300;display:none}
 .no-desktop{display:none}
 #ob.on{display:block}
@@ -468,14 +427,6 @@ html{scrollbar-gutter:stable}
 .tag.tag-onprem,.group-tag.tag-onprem{display:inline-flex;align-items:center;gap:4px;background:rgba(124,58,237,.13);color:#7c3aed;border-color:rgba(124,58,237,.30)}
 [data-theme="dark"] .tag.tag-onprem,[data-theme="dark"] .group-tag.tag-onprem{background:rgba(167,139,250,.17);color:#b79bff;border-color:rgba(167,139,250,.36)}
 .ic-srv{width:12px;height:12px;flex-shrink:0}
-#cl-ctx{position:fixed;z-index:260;min-width:260px;max-width:340px;background:var(--surface);border:1px solid var(--border-hi);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.35);padding:6px;animation:obIn .14s var(--ease)}
-.cl-ctx-h{padding:7px 10px 6px;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cl-ctx-i{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:none;background:transparent;color:var(--text);font:600 .84rem 'Figtree',sans-serif;padding:9px 10px;border-radius:9px;cursor:pointer}
-.cl-ctx-i:hover:not(:disabled),.cl-ctx-i:focus-visible{background:var(--accent-soft);outline:none}
-.cl-ctx-i:disabled{opacity:.4;cursor:not-allowed}
-.cl-ctx-i .ci{width:18px;text-align:center;flex-shrink:0}
-.cl-ctx-i small{display:block;font-weight:500;color:var(--text-sub);font-size:.72rem;margin-top:1px;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cl-ctx-sep{height:1px;background:var(--border);margin:5px 6px}
 .hw-sec-l{display:flex;align-items:center;gap:10px;margin:0 0 9px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-sub)}
 .hw-sec-l::after{content:'';flex:1;height:1px;background:var(--border)}
 .hw-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -529,6 +480,7 @@ html{scrollbar-gutter:stable}
 .hw-ln:focus{border-color:var(--accent);background:var(--card)}
 .hw-lname{font-size:.72rem;font-weight:600;color:var(--text-sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 #client-notes-ta.note-editor{max-height:none;overflow-y:visible}
+#vw-composition:not(.hidden){display:flex;flex-direction:column;height:100vh;padding:0;animation:none;overflow:hidden}
 .stat-tog{display:inline-flex;align-items:center;margin-left:10px;padding:2px;border:1px solid var(--border);border-radius:999px;background:transparent;cursor:pointer;opacity:.55;transition:opacity .15s,border-color .15s;font:inherit;line-height:1;flex-shrink:0}
 .stat-tog:hover,.stat-tog:focus-visible{opacity:1;border-color:var(--accent);outline:none}
 .stat-tog span{min-width:20px;padding:3px 6px;border-radius:999px;font-size:.66rem;font-weight:700;color:var(--text-sub);text-align:center}
@@ -543,8 +495,9 @@ html{scrollbar-gutter:stable}
 .f3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 14px}
 .f3>div{min-width:0;overflow-wrap:anywhere}
 @media(max-width:480px){.f3{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.sma-snap{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sma-snap div{padding:10px 11px;border-radius:12px;border:1px solid var(--border);background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 9%,transparent),transparent);display:flex;flex-direction:column;gap:2px}
-.sma-snap b{font-size:1.02rem;font-weight:800;color:var(--text);letter-spacing:-.01em}.sma-snap span{font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-sub)}
+#vw-smart{padding:0!important;position:relative;overflow:hidden}
+#vw-smart:not(.hidden){display:flex;flex-direction:column;height:100vh}
+#vw-smart:not(.hidden){height:calc(100vh - 64px)}
 :root{--sidebar-w:0px}
 #sidebar{width:100%;height:60px;flex-direction:row;top:auto;bottom:0;left:0;border-right:none;border-top:1px solid var(--border);padding:0}
 .sb-logo{display:none}
@@ -555,20 +508,13 @@ html{scrollbar-gutter:stable}
 .nc{display:none}
 #content{margin-left:0}
 .pg{padding:18px 14px 80px}
-.h-clock{font-size:2.8rem}
-.h-date{font-size:.85rem}
-.stat-grid{grid-template-columns:1fr 1fr!important}
 .pb-grid{grid-template-columns:1fr!important}
 .cl-toolbar{flex-direction:column;align-items:stretch;width:100%}
 .cl-search-wrap{width:100%}
 .cl-filters{flex-wrap:wrap;width:100%}
 .cl-filters select,.cl-filter-select{flex:1;min-width:0;max-width:calc(50% - 4px);font-size:.75rem}
-.cl-bulk-actions{flex-wrap:wrap;gap:5px}
-.cl-bulk-actions .btn{font-size:.75rem;padding:6px 10px}
 .ir-m{flex-wrap:wrap;overflow:visible}
 #toast{left:50%;transform:translateX(-50%)}
-.j-layout{grid-template-columns:1fr;height:auto}
-.j-right{max-height:none}
 .cl-search-wrap{flex:none;width:100%;min-width:0}
 .cl-filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
 .cl-filters>span{grid-column:1/-1}
@@ -605,8 +551,7 @@ html{scrollbar-gutter:stable}
 .ibt{width:36px;height:36px}
 .cld-actions>.btn,.cld-del{min-height:42px}
 .tel-link{pointer-events:auto;color:var(--accent);text-decoration:underline;text-underline-offset:2px}
-@media(max-width:460px){.stat-grid{grid-template-columns:1fr!important}}
-.cl-fbtn,.m-jump{display:none}
+.cl-fbtn{display:none}
 html{-webkit-tap-highlight-color:transparent}
 button,a,select,input,label,.ni,.cprod-item,.pb-head,.dd-item{touch-action:manipulation}
 input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=color]),select,textarea{font-size:16px!important}
@@ -678,11 +623,7 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):
 #mi>div:last-child:has(>.btn-p){position:sticky;bottom:-20px;z-index:4;display:flex;gap:10px;background:var(--surface);margin:16px -16px -20px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--border)}
 #mi>div:last-child:has(>.btn-p)>.btn{flex:1;justify-content:center}
 #mi .f2{margin-bottom:13px;row-gap:0}
-#ni-smart{display:none!important}
 
-
-
-/* ═ Page réservée au mobile ═ */
 #pc-gate{display:none}
 html.is-pc body{overflow:hidden}
 html.is-pc #layout,html.is-pc #mo,html.is-pc #toast{display:none!important}
@@ -694,7 +635,6 @@ html.is-pc #pc-gate{position:fixed;inset:0;z-index:9999;display:flex;flex-direct
 </head>
 <body>
 <script>
-// Cette page est réservée au mobile : sur ordinateur (écran large, souris), seul l'écran « page pour mobile seulement » s'affiche.
 (function(){
   function mobile(){return window.innerWidth<=768||(window.matchMedia&&matchMedia('(pointer:coarse)').matches&&matchMedia('(hover:none)').matches)}
   window.__CRM_MOBILE=mobile();
@@ -713,7 +653,7 @@ html.is-pc #pc-gate{position:fixed;inset:0;z-index:9999;display:flex;flex-direct
       <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       <span class="ni-lbl">Clients</span>
     </div>
-    <div class="ni" id="ni-todos" onclick="navigate('todos')">
+    <div class="ni" id="ni-notifs" onclick="navigate('notifs')">
       <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <span class="ni-lbl">Notifications</span>
       <span class="nc" id="nc-t" style="display:none"></span>
@@ -722,7 +662,7 @@ html.is-pc #pc-gate{position:fixed;inset:0;z-index:9999;display:flex;flex-direct
 </aside>
 <main id="content">
   <div id="vw-home" class="pg"></div>
-  <div id="vw-todos" class="pg hidden"></div>
+  <div id="vw-notifs" class="pg hidden"></div>
   <div id="vw-clients" class="pg hidden"></div>
   <div id="vw-client-detail" class="pg hidden"></div>
 </main>
@@ -735,17 +675,9 @@ html.is-pc #pc-gate{position:fixed;inset:0;z-index:9999;display:flex;flex-direct
 
 <script>
 const mstore=(()=>{const m=new Map();return{getItem:k=>m.has(k)?m.get(k):null,setItem:(k,v)=>{m.set(k,String(v))},removeItem:k=>{m.delete(k)}}})();
-let S={
-  settings:{name:'',theme:'light',notes:'',rcr:false,modules:{offers:true,invoices:true},autoTasks:{
-    forte:{on:false,every:3,unit:'months'},
-    moyenne:{on:false,every:6,unit:'months'},
-    faible:{on:false,every:12,unit:'months'}
-  }},
-  offers:[],todos:[],invoices:[],clients:[],groups:[],products:[],journal:{},techCodes:{}
-};
-let CV='home',CF='all',clk=null,PF=null,invPF=null;
-let pendingLogo=null;
-let selClients=new Set(), clSearch='', clFilter={priority:'',group:'',renewal:false,server:'',prospects:false,version:'',contractStatus:'',contractType:'',hebergeur:'',signYear:'',commercial:'',alerts:false,modules:[],dept:'',eff:'',segment:'',ids:null}, clSort='name';
+let S={settings:{name:'',theme:'light',rcr:false},clients:[],groups:[],products:[]};
+let CV='home',clk=null;
+let clSearch='', clFilter={priority:'',group:'',renewal:false,server:'',prospects:false,version:'',contractStatus:'',contractType:'',hebergeur:'',signYear:'',commercial:'',alerts:false,modules:[],dept:'',eff:'',segment:'',ids:null}, clSort='name';
 let clListScrollY=0;
 let clModOpen=false;
 let clView='list';
@@ -753,80 +685,66 @@ try{if(mstore.getItem('crm-clview')==='map')clView='map'}catch(e){}
 let leafletMap=null, geoQueue=[], geoRunning=false;
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function today(){return new Date().toISOString().split('T')[0]}
-function fd(s){ // AAAA-MM-JJ → JJ/MM/AAAA ; toute autre valeur est affichée telle quelle (jamais d'erreur ni de « undefined »)
+function fd(s){
   if(s==null||s==='')return'—';
   if(s instanceof Date)return isNaN(s)?'—':`${String(s.getDate()).padStart(2,'0')}/${String(s.getMonth()+1).padStart(2,'0')}/${s.getFullYear()}`;
   const t=String(s),m=t.match(/^(\d{4})-(\d{2})-(\d{2})(?:$|[T\s])/);
   return m?`${m[3]}/${m[2]}/${m[1]}`:esc(t);
 }
 function esc(s){if(s==null||s===false||s===''||(typeof s==='number'&&isNaN(s)))return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function fixInvoices(){(S.invoices||[]).forEach(i=>{if(i.status==='a_envoyer')i.status='en_attente'})}
 const DEFAULT_MAPTILER_KEY='MnLKWn9Cd8UybOkXCZFT';
 const RISKY_ID=/['"`\\<>&\s\u0000-\u001f]/;
 function safeId(s){const t=String(s==null?'':s);return t&&t.length<=100&&!RISKY_ID.test(t)?t:''}
 function ovdSanitize(){
-  if(!S.settings||typeof S.settings!=='object')S.settings={};
-  const dA={forte:{on:false,every:3,unit:'months'},moyenne:{on:false,every:6,unit:'months'},faible:{on:false,every:12,unit:'months'}};
-  if(!S.settings.autoTasks||typeof S.settings.autoTasks!=='object')S.settings.autoTasks=dA;
-  ['forte','moyenne','faible'].forEach(k=>{if(!S.settings.autoTasks[k]||typeof S.settings.autoTasks[k]!=='object')S.settings.autoTasks[k]=dA[k]});
-  ['clients','offers','todos','invoices','products','groups'].forEach(k=>{if(!Array.isArray(S[k]))S[k]=[]});
-  if(!S.journal||typeof S.journal!=='object')S.journal={};
-  S.groups=S.groups.filter(g=>typeof g==='string'&&g.trim());
-  const obj=x=>x&&typeof x==='object'&&!Array.isArray(x),str=(o,k)=>{if(o[k]!=null&&typeof o[k]!=='string')o[k]=String(o[k])};
-  const dat=(o,k)=>{if(typeof o[k]==='number')o[k]=impDateStr(o[k])||String(o[k]);else str(o,k)};
-  // produits : identifiants sûrs (renvoi dans les fiches clients)
-  const pm={};S.products=S.products.filter(obj);const pseen=new Set();
-  S.products.forEach(x=>{str(x,'name');let id=safeId(x.id);if(!id||pseen.has(id)){id=uid();if(x.id!=null)pm[x.id]=id}pseen.add(id);x.id=id});
-  const remap=(o)=>{if(!obj(o))return {};const r={};Object.keys(o).forEach(k=>{r[pm[k]||k]=o[k]});return r};
-  const cm={};const seen=new Set();
-  S.clients=S.clients.filter(obj);
-  S.clients.forEach(c=>{
-    let id=safeId(c.id);if(!id||seen.has(id)){id=uid();if(c.id!=null&&!seen.has(String(c.id)))cm[c.id]=id}seen.add(id);c.id=id;
-    ['company','finops','siren','ape','effectif','street','street2','zip','city','address','tva','serverUrl','version','commercial','group','clientNotes'].forEach(k=>str(c,k));dat(c,'createdAt');
-    if(c.company==null)c.company='';
-        clKelioPriority(c); // les KELIO priment sur OPTIMA et PRIMA (mise en conformité au chargement)
-    if(c.gestionnaires!=null){const g=parseInt(c.gestionnaires,10);if(g>=1&&g!==5)c.gestionnaires=Math.min(g,9999);else delete c.gestionnaires} // compteur de gestionnaires : 5 = valeur de base, non stocké
-    if(c.logo!=null&&!(typeof c.logo==='string'&&/^(?:data:image\/(?:png|jpe?g|gif|webp|svg\+xml);base64,[A-Za-z0-9+\/=]+|https?:\/\/[^\s"'<>`\\]+)$/i.test(c.logo)))c.logo=null; // logo : image intégrée ou lien web sans caractère de rupture, sinon ignoré
-    c.contacts=(Array.isArray(c.contacts)?c.contacts:[]).filter(obj);c.contacts.forEach(t=>['name','firstName','role','email','phone'].forEach(k=>str(t,k)));
-    c.contracts=(Array.isArray(c.contracts)?c.contracts:[]).filter(obj);const cs=new Set();
-    c.contracts.forEach(k=>{if(k.loyerAnnuel!==undefined&&k.loyerAnnuel!==null)k.loyerAnnuel=impMoney(k.loyerAnnuel);let i2=safeId(k.id);if(!i2||cs.has(i2))i2=uid();cs.add(i2);k.id=i2;['label','type','hebergeur','systeme','statut'].forEach(f=>str(k,f));['dateSignature','dateDebut','dateFin'].forEach(f=>dat(k,f))});
-    c.products=remap(c.products);if(c.moduleOptions!==undefined)c.moduleOptions=remap(c.moduleOptions);if(c.moduleQty!==undefined)c.moduleQty=remap(c.moduleQty);
-    if(typeof c.clientNotes==='string'&&/<\s*(script|iframe|frame|object|embed|applet|svg|math|base|meta|link|style|form|template)\b|\son[a-z]+\s*=|javascript\s*:|vbscript\s*:|data\s*:\s*text\/html/i.test(c.clientNotes))c.clientNotes=sanitizeNoteHtml(c.clientNotes); // notes reçues d'un fichier : jamais de code actif
-  });
-  const tseen=new Set();
-  ['offers','todos','invoices'].forEach(k=>{S[k]=S[k].filter(obj);S[k].forEach(o=>{let id=safeId(o.id);if(!id||tseen.has(id))id=uid();tseen.add(id);o.id=id;if(o.clientId!=null){const cid=cm[o.clientId]||o.clientId;o.clientId=safeId(cid)?cid:null}})});
+ if(!S.settings||typeof S.settings!=='object')S.settings={};
+ ['clients','products','groups'].forEach(k=>{if(!Array.isArray(S[k]))S[k]=[]});
+ S.groups=S.groups.filter(g=>typeof g==='string'&&g.trim());
+ const obj=x=>x&&typeof x==='object'&&!Array.isArray(x),str=(o,k)=>{if(o[k]!=null&&typeof o[k]!=='string')o[k]=String(o[k])};
+ const pm={};S.products=S.products.filter(obj);const pseen=new Set();
+ S.products.forEach(x=>{str(x,'name');let id=safeId(x.id);if(!id||pseen.has(id)){id=uid();if(x.id!=null)pm[x.id]=id}pseen.add(id);x.id=id});
+ const remap=o=>{if(!obj(o))return{};const r={};Object.keys(o).forEach(k=>{r[pm[k]||k]=o[k]});return r};
+ const seen=new Set();
+ S.clients=S.clients.filter(obj);
+ S.clients.forEach(c=>{
+  let id=safeId(c.id);if(!id||seen.has(id))id=uid();seen.add(id);c.id=id;
+  ['company','finops','siren','ape','effectif','street','street2','zip','city','address','tva','version','commercial','group','clientNotes','createdAt'].forEach(k=>str(c,k));
+  if(c.company==null)c.company='';
+  clKelioPriority(c);
+  if(c.gestionnaires!=null){const g=parseInt(c.gestionnaires,10);if(g>=1&&g!==5)c.gestionnaires=Math.min(g,9999);else delete c.gestionnaires}
+  if(c.logo!=null&&!(typeof c.logo==='string'&&/^(?:data:image\/(?:png|jpe?g|gif|webp|svg\+xml);base64,[A-Za-z0-9+\/=]+|https?:\/\/[^\s"'<>`\\]+)$/i.test(c.logo)))c.logo=null;
+  c.contacts=(Array.isArray(c.contacts)?c.contacts:[]).filter(obj);c.contacts.forEach(t=>['name','firstName','role','email','phone'].forEach(k=>str(t,k)));
+  c.contracts=(Array.isArray(c.contracts)?c.contracts:[]).filter(obj);const cs=new Set();
+  c.contracts.forEach(k=>{if(k.loyerAnnuel!=null){const v=Number(k.loyerAnnuel);k.loyerAnnuel=isFinite(v)?v:null}let i2=safeId(k.id);if(!i2||cs.has(i2))i2=uid();cs.add(i2);k.id=i2;['label','type','hebergeur','systeme','statut','dateSignature','dateDebut','dateFin'].forEach(f=>str(k,f))});
+  c.products=remap(c.products);if(c.moduleOptions!==undefined)c.moduleOptions=remap(c.moduleOptions);if(c.moduleQty!==undefined)c.moduleQty=remap(c.moduleQty);
+  if(typeof c.clientNotes==='string'&&/<\s*(script|iframe|frame|object|embed|applet|svg|math|base|meta|link|style|form|template)\b|\son[a-z]+\s*=|javascript\s*:|vbscript\s*:|data\s*:\s*text\/html/i.test(c.clientNotes))c.clientNotes=sanitizeNoteHtml(c.clientNotes);
+ });
 }
 function ovd(){
  ovdSanitize();
- if(typeof hwMigrate==='function')hwMigrate(); // matériel : ancien format → liste de lignes
-  if(S.settings.autoAlertDefaultsV!==2){ // anciennes valeurs d'origine jamais modifiées -> nouvelles valeurs par défaut (3 / 6 / 12 mois, désactivées) ; réglages personnalisés conservés
-    const a=S.settings.autoTasks,old=a&&a.forte&&a.moyenne&&a.faible&&a.forte.on===true&&a.forte.every===15&&a.forte.unit==='days'&&a.moyenne.on===true&&a.moyenne.every===45&&a.moyenne.unit==='days'&&a.faible.on===false&&a.faible.every===90&&a.faible.unit==='days';
-    if(old)S.settings.autoTasks={forte:{on:false,every:3,unit:'months'},moyenne:{on:false,every:6,unit:'months'},faible:{on:false,every:12,unit:'months'}};
-    S.settings.autoAlertDefaultsV=2;
-  }
-  if(!S.settings.maptilerKeySeeded){ // clé MapTiler par défaut (une seule fois : si on la vide ensuite, elle n'est pas remise)
-    if(!String(S.settings.maptilerKey||'').trim())S.settings.maptilerKey=DEFAULT_MAPTILER_KEY;
-    S.settings.maptilerKeySeeded=true;
-  }(S.clients||[]).forEach(c=>{if(c.effectif)c.effectif=impEffectifClean(c.effectif)});if(!S.settings.versionMin)S.settings.versionMin='5.1';if(S.settings.routeFrom!==undefined)delete S.settings.routeFrom;if(S.settings.notes==null)S.settings.notes='';if(S.settings.rcr==null)S.settings.rcr=false;if(!S.techCodes)S.techCodes={};if(!S.settings.relanceBaseline)S.settings.relanceBaseline=today();if(!S.settings.relanceDone)S.settings.relanceDone={};if(!S.settings.notifDismissed)S.settings.notifDismissed={};seedDefaultModules();(S.clients||[]).forEach(c=>{if(!['forte','moyenne','faible'].includes(c.priority))c.priority='moyenne';(c.contracts||[]).forEach(ct=>{if(ct.hebergeur){const o=String(ct.hebergeur).trim(),n=hebNorm(o);if(o&&!n)HEB_DROPPED.push(o);ct.hebergeur=n}if(ct.systeme)ct.systeme=sysClean(ct.systeme)});ctrFillHeb(c)});
- if(HEB_DROPPED.length){const l=[...new Set(HEB_DROPPED)].slice(0,4).join(', ');HEB_DROPPED.length=0;setTimeout(()=>toast('ℹ Hébergeur non reconnu vidé sur des contrats (« '+l+' »). Hébergeurs possibles : BLUE TELECOM, CELESTE, AWS.'),1200)}if(!S.settings.modules)S.settings.modules={offers:true,invoices:true};applyModuleVisibility();fixInvoices();fixGeo();fixAuto();const t=today();S.offers.forEach(o=>{if(o.status==='en_attente'&&o.expectedReturnDate&&o.expectedReturnDate<t)o.status='a_relancer'})}
+ if(!S.settings.maptilerKeySeeded){if(!String(S.settings.maptilerKey||'').trim())S.settings.maptilerKey=DEFAULT_MAPTILER_KEY;S.settings.maptilerKeySeeded=true}
+ if(!S.settings.versionMin)S.settings.versionMin='5.1';
+ if(S.settings.rcr==null)S.settings.rcr=false;
+ if(!S.settings.notifDismissed)S.settings.notifDismissed={};
+ S.clients.forEach(c=>{if(!['forte','moyenne','faible'].includes(c.priority))c.priority='moyenne'});
+}
 function applyTheme(){document.documentElement.setAttribute('data-theme',S.settings.theme||'light')}
 const CPL={forte:'IMPORTANT',moyenne:'NORMAL',faible:'FAIBLE'};
 const CPB={forte:'cp-forte',moyenne:'cp-moyenne',faible:'cp-faible'};
 function bdg(t,c){return`<span class="badge ${c}">${t}</span>`}
 function cpBadge(p){if(!p)return'';return bdg(CPL[p],CPB[p])}
 function cn(id){const c=S.clients.find(x=>x.id===id);return c?c.company:null}
-function load(){ // aucune lecture du navigateur : la base est chargée depuis un fichier à chaque ouverture
+function load(){
  ovd();
 }
-function save(){ // en mémoire seulement : rien n'est enregistré dans le navigateur
- ctrHebAll(); // contrat sans hébergeur d'un client OnPremise → « OnPremise »
+function save(){
+ ctrHebAll();
 }
 const KCM_A=[46, 51, 180, 195, 127, 85, 186, 138, 53, 217, 9, 225, 145, 221, 212, 75, 32, 185, 27, 242, 48, 153, 98, 69, 135, 130, 0, 225, 78, 235, 43, 223],KCM_B=[36, 74, 192, 97, 104, 222, 13, 26, 118, 143, 76, 81, 83, 44, 141, 149, 186, 131, 98, 50, 211, 168, 238, 5, 208, 183, 242, 254, 244, 176, 227, 173];
-async function kcmKey(salt,usage){ // clé AES-256 dérivée (HKDF) : une clé différente pour chaque fichier
+async function kcmKey(salt,usage){
  const base=await crypto.subtle.importKey('raw',Uint8Array.from(KCM_A,(v,i)=>v^KCM_B[i]),'HKDF',false,['deriveKey']);
  return crypto.subtle.deriveKey({name:'HKDF',hash:'SHA-256',salt,info:new TextEncoder().encode('kelio-crm-mobile-v1')},base,{name:'AES-GCM',length:256},false,usage);
 }
-async function kcmOpen(u8){ // fichier bdd-crm-mobile : « KCM » + version + options + sel + IV + données chiffrées (AES-GCM)
+async function kcmOpen(u8){
  if(!(window.crypto&&crypto.subtle))throw new Error('Le chiffrement n’est pas disponible dans ce navigateur : ouvrez cette page en https://.');
  if(u8.length<50||u8[0]!==75||u8[1]!==67||u8[2]!==77)throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile.');
  if(u8[3]!==1)throw new Error('Version de fichier non prise en charge : mettez à jour le CRM mobile.');
@@ -844,177 +762,10 @@ async function kcmOpen(u8){ // fichier bdd-crm-mobile : « KCM » + version + op
  if(!o||o.app!=='kelio-crm-mobile'||!o.data||!Array.isArray(o.data.clients))throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile.');
  return o.data;
 }
-const XLS_MAXCELL=32000;
-const XLS_SKIP=['fileData'];
-const XLS_NUM=['amount','price','lat','lon','gestionnaires'];
-const XLS_BOOL=['done','autoRelance'];
-function xlsEnc(v){
-  if(v===undefined||v===null)return '';
-  if(typeof v==='object')return 'json:'+JSON.stringify(v);
-  return v;
-}
-function xlsDec(v){
-  if(typeof v==='string'&&v.startsWith('json:')){try{return JSON.parse(v.slice(5))}catch(e){return v}}
-  return v;
-}
-function parseXlsWorkbook(wb){
-  const names=wb.SheetNames;
-  const get=n=>names.includes(n)?XLSX.utils.sheet_to_json(wb.Sheets[n],{defval:''}):[];
-  const dec=list=>list.filter(r=>Object.values(r).some(v=>v!=='')).map(r=>{
-    const o={};
-    Object.keys(r).forEach(k=>{
-      let v=xlsDec(r[k]);
-      if(XLS_NUM.includes(k))v=(v===''||v===null)?null:Number(v);
-      if(k==='zip'&&typeof v==='number')v=String(v).padStart(5,'0');
-      if(k==='saas'){if(v===''||v==null)return;v=(v===true||v===1||/^(true|1|oui|x)$/i.test(String(v)));}
-      if(XLS_BOOL.includes(k))v=(v===true||v==='true'||v==='TRUE'||v===1);
-      o[k]=v;
-    });
-    return o;
-  });
-  // Restaure les champs non stockés dans Excel (pièces jointes, logos trop lourds) depuis les données locales
-  const restore=(list,old)=>{
-    const byId={};(old||[]).forEach(x=>{if(x&&x.id)byId[x.id]=x});
-    list.forEach(it=>{
-      const o=byId[it.id];if(!o)return;
-      Object.keys(o).forEach(k=>{
-        const ov=xlsEnc(o[k]);
-        if(XLS_SKIP.includes(k)||(typeof ov==='string'&&ov.length>XLS_MAXCELL))it[k]=o[k];
-      });
-    });
-    return list;
-  };
-  const clients=restore(dec(get('Clients')),S.clients);
-  const offers=[]; // offres : non utilisées sur mobile
-  const todos=restore(dec(get('Taches')),S.todos);
-  const invoices=[]; // factures : non utilisées sur mobile
-  const products=dec(get('Produits'));
-  const groups=get('Groupes').map(r=>r.name||r.nom||'').filter(Boolean);
-  const journal={};
-  get('Journal').forEach(r=>{if(r.date){const v=xlsDec(r.data);journal[r.date]=(v===''&&S.journal&&S.journal[r.date]!==undefined)?S.journal[r.date]:v}});
-  const settings={...S.settings};
-  get('Paramètres').forEach(r=>{if(r['clé']){const v=xlsDec(r['valeur']);if(v!=='')settings[r['clé']]=v}});
-    const techCodes={}; // codes techniques : jamais chargés sur mobile
- return{clients,offers,todos,invoices,products,groups,settings,journal,techCodes};
-}
-function daysBetween(a,b){ // jours entiers entre deux dates 'AAAA-MM-JJ'
-  const x=String(a).split('-').map(Number),y=String(b).split('-').map(Number);
-  return Math.round((Date.UTC(y[0],y[1]-1,y[2])-Date.UTC(x[0],x[1]-1,x[2]))/86400000);
-}
-function setTodoDone(t,done){ // enregistre aussi la date de réalisation
-  if(done&&!t.done)t.doneAt=today();
-  if(!done)delete t.doneAt;
-  t.done=done;
-}
-function lastDoneDate(clientId){ // date de la dernière tâche terminée pour ce client ('' s'il n'y en a aucune)
-  let best='';
-  S.todos.forEach(t=>{if(t.clientId===clientId&&t.done){const d=t.doneAt||t.createdAt||'';if(d>best)best=d}});
-  return best;
-}
-function autoRelanceState(c,cfg){
-  const every=Math.max(1,parseInt(cfg.every)||1);
-  const interval=cfg.unit==='months'?every*30:every;
-  const ref=lastDoneDate(c.id)||c.createdAt||today();   // sans tâche terminée : on compte depuis la création du client
-  const elapsed=daysBetween(ref,today());
-  return{interval,ref,elapsed,due:elapsed>=interval};
-}
-let autoRemovedCount=0;
-function fixAuto(){
-  if(!S.settings||S.settings.autoTaskVersion===2)return;
-  const at=S.settings.autoTasks;
-  if(at){
-    const before=S.todos.length;
-    S.todos=S.todos.filter(t=>{
-      if(!t.autoRelance||t.done)return true;
-      const c=S.clients.find(x=>x.id===t.clientId);if(!c)return true;
-      const cfg=at[c.priority];if(!cfg||!cfg.on)return true;
-      const pristine=t.name===`Recontacter ${c.company}`&&/^Relance automatique/.test(t.description||'')&&!(t.productIds&&t.productIds.length);
-      if(!pristine)return true;                       // modifiée par l'utilisateur : conservée
-      return autoRelanceState(c,cfg).due;             // délai écoulé : conservée ; sinon retirée
-    });
-    autoRemovedCount+=before-S.todos.length;
-  }
-  S.settings.autoTaskVersion=2;
-}
-function checkAutoTasks(){ // les relances ne créent plus de tâches : elles apparaissent comme alertes (rafraîchit simplement l'affichage)
-  updNC();
-  if(CV==='todos')rTodos();else if(CV==='client-detail'&&ctrActiveClientId)rClientDet(ctrActiveClientId);
-}
 function updNC(){
- const ta=computeNotifs().filter(n=>n.level==='alerte').length; // le menu ne compte que les alertes (les notifications restent dans la fiche client)
+ const ta=computeNotifs().filter(n=>n.level==='alerte').length;
  const nt=document.getElementById('nc-t');
  if(nt){nt.textContent=ta;nt.style.display=ta?'':'none'}
-}
-const LOGO_MAX_CHARS=30000;
-function logoLoadImage(file){
-  return new Promise((res,rej)=>{
-    const r=new FileReader();
-    r.onerror=()=>rej(new Error('lecture'));
-    r.onload=e=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error('image illisible'));i.src=e.target.result};
-    r.readAsDataURL(file);
-  });
-}
-function logoDraw(img,max,whiteBg){
-  const nw=img.naturalWidth||img.width||256,nh=img.naturalHeight||img.height||256; // SVG sans dimensions : 256
-  const ratio=Math.min(max/nw,max/nh,1),w=Math.max(1,Math.round(nw*ratio)),h=Math.max(1,Math.round(nh*ratio));
-  const cv=document.createElement('canvas');cv.width=w;cv.height=h;
-  const cx=cv.getContext('2d');
-  if(whiteBg){cx.fillStyle='#fff';cx.fillRect(0,0,w,h)} // sinon une zone transparente sortirait noire en JPEG
-  cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high';
-  cx.drawImage(img,0,0,w,h);
-  return cv;
-}
-function logoHasAlpha(cv){
-  try{const d=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data;for(let i=3;i<d.length;i+=4)if(d[i]<250)return true;return false}
-  catch(e){return true} // lecture impossible : par prudence on suppose de la transparence (export PNG)
-}
-async function compressImage(file){return logoEncode(await logoLoadImage(file))}
-async function logoEncode(img){ // image décodée → PNG (transparence conservée) ou JPEG, sous la limite de la sauvegarde Excel
-  const sizes=[160,128,96,72,56];
-  const probe=logoDraw(img,160,false),alpha=logoHasAlpha(probe);
-  // 1) PNG (transparence conservée) : taille réduite jusqu'à passer sous la limite de la sauvegarde Excel
-  for(const s of sizes){const u=logoDraw(img,s,false).toDataURL('image/png');if(u.length<=LOGO_MAX_CHARS)return u}
-  // 2) image opaque très détaillée (photo) : JPEG sur fond blanc
-  if(!alpha){for(const s of sizes)for(const q of [.88,.78,.65,.5]){const u=logoDraw(img,s,true).toDataURL('image/jpeg',q);if(u.length<=LOGO_MAX_CHARS)return u}}
-  // 3) dernier recours : la plus petite version PNG
-  return logoDraw(img,48,false).toDataURL('image/png');
-}
-function logoHintFromImg(img){ // ancien logo converti en JPEG avec un fond noir : on le signale dans le formulaire
-  try{
-    if(!/^data:image\/jpe?g/i.test(img.src))return;
-    const cv=document.createElement('canvas');cv.width=cv.height=32;const cx=cv.getContext('2d');cx.drawImage(img,0,0,32,32);
-    const pts=[[0,0],[31,0],[0,31],[31,31],[15,0],[15,31],[0,15],[31,15]];
-    const dark=pts.every(([x,y])=>{const p=cx.getImageData(x,y,1,1).data;return p[0]+p[1]+p[2]<90});
-    const el=document.getElementById('logo-hint');
-    if(dark&&el)el.innerHTML='⚠ Ce logo a un <b>fond noir</b> : il a été chargé avant la correction (la transparence était perdue). <b>Rechargez l\'image d\'origine</b> pour la retrouver.';
-  }catch(e){}
-}
-async function handleLogoUpload(e){
-  const file=e.target.files[0];if(!file)return;
-  if(file.size>5*1024*1024){toast('Image trop grande (max 5 Mo)');return}
-  let compressed;
-  try{compressed=await compressImage(file)}catch(err){toast('Image illisible : essayez un fichier PNG, JPG, WebP ou SVG');return}
-  pendingLogo=compressed;
-  toast('✓ Logo prêt'+(/^data:image\/png/.test(compressed)?' (transparence conservée)':'')+' : '+Math.round(compressed.length/1024)+' Ko');
-  const prev=document.getElementById('logo-preview-img');
-  if(prev){prev.outerHTML=`<div id="logo-preview-img" class="logo-thumb-wrap" onclick="document.getElementById('logo-file-inp').click()" title="Changer le logo">${logoBox(compressed,72,'var(--rx-sm)')}</div>`;}
-  const rm=document.getElementById('logo-rm-btn');
-  if(rm)rm.style.display='';
-  const hint=document.getElementById('logo-hint');if(hint)hint.innerHTML='';
-}
-function removeLogo(clientId){
-  if(clientId){const c=S.clients.find(x=>x.id===clientId);if(c){c.logo=null;save();toast('Logo supprimé ✓');}}
-  pendingLogo='__remove__';
-  const prev=document.getElementById('logo-preview-img');
-  if(prev){prev.outerHTML=`<div id="logo-preview-img" class="logo-placeholder" onclick="document.getElementById('logo-file-inp').click()" title="Ajouter un logo">📷</div>`;}
-  const rm=document.getElementById('logo-rm-btn');
-  if(rm)rm.style.display='none';
-}
-function moduleOn(key){if(key==='offers'||key==='invoices')return false;return !(S.settings&&S.settings.modules&&S.settings.modules[key]===false)}
-function applyModuleVisibility(){
- if(typeof applySmartMenu==='function')applySmartMenu();
-  const off=document.getElementById('ni-offers');if(off)off.style.display=moduleOn('offers')?'':'none';
-  const inv=document.getElementById('ni-invoices');if(inv)inv.style.display=moduleOn('invoices')?'':'none';
 }
 function portefeuilleLabel(){return S.settings.rcr?'Région':'Portefeuille'}
 let NAV_RESTORING=false,NAV_LAST={crm:1,view:'home',params:{}};
@@ -1026,17 +777,17 @@ function navHistoryPush(view,params){
   if(NAV_RESTORING)return;
   try{
     const cur=history.state;
-    if(cur&&cur.crm&&cur.view===st.view&&JSON.stringify(cur.params)===JSON.stringify(st.params))return; // même page : pas de doublon
+    if(cur&&cur.crm&&cur.view===st.view&&JSON.stringify(cur.params)===JSON.stringify(st.params))return;
     if(navQuiet())history.replaceState(st,'',navUrl(st));else history.pushState(st,'',navUrl(st));
   }catch(e){}
 }
 function navHistoryInit(){
   try{history.scrollRestoration='manual'}catch(e){}
-  try{history.replaceState(navStateOf('home',{}),'','#home')}catch(e){return} // historique indisponible : l'application fonctionne comme avant
+  try{history.replaceState(navStateOf('home',{}),'','#home')}catch(e){return}
   window.addEventListener('popstate',e=>{
-    const st=e.state;if(!st||!st.crm)return; // entrée étrangère à l'application : le navigateur s'en occupe
+    const st=e.state;if(!st||!st.crm)return;
     const mo=document.getElementById('mo'),modal=mo&&!mo.classList.contains('hidden');
-    if(modal||navQuiet()){ // une fenêtre ou l'assistant de démarrage est ouvert : « Précédent » ne change pas de page
+    if(modal||navQuiet()){
       try{history.pushState(NAV_LAST,'',navUrl(NAV_LAST))}catch(err){}
       if(modal){if(mo.dataset.sticky==='1')toast('Terminez ou annulez cette saisie (Annuler ou ✕) avant de revenir en arrière');else cm()}
       return;
@@ -1044,33 +795,32 @@ function navHistoryInit(){
     NAV_RESTORING=true;
     try{
       const p=st.params||{};
-      if(st.view==='client-detail'&&!S.clients.some(c=>c.id===p.id)){navigate('clients');try{history.replaceState(navStateOf('clients',{}),'','#clients')}catch(err){}} // client supprimé depuis
+      if(st.view==='client-detail'&&!S.clients.some(c=>c.id===p.id)){navigate('clients');try{history.replaceState(navStateOf('clients',{}),'','#clients')}catch(err){}}
       else navigate(st.view,p);
     }finally{NAV_RESTORING=false}
   });
 }
 function navigate(view,params={}){
-  if(view==='map'){view='clients';clView='map'}   // la carte est un mode d'affichage de la page Clients
-  if(!['home','todos','clients','client-detail'].includes(view))view='home';
+  if(view==='map'){view='clients';clView='map'}
+  if(!['home','notifs','clients','client-detail'].includes(view))view='home';
   if(clk){clearInterval(clk);clk=null}
-  if(CV==='clients'&&view!=='clients')clListScrollY=window.scrollY;   // mémorise la position avant de quitter la liste
-  CV=view;CF='all';PF=null;
-  if(view!=='clients'){selClients=new Set();}
-  if(view!=='todos'){tdKbFilter='';}
+  if(CV==='clients'&&view!=='clients')clListScrollY=window.scrollY;
+  CV=view;
+
   if(view!=='clients'&&leafletMap){leafletMap.remove();leafletMap=null;}
   document.querySelectorAll('.pg').forEach(v=>v.classList.add('hidden'));
   const el=document.getElementById('vw-'+view);
   if(el){el.classList.remove('hidden');el.style.animation='none';el.offsetHeight;el.style.animation=''}
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
-  const nm={home:'ni-home',todos:'ni-todos',clients:'ni-clients','client-detail':'ni-clients'};
+  const nm={home:'ni-home',notifs:'ni-notifs',clients:'ni-clients','client-detail':'ni-clients'};
   const ni=document.getElementById(nm[view]);if(ni)ni.classList.add('on');
   updNC();window.scrollTo(0,0);
-  const R={home:rHome,todos:()=>rTodos(params),clients:rClients,'client-detail':()=>rClientDet(params.id)};
+  const R={home:rHome,notifs:()=>rNotifs(params),clients:rClients,'client-detail':()=>rClientDet(params.id)};
   R[view]();
-  navHistoryPush(CV,CV===view?params:{}); // une entrée d'historique par page (« Précédent » du navigateur)
+  navHistoryPush(CV,CV===view?params:{});
 }
 function om(html){document.getElementById('mo').dataset.sticky='';const mb_=document.getElementById('mb');if(mb_)mb_.style.maxWidth='';document.getElementById('mi').innerHTML=html;document.getElementById('mo').classList.remove('hidden');document.body.style.overflow='hidden'}
-function cm(){if(typeof rtMap!=='undefined'&&rtMap){try{rtMap.remove()}catch(e){}rtMap=null}document.getElementById('mo').classList.add('hidden');document.body.style.overflow='';PF=null;}
+function cm(){if(typeof rtMap!=='undefined'&&rtMap){try{rtMap.remove()}catch(e){}rtMap=null}document.getElementById('mo').classList.add('hidden');document.body.style.overflow='';}
 function omSticky(html){om(html);document.getElementById('mo').dataset.sticky='1'}
 function hov(e){const mo=document.getElementById('mo');if(e.target===mo&&!mo.dataset.sticky)cm()}
 let fitHomeT=null;
@@ -1080,12 +830,12 @@ function fitHome(){
   const bodies=[...g.querySelectorAll('.pb-body')];
   g.style.height='';
   bodies.forEach(b=>b.querySelectorAll('.pi').forEach(pi=>pi.style.display=''));
-  if(window.innerWidth<=768){ // mobile : blocs empilés, 4 éléments par bloc
+  if(window.innerWidth<=768){
     bodies.forEach(b=>[...b.querySelectorAll('.pi')].forEach((pi,i)=>{if(i>=4)pi.style.display='none'}));
     return;
   }
   const home=document.getElementById('vw-home');
-  let ty=0;try{ty=new DOMMatrix(getComputedStyle(home).transform).m42||0}catch(e){} // décalage de l'animation d'apparition
+  let ty=0;try{ty=new DOMMatrix(getComputedStyle(home).transform).m42||0}catch(e){}
   const top=g.getBoundingClientRect().top+window.scrollY-ty;
   const padB=parseFloat(getComputedStyle(home).paddingBottom)||0;
   g.style.height=Math.max(window.innerHeight-top-padB,300)+'px';
@@ -1099,7 +849,7 @@ function jsAttr(s){return esc(String(s==null?'':s)).replace(/\\/g,'\\\\').replac
 const STAT_KEY='crm-statmode';
 const STAT_DEFAULT={'SaaS / OnPremise':'p','Versions':'p','Provenance par département':'p','Collaborateurs':'p'};
 function statModes(){try{return JSON.parse(mstore.getItem(STAT_KEY)||'{}')||{}}catch(e){return{}}}
-function statFmt(n,p){ // 12 % ; 3,8 % ; <0,1 %
+function statFmt(n,p){
   if(n>0&&p<0.1)return '<0,1 %';
   return (p>=10?String(Math.round(p)):String(Math.round(p*10)/10).replace('.',','))+' %';
 }
@@ -1112,20 +862,20 @@ function statToggle(btn){
   const card=btn.closest('.pb');if(!card)return;
   const mode=btn.dataset.mode==='p'?'n':'p',key=card.dataset.statKey;
   statApply(card,mode);
-  const m=statModes();m[key]=mode; // le choix de l'utilisateur est toujours mémorisé (nombres ou pourcentages)
+  const m=statModes();m[key]=mode;
   try{mstore.setItem(STAT_KEY,JSON.stringify(m))}catch(e){}
 }
-function statInit(){ // ajoute le bouton aux cartes qui ont des barres avec une base de pourcentage
+function statInit(){
   const m=statModes();
   document.querySelectorAll('#vw-home .pb').forEach(card=>{
-    if(!card.querySelector('.sbar-val[data-p]'))return; // aucune donnée ou pas de base : pas de bouton
+    if(!card.querySelector('.sbar-val[data-p]'))return;
     const head=card.querySelector('.pb-head'),t=card.querySelector('.pb-title');if(!head||!t||head.querySelector('.stat-tog'))return;
     card.dataset.statKey=String(t.lastChild?t.lastChild.textContent:t.textContent).replace(/\s+/g,' ').trim();
     head.insertAdjacentHTML('beforeend','<button type="button" class="stat-tog" data-mode="n" aria-pressed="false" onclick="statToggle(this)" title="Afficher les pourcentages" aria-label="Basculer entre les nombres et les pourcentages"><span data-m="n" class="on">#</span><span data-m="p">%</span></button>');
     statApply(card,m[card.dataset.statKey]||STAT_DEFAULT[card.dataset.statKey]||'n');
   });
 }
-function sbarRows(items,colorFn,clickFn,multi,total){ // items : [[label,count], ...] ; clickFn(label) -> code JS au clic ; multi : colonnes ; total : base du pourcentage (nb de clients ou de contrats)
+function sbarRows(items,colorFn,clickFn,multi,total){
   if(!items||!items.length)return `<div class="p-empty">Aucune donnée</div>`;
   const base=total>0?total:Math.max(1,...items.map(i=>i[1]));
   const rows=items.map(([label,count])=>{
@@ -1137,36 +887,36 @@ function sbarRows(items,colorFn,clickFn,multi,total){ // items : [[label,count],
   return `<div class="${multi?'sbar-multi':'sbar-list'}">${rows}</div>`;
 }
 function homeOpenFinops(){homeGoFiltered('ids',S.clients.filter(c=>!isProspect(c)).map(c=>c.id))}
-function homeGoFiltered(key,val){ // depuis le tableau de bord : ouvre la liste clients avec UN SEUL filtre actif (les autres remis à zéro)
+function homeGoFiltered(key,val){
   clSearch='';
   clFilter={priority:'',group:'',renewal:false,server:'',prospects:false,version:'',contractStatus:'',contractType:'',hebergeur:'',signYear:'',commercial:'',alerts:false,modules:[],dept:'',eff:'',segment:'',ids:null};
   clFilter[key]=val;
   navigate('clients');
 }
 const DEPT_NAMES=Object.fromEntries(("01 Ain|02 Aisne|03 Allier|04 Alpes-de-Haute-Provence|05 Hautes-Alpes|06 Alpes-Maritimes|07 Ardèche|08 Ardennes|09 Ariège|10 Aube|11 Aude|12 Aveyron|13 Bouches-du-Rhône|14 Calvados|15 Cantal|16 Charente|17 Charente-Maritime|18 Cher|19 Corrèze|21 Côte-d'Or|22 Côtes-d'Armor|23 Creuse|24 Dordogne|25 Doubs|26 Drôme|27 Eure|28 Eure-et-Loir|29 Finistère|2A Corse-du-Sud|2B Haute-Corse|30 Gard|31 Haute-Garonne|32 Gers|33 Gironde|34 Hérault|35 Ille-et-Vilaine|36 Indre|37 Indre-et-Loire|38 Isère|39 Jura|40 Landes|41 Loir-et-Cher|42 Loire|43 Haute-Loire|44 Loire-Atlantique|45 Loiret|46 Lot|47 Lot-et-Garonne|48 Lozère|49 Maine-et-Loire|50 Manche|51 Marne|52 Haute-Marne|53 Mayenne|54 Meurthe-et-Moselle|55 Meuse|56 Morbihan|57 Moselle|58 Nièvre|59 Nord|60 Oise|61 Orne|62 Pas-de-Calais|63 Puy-de-Dôme|64 Pyrénées-Atlantiques|65 Hautes-Pyrénées|66 Pyrénées-Orientales|67 Bas-Rhin|68 Haut-Rhin|69 Rhône|70 Haute-Saône|71 Saône-et-Loire|72 Sarthe|73 Savoie|74 Haute-Savoie|75 Paris|76 Seine-Maritime|77 Seine-et-Marne|78 Yvelines|79 Deux-Sèvres|80 Somme|81 Tarn|82 Tarn-et-Garonne|83 Var|84 Vaucluse|85 Vendée|86 Vienne|87 Haute-Vienne|88 Vosges|89 Yonne|90 Territoire de Belfort|91 Essonne|92 Hauts-de-Seine|93 Seine-Saint-Denis|94 Val-de-Marne|95 Val-d'Oise|971 Guadeloupe|972 Martinique|973 Guyane|974 La Réunion|975 Saint-Pierre-et-Miquelon|976 Mayotte|977 Saint-Barthélemy|978 Saint-Martin|980 Monaco|986 Wallis-et-Futuna|987 Polynésie française|988 Nouvelle-Calédonie|99 Étranger").split('|').map(s=>{const i=s.indexOf(' ');return[s.slice(0,i),s.slice(i+1)]}));
-function clDeptCode(c){ // code du département d'après le code postal : 75, 49, 2A, 2B, 971… ('' si absent ou invalide)
+function clDeptCode(c){
   const ap=clAddrParts(c);let z=String((ap&&ap.zip)||c.zip||'').replace(/\D/g,'');
-  if(z.length===4)z='0'+z; // zéro de tête perdu (ex. 1000 → 01000)
+  if(z.length===4)z='0'+z;
   if(z.length!==5)return '';
-  if(/^9[78]/.test(z))return z.slice(0,3);          // outre-mer, Monaco (980)
-  if(z.startsWith('20'))return parseInt(z,10)<=20199?'2A':'2B'; // Corse
+  if(/^9[78]/.test(z))return z.slice(0,3);
+  if(z.startsWith('20'))return parseInt(z,10)<=20199?'2A':'2B';
   const d=z.slice(0,2);return d==='00'?'':d;
 }
 function clDeptName(code){return DEPT_NAMES[code]||code}
 const EFF_BUCKETS=[['lt100','Moins de 100'],['100-250','100 à 250'],['250-500','250 à 500'],['500-1000','500 à 1 000'],['gt1000','Plus de 1 000'],['none','Non renseigné']];
-function clEffBucket(c){ // tranche d'effectif : 100 à 250 inclut 100 et 250, 250 à 500 commence après 250, etc.
+function clEffBucket(c){
   const n=clEffNum(c.effectif);
   if(Number.isNaN(n))return 'none';
   if(n<100)return 'lt100';if(n<=250)return '100-250';if(n<=500)return '250-500';if(n<=1000)return '500-1000';return 'gt1000';
 }
 const SEG_GTA=['gta','gtapro','planification','planificationpro','activite','activitepro'];
 const SEG_SIRH=['keliohrpro','entretien','formation','ndf','ats','atspro','actuetdoc'];
-function clSegments(c){ // GTA : GTA, PLANIFICATION, ACTIVITÉS (et leurs versions PRO) ; SIRH : KELIO HR PRO, ENTRETIEN, FORMATION, NDF, ATS, ACTUS ET DOCS ; matériel : au moins un terminal ; ACCES : le module ACCES
+function clSegments(c){
   const have=c.products||{};let gta=false,sirh=false,acces=false;
-  (S.products||[]).forEach(p=>{if(!have[p.id])return;const k=modCanon(p.name);if(SEG_GTA.includes(k))gta=true;if(SEG_SIRH.includes(k))sirh=true;if(k===modCanon('ACCES'))acces=true}); // modCanon retire le « s » final : on compare à la forme normalisée du module
+  (S.products||[]).forEach(p=>{if(!have[p.id])return;const k=modCanon(p.name);if(SEG_GTA.includes(k))gta=true;if(SEG_SIRH.includes(k))sirh=true;if(k===modCanon('ACCES'))acces=true});
   return{gta,sirh,both:gta&&sirh,hw:hwTotal(c)>0,acces};
 }
-function clExtraFilterSelects(){ // filtres de la liste : Département, Effectif, Offre
+function clExtraFilterSelects(){
   const dc={};let none=0;S.clients.forEach(c=>{const d=clDeptCode(c);if(d)dc[d]=(dc[d]||0)+1;else none++});
   const depts=Object.entries(dc).sort((a,b)=>a[0].localeCompare(b[0],'fr',{numeric:true}));
   const sg=[['gta','GTA'],['sirh','SIRH'],['both','GTA + SIRH'],['hw','Avec du matériel'],['acces','Avec ACCES']];
@@ -1174,9 +924,9 @@ function clExtraFilterSelects(){ // filtres de la liste : Département, Effectif
       <select class="cl-filter-select ${clFilter.eff?'active':''}" onchange="clSetFilter('eff',this.value)" title="Nombre de collaborateurs"><option value="">Effectif</option>${EFF_BUCKETS.map(([k,l])=>`<option value="${k}" ${clFilter.eff===k?'selected':''}>${l}</option>`).join('')}</select>
       <select class="cl-filter-select ${clFilter.segment?'active':''}" onchange="clSetFilter('segment',this.value)" title="Offre : GTA, SIRH, matériel ou ACCES"><option value="">Offre</option>${sg.map(([k,l])=>`<option value="${k}" ${clFilter.segment===k?'selected':''}>${l}</option>`).join('')}</select>`;
 }
-function homeExtraStatsHtml(){ // trois cartes du tableau de bord (même base que les autres : tous les clients du portefeuille)
+function homeExtraStatsHtml(){
   const L=S.clients,total=L.length;
-  // 1) départements
+
   const dc={};let noDept=0;L.forEach(c=>{const d=clDeptCode(c);if(d)dc[d]=(dc[d]||0)+1;else noDept++});
   const dAll=Object.entries(dc).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'fr',{numeric:true}));
   const rest=dAll.slice(10);
@@ -1184,11 +934,11 @@ function homeExtraStatsHtml(){ // trois cartes du tableau de bord (même base qu
   if(rest.length)deptRows.push([`Autres (${rest.length} département${rest.length>1?'s':''})`,rest.reduce((s,x)=>s+x[1],0)]);
   if(noDept)deptRows.push(['Non renseigné',noDept]);
   const deptClick=l=>{const m=l.match(/^([0-9A-B]+) · /);return m?`homeGoFiltered('dept','${m[1]}')`:(l==='Non renseigné'?`homeGoFiltered('dept','none')`:'')};
-  // 2) taille
+
   const ec={};L.forEach(c=>{const k=clEffBucket(c);ec[k]=(ec[k]||0)+1});
   const effRows=EFF_BUCKETS.filter(([k])=>k!=='none'||ec.none).map(([k,l])=>[l,ec[k]||0]);
   const effKey=Object.fromEntries(EFF_BUCKETS.map(([k,l])=>[l,k]));
-  // 3) offre
+
   const sg={gta:0,sirh:0,both:0,hw:0,acces:0};L.forEach(c=>{const s=clSegments(c);if(s.gta)sg.gta++;if(s.sirh)sg.sirh++;if(s.both)sg.both++;if(s.hw)sg.hw++;if(s.acces)sg.acces++});
   const offRows=[['GTA',sg.gta],['SIRH',sg.sirh],['GTA + SIRH (les deux)',sg.both],['Avec du matériel',sg.hw],['Avec ACCES',sg.acces]];
   const offKey={'GTA':'gta','SIRH':'sirh','GTA + SIRH (les deux)':'both','Avec du matériel':'hw','Avec ACCES':'acces'};
@@ -1200,14 +950,96 @@ function homeExtraStatsHtml(){ // trois cartes du tableau de bord (même base qu
       <div class="pb" id="hs-offre"><div class="pb-head"><div class="pb-title"><div class="pb-ico ico-w">🧭</div>Offre : GTA, SIRH, matériel, ACCES</div></div><div class="cld-panel-body" style="padding:14px 16px">${sbarRows(offRows,l=>offColor[l],l=>`homeGoFiltered('segment','${offKey[l]}')`,false,total)}</div></div>
     </div>`;
 }
+const HH_TOD=h=>h>=5&&h<9?'dawn':h>=9&&h<17?'day':h>=17&&h<21?'dusk':'night';
+const HH_HELLO=h=>h>=5&&h<12?'Bonjour':h>=12&&h<18?'Bon après-midi':'Bonsoir';
+const HH_EMO={dawn:'🌅',day:'👋',dusk:'🌆',night:'🌙'};
+function homeIsoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())),dn=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-dn);const y=new Date(Date.UTC(t.getUTCFullYear(),0,1));return Math.ceil(((t-y)/864e5+1)/7)}
+function homeHeroHtml(n){
+ const now=new Date(),h0=now.getHours(),td=today();let al=0;
+ try{al=computeNotifs().filter(x=>x.level==='alerte').length}catch(e){}
+ const rn=(S.clients||[]).filter(clNeedsRenewal).length,P=[];
+  if(al)P.push(`<button class="hh-pill" onclick="navigate('notifs')">🔔 <b>${al}</b> alerte${al>1?'s':''}</button>`);
+ if(rn)P.push(`<button class="hh-pill" onclick="homeGoFiltered('renewal',true)">🔄 <b>${rn}</b> contrat${rn>1?'s':''} à renouveler</button>`);
+ const tod=HH_TOD(h0);
+ return `<div class="hh" id="hh" data-tod="${tod}">
+  <div class="hh-l">
+   <div class="hh-eyebrow"><span id="hh-date">…</span><i></i><span id="hh-week"></span></div>
+   <h1 class="hh-title"><span id="hh-hello">${HH_HELLO(h0)}</span>${n?`, <span class="hh-name">${esc(n)}</span>`:''} <span class="hh-emo" id="hh-emo">${HH_EMO[tod]}</span></h1>
+   <div class="hh-sub">${n?(P.length?'Voici ce qui vous attend aujourd\'hui.':'Rien d\'urgent aujourd\'hui : un bon moment pour prospecter ✨'):'Renseignez votre nom dans <a href="#" onclick="navigate(\'options\');return false">les paramètres</a> pour personnaliser l\'accueil.'}</div>
+   ${P.length?`<div class="hh-pills">${P.join('')}</div>`:''}
+  </div>
+  <div class="hh-time"><span id="hh-hm">--:--</span><sup id="hh-s">--</sup></div><div class="hh-wx" id="hh-wx"><div class="wx-msg">☁️ Météo…</div></div>
+ </div>`;
+}
+function homeTick(){
+ const now=new Date(),hh=document.getElementById('hh');if(!hh)return;
+ const ds=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),H=now.getHours(),M=now.getMinutes(),S_=now.getSeconds(),p2=v=>String(v).padStart(2,'0');
+ const d=document.getElementById('hh-date');if(d)d.textContent=ds.charAt(0).toUpperCase()+ds.slice(1);
+ const w=document.getElementById('hh-week');if(w)w.textContent='Semaine '+homeIsoWeek(now);
+ const t=document.getElementById('hh-hm');if(t)t.innerHTML=p2(H)+'<span class="hh-c">:</span>'+p2(M);
+ const s=document.getElementById('hh-s');if(s)s.textContent=p2(S_);
+ const tod=HH_TOD(H);if(hh.dataset.tod!==tod){hh.dataset.tod=tod;const e=document.getElementById('hh-emo');if(e)e.textContent=HH_EMO[tod]}
+ const hl=document.getElementById('hh-hello');if(hl&&hl.textContent!==HH_HELLO(H))hl.textContent=HH_HELLO(H);
+}
+const WX_TTL=30*60*1000;
+const WX_C={0:['Ciel dégagé','☀️','🌙','sun'],1:['Plutôt dégagé','🌤️','🌙','sun'],2:['Partiellement nuageux','⛅','☁️',''],3:['Couvert','☁️','☁️',''],45:['Brouillard','🌫️','🌫️',''],48:['Brouillard givrant','🌫️','🌫️',''],51:['Bruine légère','🌦️','🌧️','rain'],53:['Bruine','🌦️','🌧️','rain'],55:['Bruine dense','🌧️','🌧️','rain'],56:['Bruine verglaçante','🌧️','🌧️','rain'],57:['Bruine verglaçante','🌧️','🌧️','rain'],61:['Pluie faible','🌦️','🌧️','rain'],63:['Pluie','🌧️','🌧️','rain'],65:['Pluie forte','🌧️','🌧️','rain'],66:['Pluie verglaçante','🌧️','🌧️','rain'],67:['Pluie verglaçante','🌧️','🌧️','rain'],71:['Neige faible','🌨️','🌨️','snow'],73:['Neige','🌨️','🌨️','snow'],75:['Neige forte','❄️','❄️','snow'],77:['Grains de neige','🌨️','🌨️','snow'],80:['Averses','🌦️','🌧️','rain'],81:['Averses','🌧️','🌧️','rain'],82:['Averses violentes','⛈️','⛈️','storm'],85:['Averses de neige','🌨️','🌨️','snow'],86:['Averses de neige','🌨️','🌨️','snow'],95:['Orage','⛈️','⛈️','storm'],96:['Orage et grêle','⛈️','⛈️','storm'],99:['Orage et grêle','⛈️','⛈️','storm']};
+const wxCode=(c,day)=>{const x=WX_C[c]||['Météo','☁️','☁️',''];return{label:x[0],ico:day?x[1]:x[2],mood:x[3]}};
+async function wxLocation(){
+ const a=S.settings.myAddress;
+ if(a&&(a.city||a.zip)){if(!(a.lat&&a.lon)){try{await myAddrLocate(true)}catch(e){}}if(a.lat&&a.lon)return{lat:+a.lat,lon:+a.lon,label:a.city||a.zip||''}}
+ const w=S.settings.wxLoc;if(w&&w.lat&&w.lon)return{lat:+w.lat,lon:+w.lon,label:w.label||''};
+ return null;
+}
+const wxKey=l=>l.lat.toFixed(2)+','+l.lon.toFixed(2);
+function wxCache(l){try{const c=JSON.parse(mstore.getItem('crm-wx')||'null');return c&&c.k===wxKey(l)?c:null}catch(e){return null}}
+function wxSave(l,d){try{mstore.setItem('crm-wx',JSON.stringify({k:wxKey(l),t:Date.now(),d}))}catch(e){}}
+async function wxFetch(l){
+ const u='https://api.open-meteo.com/v1/forecast?latitude='+l.lat+'&longitude='+l.lon+'&current=temperature_2m,apparent_temperature,weather_code,is_day,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto&forecast_days=3';
+ const r=await fetch(u);if(!r.ok)throw new Error('météo '+r.status);const j=await r.json();if(!j||!j.current||!j.daily)throw new Error('réponse inattendue');return j;
+}
+function wxShow(box,d,l,stale){
+ const c=d.current,dl=d.daily,w=wxCode(c.weather_code,c.is_day===1||c.is_day===true),r0=v=>Math.round(v),hm=s=>String(s||'').slice(11,16);
+ const day=i=>{const dt=new Date((dl.time[i]||'')+'T12:00'),x=wxCode(dl.weather_code[i],true);return `<div class="wx-day"><b>${dt.toLocaleDateString('fr-FR',{weekday:'short'}).replace('.','')}</b>${x.ico} ${r0(dl.temperature_2m_max[i])}° / ${r0(dl.temperature_2m_min[i])}°</div>`};
+ const hh=document.getElementById('hh');if(hh){if(w.mood)hh.dataset.wx=w.mood;else delete hh.dataset.wx}
+ box.innerHTML=`<div class="wx-main"><div class="wx-ico">${w.ico}</div><div class="wx-t">${r0(c.temperature_2m)}°</div><div class="wx-d"><b>${esc(l.label||'Ma position')}</b><span>${w.label} · ressenti ${r0(c.apparent_temperature)}°</span></div></div>
+  <div class="wx-row"><span>↑ ${r0(dl.temperature_2m_max[0])}°</span><span>↓ ${r0(dl.temperature_2m_min[0])}°</span><span>💨 ${r0(c.wind_speed_10m)} km/h</span><span>🌅 ${hm(dl.sunrise[0])}</span><span>🌇 ${hm(dl.sunset[0])}</span>${stale?'<span title="Dernière mesure enregistrée">⚠️ hors ligne</span>':''}</div>
+  <div class="wx-days">${day(1)}${day(2)}</div>`;
+}
+function wxNoLoc(box){
+ if(mobOn()){box.remove();return}
+ box.innerHTML='<div class="wx-msg">📍 Pour afficher la météo : <button class="btn btn-g btn-sm" onclick="wxGeo()">Utiliser ma position</button><span>ou renseignez « Mon adresse » dans <a href="#" onclick="navigate(\'options\');return false" style="color:var(--accent)">les paramètres</a>.</span></div>';
+}
+let wxBusy=false;
+async function homeWxLoad(){
+ const box=document.getElementById('hh-wx');if(!box||wxBusy)return;
+ if(S.settings.wx===false){box.remove();return}
+ wxBusy=true;
+ try{
+  const loc=await wxLocation();if(!document.getElementById('hh-wx'))return;
+  if(!loc){wxNoLoc(box);return}
+  const c=wxCache(loc);
+  if(c&&Date.now()-c.t<WX_TTL){wxShow(box,c.d,loc,false);return}
+  try{const d=await wxFetch(loc);wxSave(loc,d);if(document.getElementById('hh-wx'))wxShow(document.getElementById('hh-wx'),d,loc,false)}
+  catch(e){const b2=document.getElementById('hh-wx');if(!b2)return;if(c)wxShow(b2,c.d,loc,true);else b2.innerHTML='<div class="wx-msg">☁️ Météo indisponible pour le moment.</div>'}
+ }finally{wxBusy=false}
+ if(!window.__wxT)window.__wxT=setInterval(()=>{if(typeof CV!=='undefined'&&CV==='home')homeWxLoad()},600000);
+}
+function wxGeo(){
+ if(!navigator.geolocation){toast('Localisation indisponible sur ce navigateur');return}
+ navigator.geolocation.getCurrentPosition(async p=>{
+  const lat=+p.coords.latitude.toFixed(4),lon=+p.coords.longitude.toFixed(4);let label='';
+  try{const r=await fetch('https://api-adresse.data.gouv.fr/reverse/?lon='+lon+'&lat='+lat);const j=await r.json();label=(j.features&&j.features[0]&&j.features[0].properties&&j.features[0].properties.city)||''}catch(e){}
+  S.settings.wxLoc={lat,lon,label};save();toast('📍 Position enregistrée pour la météo');
+  if(CV==='home')homeWxLoad();
+ },()=>toast('Position refusée ou indisponible'),{timeout:10000,maximumAge:600000});
+}
 function rHome(){
   const el=document.getElementById('vw-home');
   const n=S.settings.name;
   const td_=today();
 
-  // ── Portefeuille clients ──
   const totalClients=S.clients.length;
- const finopsClients=S.clients.filter(c=>!isProspect(c)).length; // la tuile « Clients » compte les fiches qui ont un numéro FinOps (les autres sont des prospects)
+ const finopsClients=S.clients.filter(c=>!isProspect(c)).length;
  const finopsNewMonth=S.clients.filter(c=>!isProspect(c)&&c.createdAt&&c.createdAt.slice(0,7)===today().slice(0,7)).length;
   const prospectsCount=S.clients.filter(isProspect).length;
   const renewalCount=S.clients.filter(clNeedsRenewal).length;
@@ -1219,7 +1051,7 @@ function rHome(){
     if(c.priority==='forte')prioCounts[0][1]++;
     else if(c.priority==='moyenne')prioCounts[1][1]++;
     else if(c.priority==='faible')prioCounts[2][1]++;
-    else prioCounts[1][1]++; // sécurité : sans priorité = NORMAL
+    else prioCounts[1][1]++;
   });
   const prioColors={'IMPORTANT':'#FF9480','NORMAL':'#7D9AFF','FAIBLE':'var(--text-sub)'};
 
@@ -1228,24 +1060,22 @@ function rHome(){
   const saasColors={'SaaS':'var(--accent)','OnPremise':'#8a94a8'};
   const saasPct=totalClients?Math.round(saasCount/totalClients*100):0;
 
-  // Les années 2020 et suivantes en détail ; tout ce qui a été signé avant 2020 est regroupé dans une dernière ligne « Avant 2020 »
  const yearBuckets={};
  S.clients.forEach(c=>{
  const yStr=(clLatestSignature(c)||'').slice(0,4); if(!yStr)return;
  const label=parseInt(yStr,10)>=2020?yStr:'Avant 2020';
  yearBuckets[label]=(yearBuckets[label]||0)+1;
  });
- const topYears=Object.entries(yearBuckets).sort((a,b)=>a[0]==='Avant 2020'?1:b[0]==='Avant 2020'?-1:b[0].localeCompare(a[0])); // années récentes en premier, « Avant 2020 » en dernier
+ const topYears=Object.entries(yearBuckets).sort((a,b)=>a[0]==='Avant 2020'?1:b[0]==='Avant 2020'?-1:b[0].localeCompare(a[0]));
 
   const versionCounts={};
   S.clients.forEach(c=>{ const v=versionMajor(c.version); if(v) versionCounts[v]=(versionCounts[v]||0)+1; });
-  const vnum=s=>(String(s).match(/\d+/g)||[]).map(Number); // « V5.2 » → [5,2] : tri dans le sens des versions, de la plus récente à la plus ancienne (V10.0 > V5.2 > V5.0 > V4.9)
+  const vnum=s=>(String(s).match(/\d+/g)||[]).map(Number);
  const topVersions=Object.entries(versionCounts).sort((a,b)=>{const x=vnum(a[0]),y=vnum(b[0]);for(let i=0;i<Math.max(x.length,y.length);i++){const d=(y[i]||0)-(x[i]||0);if(d)return d}return b[0].localeCompare(a[0],'fr',{numeric:true})});
 
   const moduleList=S.products||[];
-  const moduleCounts=moduleList.map(p=>[p.name||'(sans nom)',S.clients.filter(c=>c.products&&c.products[p.id]).length]); // même ordre que la liste des modules de la fiche client (pas de tri par nombre de clients)
+  const moduleCounts=moduleList.map(p=>[p.name||'(sans nom)',S.clients.filter(c=>c.products&&c.products[p.id]).length]);
 
-  // ── Contrats ──
   let allContracts=[];
   S.clients.forEach(c=>{ (c.contracts||[]).forEach(ct=>allContracts.push(ct)); });
   const totalContracts=allContracts.length;
@@ -1261,13 +1091,8 @@ function rHome(){
   const topHeb=Object.entries(hebCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
 
   el.innerHTML=`
-  <div class="h-hero">
-    <div class="h-date" id="h-date">…</div>
-    <div class="h-clock" id="h-clock">--:--</div>
-    <div class="h-greet">${n?`Bonjour, <em>${esc(n)}</em> 👋`:`<span style="color:var(--text-sub);font-size:.95rem">Renseignez votre nom dans <a href="#" onclick="navigate('options');return false" style="color:var(--accent)">les paramètres</a></span>`}</div>
-  </div>
+  ${homeHeroHtml(n)}
 
-  <!-- Tableau de bord -->
   <div class="home-stats" style="margin-top:10px">
   <div class="home-stats">
     <div class="home-stats-head">📊 Tableau de bord</div>
@@ -1305,14 +1130,13 @@ function rHome(){
 
   <div class="mob-reload no-desktop"><button type="button" class="btn btn-g" onclick="mobReload()">↻ Recharger ma base</button><div class="mob-reload-sub">Remplace les données affichées par un autre fichier bdd-crm-mobile choisi dans les fichiers de votre téléphone.</div></div>
   </div>`;
-  function tick(){const now=new Date();const c=document.getElementById('h-clock');const d=document.getElementById('h-date');if(c)c.textContent=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});if(d){const ds=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});d.textContent=ds.charAt(0).toUpperCase()+ds.slice(1)}}
-  tick();clk=setInterval(tick,1000);
+  homeTick();clk=setInterval(homeTick,1000);homeWxLoad();
   statInit();
 }
 let rtMap=null,rtSeq=0;
 function myAddrOk(){const a=(S.settings&&S.settings.myAddress)||{};return !!(a.city||a.zip)}
 function myAddrText(){const a=(S.settings&&S.settings.myAddress)||{};return addrCompose(a.street||'',a.zip||'',a.city||'').replace(/\n/g,', ')}
-async function myAddrLocate(silent){ // position de « mon adresse » (calculée une seule fois)
+async function myAddrLocate(silent){
   const a=S.settings.myAddress;if(!a||(!a.city&&!a.zip))return false;
   if(a.lat&&a.lon)return true;
   try{
@@ -1324,7 +1148,7 @@ async function myAddrLocate(silent){ // position de « mon adresse » (calculée
 }
 const rtFmtDur=s=>{const m=Math.max(0,Math.round(s/60)),h=Math.floor(m/60);return h?`${h} h ${String(m%60).padStart(2,'0')}`:`${m} min`};
 const rtFmtKm=m=>m>=1000?(m/1000).toFixed(m>=10000?0:1).replace('.',',')+' km':Math.round(m)+' m';
-function rtTrafficState(total,base){ // fluide / dense / très dense / embouteillé, selon le retard dû au trafic
+function rtTrafficState(total,base){
   const delay=Math.max(0,total-base),ratio=base>0?total/base:1;
   if(delay<120||ratio<1.10)return{lbl:'Fluide',col:'var(--success)'};
   if(ratio<1.30)return{lbl:'Dense',col:'var(--warning)'};
@@ -1371,7 +1195,7 @@ async function rtFetchOsrm(o,d){
   return{provider:'osrm',pts,dist:rt.distance||0,total:rt.duration||0,base:rt.duration||0,delay:0,secs:[],steps};
 }
 const RT_CAT={0:['Perturbation','⚠'],1:['Accident','💥'],2:['Brouillard','🌫'],3:['Conditions dangereuses','⚠'],4:['Pluie','🌧'],5:['Verglas','🧊'],6:['Bouchon','🚗'],7:['Voie fermée','⛔'],8:['Route fermée / déviation','⛔'],9:['Travaux','🚧'],10:['Vent','💨'],11:['Inondation','🌊'],14:['Véhicule en panne','🛠']};
-async function rtFetchIncidents(pts,key){ // incidents TomTom situés à moins de 150 m du trajet (zones < ~7 000 km², 6 requêtes max)
+async function rtFetchIncidents(pts,key){
   const chunks=[];let cur=null;
   pts.forEach(p=>{
     if(!cur||Math.max(cur.maxLat,p[0])-Math.min(cur.minLat,p[0])>0.8||Math.max(cur.maxLon,p[1])-Math.min(cur.minLon,p[1])>1.0){cur={minLat:p[0],maxLat:p[0],minLon:p[1],maxLon:p[1]};chunks.push(cur)}
@@ -1406,9 +1230,9 @@ async function rtFetchIncidents(pts,key){ // incidents TomTom situés à moins d
 function rtBuildAlerts(rt,incidents){
   const out=[];
   const secInfo=rt.secs.map(s=>{const seg=rt.pts.slice(s.startPointIndex,s.endPointIndex+1);return{s,seg,mid:seg[Math.floor(seg.length/2)]||null,cat:String(s.simpleCategory||'').toUpperCase()}});
-  const incNearSeg=(i,seg)=>(i.samples||[i.pt]).some(s=>rtNear(s,seg,500)); // l'incident touche ce tronçon du trajet
+  const incNearSeg=(i,seg)=>(i.samples||[i.pt]).some(s=>rtNear(s,seg,500));
   incidents.forEach(i=>{
-    if(i.cat===6&&secInfo.some(x=>x.cat==='JAM'&&incNearSeg(i,x.seg)))return; // le ralentissement est déjà décrit (durée, vitesse) par le trajet
+    if(i.cat===6&&secInfo.some(x=>x.cat==='JAM'&&incNearSeg(i,x.seg)))return;
     const [lbl,ico]=RT_CAT[i.cat]||RT_CAT[0];
     out.push({ico,lbl,desc:i.desc,road:i.road,delay:i.delay,sev:Math.max(i.mg,[1,7,8].includes(i.cat)?2:0),pt:i.pt});
   });
@@ -1476,7 +1300,7 @@ function rtRender(c,o,d,rt,incidents,fl){
   rtDrawMap(rt,o,d,alerts);
 }
 const RT_GPS_ERR={DENIED:'autorisation refusée',TIMEOUT:'délai dépassé',UNSUPPORTED:'non prise en charge par ce navigateur',UNAVAILABLE:'position indisponible'};
-function rtGetPosition(){ // position réelle de l'appareil (le navigateur demande l'autorisation)
+function rtGetPosition(){
   return new Promise((res,rej)=>{
     if(!navigator.geolocation){rej(new Error('UNSUPPORTED'));return}
     navigator.geolocation.getCurrentPosition(
@@ -1485,7 +1309,7 @@ function rtGetPosition(){ // position réelle de l'appareil (le navigateur deman
       {enableHighAccuracy:true,timeout:10000,maximumAge:30000});
   });
 }
-async function routeOpen(clientId,from){ // from : 'gps' uniquement quand l'utilisateur le demande dans la fenêtre ; sinon toujours « Mon adresse »
+async function routeOpen(clientId,from){
   const c=S.clients.find(x=>x.id===clientId);if(!c)return;
   const seq=++rtSeq;
   om(`<div class="mh"><h2 class="mt">Itinéraire — ${esc(c.company)}</h2><button class="mc" onclick="cm()">✕</button></div><div id="rt-body"><div class="p-empty">Calcul de l'itinéraire…</div></div>`);
@@ -1497,7 +1321,7 @@ async function routeOpen(clientId,from){ // from : 'gps' uniquement quand l'util
   const mode=from==='gps'?'gps':'address';
   const key=String(S.settings.tomtomKey||'').trim();
   const fl={noKey:!key,keyErr:false,ttErr:false,incErr:false,gpsErr:''};
-  // 1) point de départ : position en temps réel (par défaut), sinon « Mon adresse »
+
   let o=null;
   if(mode==='gps'){
     loading('Recherche de votre position…');
@@ -1517,7 +1341,7 @@ async function routeOpen(clientId,from){ // from : 'gps' uniquement quand l'util
       const a=S.settings.myAddress;o={lat:a.lat,lon:a.lon,gps:false,short:'mon adresse',label:myAddrText()};
     }catch(e){msg('Localisation impossible (connexion ?).');return}
   }
-  // 2) arrivée : adresse du client
+
   let d;
   try{
     if(!(c.lat&&c.lon)){const f=await geoLocate(c);if(f){c.lat=f.lat;c.lon=f.lon;c.geoLevel=f.level}else{c.lat=0;c.lon=0}save()}
@@ -1525,7 +1349,7 @@ async function routeOpen(clientId,from){ // from : 'gps' uniquement quand l'util
     d={lat:c.lat,lon:c.lon};
   }catch(e){msg('Localisation impossible (connexion ?).');return}
   if(seq!==rtSeq)return;
-  // 3) trajet
+
   let rt=null;
   if(key){try{rt=await rtFetchTomTom(o,d,key)}catch(e){if(e.message==='KEY')fl.keyErr=true;else fl.ttErr=true}}
   try{if(!rt)rt=await rtFetchOsrm(o,d)}catch(e){msg('Itinéraire indisponible pour le moment ('+esc(e.message)+').');return}
@@ -1541,15 +1365,7 @@ function verLess(a,b){return a[0]<b[0]||(a[0]===b[0]&&a[1]<b[1])}
 function licThresholdPct(total){return total>200?98:95}
 function licFull(eff){const l=parseLicences(eff);return !!(l&&l.total>0&&l.used*100>=licThresholdPct(l.total)*l.total)}
 function parseLicences(eff){const m=String(eff==null?'':eff).match(/^\s*(\d+)\s*\/\s*(\d+)\s*$/);return m?{used:parseInt(m[1],10),total:parseInt(m[2],10)}:null}
-function relanceState(c,cfg){ // référence = dernière relance traitée (alerte supprimée), sinon création du client / mise en service de la fonction
-  const every=Math.max(1,parseInt(cfg.every)||1);
-  const interval=cfg.unit==='months'?every*30:every;
-  const cands=[c.createdAt,S.settings.relanceBaseline,(S.settings.relanceDone||{})[c.id],lastDoneDate(c.id)].filter(Boolean).sort();
-  const ref=cands.length?cands[cands.length-1]:today();
-  const elapsed=daysBetween(ref,today());
-  return{interval,ref,elapsed,due:elapsed>=interval};
-}
-function computeNotifs(clientId,raw){ // clientId : limiter à un client ; raw : sans retirer les éléments supprimés
+function computeNotifs(clientId,raw){
   const dis=S.settings.notifDismissed||{};
   const lim=new Date();lim.setFullYear(lim.getFullYear()-3);const limit=lim.toISOString().slice(0,10);
   const out=[];
@@ -1563,32 +1379,24 @@ function computeNotifs(clientId,raw){ // clientId : limiter à un client ; raw :
     const vmin=verParse(S.settings.versionMin||'5.1'),vcl=verParse(c.version);
     if(vmin&&vcl&&verLess(vcl,vmin))out.push({key:`version:${c.id}:${c.version}`,level:'alerte',type:'version',clientId:c.id,
       text:`Version obsolète : ${c.version} (inférieure à la ${vmin[0]}.${vmin[1]})`});
-    const cfg=(S.settings.autoTasks||{})[c.priority];
-    if(cfg&&cfg.on){
-      const st=relanceState(c,cfg);
-      if(st.due)out.push({key:'relance:'+c.id,level:'alerte',type:'relance',clientId:c.id,
-        text:`À relancer : ${st.elapsed} jour${st.elapsed>1?'s':''} sans relance (relance tous les ${cfg.every} ${cfg.unit==='months'?'mois':'jours'})`});
-    }
     const old=(c.contracts||[]).filter(ct=>ctEtat(ct)==='active'&&ct.dateSignature&&ct.dateSignature<limit).sort((a,b)=>a.dateSignature.localeCompare(b.dateSignature));
     if(old.length)out.push({key:'contrat:'+c.id,level:'notif',type:'contrat',clientId:c.id,
       text:`Contrat de plus de 3 ans : « ${old[0].label||'Contrat'} » signé le ${fd(old[0].dateSignature)}${old.length>1?` (+${old.length-1} autre${old.length>2?'s':''})`:''}`});
   });
   const nm=id=>((S.clients||[]).find(x=>x.id===id)||{}).company||'';
-  const list=raw?out:out.filter(n=>n.type==='relance'||!dis[n.key]); // une relance se « traite » en la supprimant : son délai repart de zéro
+  const list=raw?out:out.filter(n=>!dis[n.key]);
   return list.sort((a,b)=>(a.level==='alerte'?0:1)-(b.level==='alerte'?0:1)||nm(a.clientId).localeCompare(nm(b.clientId),'fr'));
 }
-function pruneNotifDismissed(){ // ne garde que les suppressions encore pertinentes
+function pruneNotifDismissed(){
   const dis=S.settings.notifDismissed;if(!dis)return;
   const live=new Set(computeNotifs(null,true).map(n=>n.key));
   Object.keys(dis).forEach(k=>{if(!live.has(k))delete dis[k]});
 }
 function notifDelete(key){
-  const n=computeNotifs().find(x=>x.key===key);if(!n)return;
-  if(n.type==='relance'){if(!S.settings.relanceDone)S.settings.relanceDone={};S.settings.relanceDone[n.clientId]=today()}
-  else{if(!S.settings.notifDismissed)S.settings.notifDismissed={};S.settings.notifDismissed[key]=today()}
-  pruneNotifDismissed();
-  save();updNC();
-  if(CV==='todos')rTodos();else if(CV==='client-detail'&&ctrActiveClientId)rClientDet(ctrActiveClientId);
+ const n=computeNotifs().find(x=>x.key===key);if(!n)return;
+ if(!S.settings.notifDismissed)S.settings.notifDismissed={};S.settings.notifDismissed[key]=today();
+ pruneNotifDismissed();save();updNC();
+ if(CV==='notifs')rNotifs();else if(CV==='client-detail'&&ctrActiveClientId)rClientDet(ctrActiveClientId);
 }
 function notifRowHtml(n,withClient){
   const L=NOTIF_LEVEL[n.level],c=(S.clients||[]).find(x=>x.id===n.clientId);
@@ -1598,39 +1406,13 @@ function notifRowHtml(n,withClient){
     <button class="ibt del" onclick="notifDelete('${jsAttr(n.key)}')" title="Supprimer">🗑</button>
   </div>`;
 }
-function rTodos(){ // page « Notifications » : liste des ALERTES à traiter (on peut seulement les supprimer) ; les notifications d'information restent dans la fiche client
-  const el=document.getElementById('vw-todos');if(!el)return;
+function rNotifs(){
+  const el=document.getElementById('vw-notifs');if(!el)return;
   const list=computeNotifs().filter(n=>n.level==='alerte');const na=list.length;
   el.innerHTML=`<div class="ph"><div class="ph-left"><div class="eyebrow">Suivi</div><h1 class="ptitle">Notifications</h1></div></div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px">${bdg(na+' alerte'+(na>1?'s':''),'bd')}<span style="font-size:.78rem;color:var(--text-sub)">Les notifications d'information (ex. contrat de plus de 3 ans) s'affichent dans la fiche du client.</span></div>
   ${list.length?`<div class="nt-list">${list.map(n=>notifRowHtml(n,true)).join('')}</div>`:`<div class="empty"><div class="empty-i">🔔</div><div class="empty-t">Aucune alerte</div></div>`}`;
 }
-function td_form(id=null,preClientId=null){
-  const t=id?S.todos.find(x=>x.id===id):null;
-  const co=S.clients.map(c=>`<option value="${c.id}" ${t&&t.clientId===c.id?'selected':''}>${esc(c.company)}${c.priority?' ['+CPL[c.priority]+']':''}</option>`).join('');
-  om(`<div class="mh"><h2 class="mt">${t?'Modifier la tâche':'Nouvelle tâche'}</h2><button class="mc" onclick="cm()">✕</button></div>
-  <div class="fsec"><div class="fst">Informations</div>
-    <div class="fg"><label class="fl">Nom *</label><input id="td-n" class="fi" value="${esc(t?.name||'')}" placeholder="Ex: Appel de suivi client X"></div>
-    <div class="fg"><label class="fl">Description</label><textarea id="td-d" class="ft" placeholder="Détails, contexte...">${esc(t?.description||'')}</textarea></div>
-    <div class="f2">
-      <div class="fg"><label class="fl">Échéance</label><input id="td-m" class="fi" type="date" value="${t?.maxDate||''}"></div>
-      <div class="fg"><label class="fl">Priorité</label><select id="td-p" class="fs"><option value="mineure" ${t?.priority==='mineure'?'selected':''}>Mineure</option><option value="normal" ${(!t||t.priority==='normal')?'selected':''}>Normal</option><option value="prioritaire" ${t?.priority==='prioritaire'?'selected':''}>Prioritaire</option></select></div>
-    </div>
-    <div class="fg"><label class="fl">Client rattaché</label><select id="td-c" class="fs"><option value="">— Aucun —</option>${co}</select></div>
-    <div class="fg"><label class="fl">Modules concernés</label>${buildProdPicker(t?.productIds||[])}</div>
-  </div>
-  <div style="display:flex;gap:9px"><button class="btn btn-p" onclick="std('${id||''}')">Enregistrer</button><button class="btn btn-g" onclick="cm()">Annuler</button></div>`);
-  if(preClientId){const sel=document.getElementById('td-c');if(sel)sel.value=preClientId;}
-}
-function std(id){
-  const name=document.getElementById('td-n').value.trim();if(!name){alert('Nom obligatoire');return}
-  const old=id?S.todos.find(x=>x.id===id):null;
-  const data={id:id||uid(),name,description:document.getElementById('td-d').value.trim(),createdAt:old?.createdAt||today(),maxDate:document.getElementById('td-m').value,priority:document.getElementById('td-p').value,clientId:document.getElementById('td-c').value||null,done:old?.done||false,...(old&&old.doneAt?{doneAt:old.doneAt}:{}),autoRelance:old?.autoRelance||false,productIds:getSelectedProds()};
-  if(id){const i=S.todos.findIndex(x=>x.id===id);if(i>=0)S.todos[i]=data}else S.todos.unshift(data);
-  save();cm();updNC();if(CV==='todos')rTodos({filter:CF});else if(CV==='home')rHome();toast('Tâche enregistrée ✓');
-}
-function tog(id){const t=S.todos.find(x=>x.id===id);if(t){setTodoDone(t,!t.done);save();updNC()}if(CV==='todos')rTodos({filter:CF});else if(CV==='home')rHome()}
-let tdKbFilter='', tdKbDragging=null;
 function prioBorderColor(p){return{forte:'#FF9480',moyenne:'#7D9AFF',faible:'#8a94a8'}[p]||'var(--border)'}
 function logoBox(src,size,radius,border,alt){
   return `<div style="width:${size}px;height:${size}px;border-radius:${radius};${border?`border:${border};`:''}flex-shrink:0;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;box-sizing:border-box"><img src="${esc(src)}" alt="${esc(alt||'')}" style="width:100%;height:100%;object-fit:contain;display:block"></div>`;
@@ -1653,7 +1435,7 @@ function clFiltered(){
       const q=srchNorm(clSearch).trim();
       const inCompany=srchNorm(c.company).includes(q);
       const inContact=(c.contacts||[]).some(ct=>srchNorm(`${ct.firstName||''} ${ct.name||''} ${ct.email||''}`).includes(q));
-      // numéro FinOps : « 1234 » ou « C0001234 » (format Kodtool, zéros ignorés)
+
       const fin=String(c.finops||'').toLowerCase().replace(/\s+/g,''),qn=q.replace(/\s+/g,''),kt=qn.match(/^c0*(\d{3,})$/);
       const inFin=!!fin&&(fin.includes(qn)||(!!kt&&fin.includes(kt[1])));
       if(!inCompany&&!inContact&&!inFin) return false;
@@ -1694,7 +1476,7 @@ function ctEtat(ct){if(!ct)return 'active';if(CT_ETATS.some(e=>e[0]===ct.etat))r
 function ctEtatLabel(e){return (CT_ETATS.find(x=>x[0]===e)||CT_ETATS[0])[1]}
 function clIsResilie(c){const l=(c&&c.contracts)||[];return l.length>0&&l.every(ct=>ctEtat(ct)==='resilie')}
 function hasContractEtat(c,e){return (c.contracts||[]).some(ct=>ctEtat(ct)===e)}
-function clLatestSignature(c){ // date de signature la plus récente parmi les contrats du client
+function clLatestSignature(c){
   const dates=(c.contracts||[]).map(ct=>ct.dateSignature).filter(Boolean).sort();
   return dates.length?dates[dates.length-1]:'';
 }
@@ -1702,23 +1484,22 @@ function clCardHtml(c,td){
   const ap=clAddrParts(c);
   const loc=[ap.zip,ap.city].filter(Boolean).join(' ')||ap.street||'';
   const lastSig=clLatestSignature(c);
-  const alerts=computeNotifs(c.id).filter(n=>n.level==='alerte'); // alertes seulement (pas les notifications)
+  const alerts=computeNotifs(c.id).filter(n=>n.level==='alerte');
   const alertTag=alerts.length?`<span class="tag tag-alert" title="${esc(alerts.map(a=>a.text).join(' · '))}">⚠ ${alerts.length}</span>`:'';
   const ids=[c.finops&&`FinOps <b>${esc(c.finops)}</b>`,c.effectif&&`👥 <b${licFull(c.effectif)?' class="eff-alert" title="Licences presque pleines"':''}>${esc(c.effectif)}</b>`].filter(Boolean);
   const sigLine=lastSig?`Signé le <b>${fd(lastSig)}</b>`:'';
 
   return`<div class="cl-card ${isProspect(c)?'is-prospect':''} ${clIsResilie(c)?'is-resiliated':''}" id="clr-${c.id}" onclick="clRowClick(event,'${c.id}')">
     <div class="cl-card-top">
-      <div onclick="event.stopPropagation()" style="flex-shrink:0"><input type="checkbox" class="cl-chk" data-id="${c.id}" onchange="clToggleSel('${c.id}',this.checked)" style="accent-color:var(--accent);width:15px;height:15px;cursor:pointer"></div>
+
       ${clientAvatar(c,44,11)}
       <div class="cl-card-id"><div class="cl-card-name" title="${esc(c.company)}">${esc(c.company)}</div>${loc?`<div class="cl-card-loc" title="${esc(loc)}">📍 ${esc(loc)}</div>`:''}</div>
-      <div class="cl-card-act" onclick="event.stopPropagation()"><button class="ibt" onclick="cl_form('${c.id}')" title="Modifier">✏️</button><button class="ibt del" onclick="del('client','${c.id}')" title="Supprimer">🗑</button></div>
+
     </div>
     <div class="cl-card-badges">${alertTag}${clIsResilie(c)?`<span class="tag" style="background:var(--danger-soft);color:var(--danger)" title="Tous les contrats sont résiliés">⛔ Résilié</span>`:''}${isProspect(c)?`<span class="tag" style="background:var(--success-soft);color:var(--success)" title="Pas de numéro FinOps : ce client est un prospect">🌱 Prospect</span>`:''}${c.group?`<span class="group-tag">💼 ${esc(c.group)}</span>`:''}${c.saas===false?`<span class="tag tag-onprem" title="Client OnPremise : serveur installé chez le client">${SRV_ICON} OnPremise</span>`:`<span class="tag tag-saas" title="Client SAAS">☁ SAAS</span>`}${c.version?`<span class="tag" title="Version">${esc(c.version)}</span>`:''}</div>
     ${ids.length?`<div class="cl-card-ids">${ids.join(' &nbsp;·&nbsp; ')}</div>`:''}
     ${sigLine?`<div class="cl-card-ids">${sigLine}</div>`:''}
-    
-    
+
   </div>`;
 }
 let clSortDir='asc';
@@ -1727,12 +1508,12 @@ function clSortList(list){
   const dir=clSortDir==='desc'?-1:1,byName=(a,b)=>String(a.company||'').localeCompare(String(b.company||''),'fr');
   const pOrd={forte:0,moyenne:1,faible:2},alerts={};
   if(clSort==='status')computeNotifs().filter(n=>n.level==='alerte').forEach(n=>{alerts[n.clientId]=(alerts[n.clientId]||0)+1});
-  const val={ // valeur de tri ; null = information absente (toujours placée en fin de liste, quel que soit le sens)
+  const val={
     name:c=>String(c.company||''),priority:c=>pOrd[c.priority]??3,group:c=>c.group||null,date:c=>clLatestSignature(c)||null,
     finops:c=>{const s=String(c.finops==null?'':c.finops).replace(/\s+/g,'');return s||null},
     eff:c=>{const n=clEffNum(c.effectif);return Number.isNaN(n)?null:n},status:c=>alerts[c.id]||0,
-    version:c=>{const v=verParse(c.version);return v?v[0]*1000+v[1]:null}, // « V5.1S1 » → 5,1 (les versions les plus anciennes en premier)
-    server:c=>c.saas===false?1:0}; // SaaS puis OnPremise
+    version:c=>{const v=verParse(c.version);return v?v[0]*1000+v[1]:null},
+    server:c=>c.saas===false?1:0};
   const f=val[clSort]||val.name;
   const cmpV=(x,y)=>typeof x==='number'&&typeof y==='number'?x-y:String(x).localeCompare(String(y),'fr',{numeric:true});
   return list.sort((a,b)=>{const x=f(a),y=f(b);
@@ -1740,7 +1521,7 @@ function clSortList(list){
     return (cmpV(x,y)*dir)||byName(a,b)});
 }
 let clLayout='mosaic';
-function clSetLayout(l){ // « Mosaïque » ou « Liste » (la carte géographique reste un mode à part)
+function clSetLayout(l){
   clLayout=l==='rows'?'rows':'mosaic';clView='list';
   try{mstore.setItem('crm-cllayout',clLayout);mstore.setItem('crm-clview','list')}catch(e){}
   rClients();
@@ -1751,7 +1532,7 @@ function clTopHtml(list){
   const versions=[...new Set(S.clients.map(c=>versionMajor(c.version)).filter(Boolean))].sort();
   const commercials=[...new Set(S.clients.map(c=>c.commercial).filter(Boolean))].sort();
   return `
-  <!-- Search + Filters -->
+
   <div class="cl-toolbar${clFiltOpen?' fo':''}">
     <div class="cl-search-wrap">
       <svg width="15" height="15" viewBox="0 0 24 24" stroke="var(--text-sub)" stroke-width="2.2" fill="none" style="flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1800,33 +1581,19 @@ function clTopHtml(list){
     <div class="cl-count">${list.length} client${list.length>1?'s':''}${list.length!==S.clients.length?` sur ${S.clients.length}`:''}</div>
   </div>
 
-  <!-- Tri + Renouvellement/Prospects : tout à gauche, collés à la suite -->
   <div class="frow" style="margin-bottom:14px;justify-content:flex-start">
     <div class="ftabs" style="align-items:center">
-      
-      
-      
+
       <button class="ftab ${clFilter.alerts?'on':''}" onclick="clToggleAlerts()" title="Clients ayant au moins une alerte en cours">⚠ Alertes <span style="opacity:.6">${clAlertClientIds().size}</span></button>
     </div>
   </div>
 
-  <!-- Group filter tabs -->
   ${groups.length>0?`<div class="frow" style="margin-bottom:14px">
     <div class="ftabs">
       <button class="ftab ${!clFilter.group?'on':''}" onclick="clSetFilter('group','')">Tous les groupes</button>${groups.map(g=>`<button class="ftab ${clFilter.group===g?'on':''}" onclick="clSetFilter('group','${jsAttr(g)}')">${esc(g)}</button>`).join('')}
     </div>
   </div>`:''}
 
-  <!-- Bulk action bar (visible when selection) -->
-  <div id="cl-bulk-bar" class="cl-bulk-bar hidden">
-    <div class="cl-bulk-info"><input type="checkbox" id="cl-check-all" onchange="clToggleAll(this.checked)" style="accent-color:var(--accent);width:15px;height:15px"> <span id="cl-sel-count">0 sélectionné(s)</span></div>
-    <div class="cl-bulk-actions">
-      <button class="btn btn-s btn-sm" onclick="clBulkTask()" title="Créer une tâche pour tous">✅ Tâche</button>
-      <button class="btn btn-s btn-sm" onclick="clBulkMail()" title="Écrire à tous">✉ Mail</button>
-      <button class="btn btn-s btn-sm" onclick="clBulkPriority()" title="Changer priorité">⭐ Priorité</button>
-      <button class="btn btn-d btn-sm" onclick="clBulkDelete()" title="Supprimer tous">🗑 Supprimer</button>
-    </div>
-  </div>
   `;
 }
 function clGridHtml(list){
@@ -1838,8 +1605,7 @@ function clGridHtml(list){
 function clBodyHtml(list){return clView==='map'?clMapBodyHtml(list):clGridHtml(list)}
 function rClients(){
   const el=document.getElementById('vw-clients');
-  selClients=new Set();
-  clModOpen=false;   // page rouverte : le filtre « Modules » repart fermé
+  clModOpen=false;
   if(leafletMap){leafletMap.remove();leafletMap=null}
   const list=clFiltered();
   el.classList.toggle('cl-mapmode',clView==='map');
@@ -1852,7 +1618,7 @@ function rClients(){
   <div id="cl-body">${clBodyHtml(list)}</div>`;
   if(clView==='map')clMapStart();
   else{
-        if(clListScrollY)requestAnimationFrame(()=>window.scrollTo(0,clListScrollY));   // revenir au même niveau de défilement
+        if(clListScrollY)requestAnimationFrame(()=>window.scrollTo(0,clListScrollY));
   }
 }
 function clRefresh(){
@@ -1864,18 +1630,16 @@ function clRefresh(){
   if(had){const n=document.getElementById('cl-search');if(n){n.focus();if(pos!=null)try{n.setSelectionRange(pos,pos)}catch(e){}}}
   if(clView==='map'){clMapSync(list,true);return}
   document.getElementById('cl-body').innerHTML=clGridHtml(list);
-  selClients=new Set([...selClients].filter(id=>list.some(c=>c.id===id)));   // la sélection survit au filtrage
-  selClients.forEach(id=>{const cb=document.querySelector('.cl-chk[data-id="'+id+'"]');if(cb)cb.checked=true;const cd=document.getElementById('clr-'+id);if(cd)cd.classList.add('sel')});
-  clUpdateBulkBar();
+
 }
 function clSetView(v){
   if(v!=='map')v='list';
   clView=v;try{mstore.setItem('crm-clview',v)}catch(e){}
   rClients();
 }
-function clShowOnMap(id){ // « Voir sur la carte » depuis une fiche client
+function clShowOnMap(id){
   clView='map';try{mstore.setItem('crm-clview','map')}catch(e){}
-  clSearch='';clFilter={priority:'',group:'',renewal:false,server:'',prospects:false,version:'',contractStatus:'',contractType:'',hebergeur:'',signYear:'',commercial:'',alerts:false,modules:[],dept:'',eff:'',segment:'',ids:null};   // le client doit être visible
+  clSearch='';clFilter={priority:'',group:'',renewal:false,server:'',prospects:false,version:'',contractStatus:'',contractType:'',hebergeur:'',signYear:'',commercial:'',alerts:false,modules:[],dept:'',eff:'',segment:'',ids:null};
   navigate('clients');
   setTimeout(()=>mapFocusClient(id),400);
 }
@@ -1885,7 +1649,7 @@ function clSetSearch(v){
   clSearchT=setTimeout(clRefresh,120);
 }
 function clSetFilter(k,v){ clFilter[k]=v; clRefresh(); }
-function clNeedsRenewal(c){ // au moins un contrat ACTIVÉ signé il y a plus de 3 ans (comme les notifications : un contrat résilié ou saisi ne compte pas ; la case SAAS n'influence que le tag SAAS/OnPremise)
+function clNeedsRenewal(c){
   const limit=new Date();limit.setFullYear(limit.getFullYear()-3);
   const limitStr=limit.toISOString().slice(0,10);
   return (c.contracts||[]).some(ct=>ctEtat(ct)==='active'&&ct.dateSignature&&ct.dateSignature<limitStr);
@@ -1902,101 +1666,23 @@ function clModToggle(e){
 function clModTogglePid(id){
   const i=clFilter.modules.indexOf(id);
   if(i>=0)clFilter.modules.splice(i,1);else clFilter.modules.push(id);
-  clModOpen=true;   // le menu reste ouvert : on peut cocher plusieurs modules d'affilée
+  clModOpen=true;
   clRefresh();
 }
 function clModClear(){ clFilter.modules=[]; clModOpen=true; clRefresh(); }
 function clResetFilters(){ clSearch=''; clFilter={priority:'',group:'',renewal:false,server:'',prospects:false,version:'',contractStatus:'',contractType:'',hebergeur:'',signYear:'',commercial:'',alerts:false,modules:[],dept:'',eff:'',segment:'',ids:null}; clRefresh(); }
-function clRowClick(e,id){
-  // Sans sélection en cours : ouvre la fiche. Sinon : un clic sur la carte l'ajoute / la retire de la sélection.
-  if(selClients.size===0){navigate('client-detail',{id});return}
-  const cb=document.querySelector('.cl-chk[data-id="'+id+'"]');
-  if(cb){cb.checked=!cb.checked;clToggleSel(id,cb.checked)}
-}
-function clToggleSel(id,checked){
-  if(checked) selClients.add(id); else selClients.delete(id);
-  const card=document.getElementById('clr-'+id);if(card)card.classList.toggle('sel',!!checked);
-  clUpdateBulkBar();
-}
-function clToggleAll(checked){
-  document.querySelectorAll('.cl-chk').forEach(cb=>{
-    cb.checked=checked;
-    if(checked) selClients.add(cb.dataset.id); else selClients.delete(cb.dataset.id);
-    const card=document.getElementById('clr-'+cb.dataset.id);if(card)card.classList.toggle('sel',checked);
-  });
-  clUpdateBulkBar();
-}
-function clUpdateBulkBar(){
-  const bar=document.getElementById('cl-bulk-bar');
-  const cnt=document.getElementById('cl-sel-count');
-  const allChk=document.getElementById('cl-check-all');
-  if(!bar) return;
-  const n=selClients.size;
-  if(n>0){ bar.classList.remove('hidden'); if(cnt) cnt.textContent=n+' sélectionné'+(n>1?'s':''); }
-  else { bar.classList.add('hidden'); }
-  const totalVisible=document.querySelectorAll('.cl-chk').length;
-  if(allChk) allChk.indeterminate=n>0&&n<totalVisible;
-  if(allChk) allChk.checked=n===totalVisible&&n>0;
- const allL=document.getElementById('cl-check-all-l');if(allL){allL.indeterminate=n>0&&n<totalVisible;allL.checked=n===totalVisible&&n>0}
-}
-function clBulkTask(){
-  const ids=[...selClients];
-  if(!ids.length) return;
-  // Pre-select first client in the form, user can change
-  cm();
-  td_form();
-  // Auto-select client if only one selected
-  if(ids.length===1){ setTimeout(()=>{ const sel=document.getElementById('td-c'); if(sel) sel.value=ids[0]; },50); }
-  else toast(`Créez la tâche — elle sera assignée manuellement parmi les ${ids.length} clients`);
-}
-function clBulkMail(){
-  const ids=[...selClients];
-  const emails=[];
-  ids.forEach(id=>{
-    const c=S.clients.find(x=>x.id===id);
-    if(c&&c.contacts) c.contacts.forEach(ct=>{ if(ct.email) emails.push(ct.email); });
-  });
-  if(!emails.length){ toast('Aucun email trouvé dans les fiches contacts'); return; }
-  const gmailUrl='https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(emails.join(','));
-  window.open(gmailUrl,'_blank');
-}
-function clBulkPriority(){
-  const ids=[...selClients];
-  if(!ids.length) return;
-  om(`<div class="mh"><h2 class="mt">Changer la priorité</h2><button class="mc" onclick="cm()">✕</button></div>
-  <p style="color:var(--text-sub);font-size:.88rem;margin-bottom:18px">${ids.length} client(s) sélectionné(s)</p>
-  <div class="prio-pick">
-    <div class="pp t-forte" onclick="clBulkSetPriority('forte')">IMPORTANT</div>
-    <div class="pp t-moyenne" onclick="clBulkSetPriority('moyenne')">NORMAL</div>
-    <div class="pp t-faible" onclick="clBulkSetPriority('faible')">FAIBLE</div>
-  </div>
-`);
-}
-function clBulkSetPriority(p){
-  [...selClients].forEach(id=>{ const c=S.clients.find(x=>x.id===id); if(c) c.priority=p||'moyenne'; });
-  save(); cm(); rClients(); toast('Priorité mise à jour ✓');
-}
-function clBulkDelete(){
-  const n=selClients.size;
-  if(!confirm(`Supprimer ${n} client(s) ? Cette action est irréversible.`)) return;
-  [...selClients].forEach(id=>{
-    S.clients=S.clients.filter(x=>x.id!==id);
-    S.offers.forEach(o=>{ if(o.clientId===id) o.clientId=null; });
-    S.todos.forEach(t=>{ if(t.clientId===id) t.clientId=null; });
-  });
-  save(); selClients=new Set(); rClients(); toast(`${n} client(s) supprimé(s) ✓`);
-}
+function clRowClick(e,id){navigate('client-detail',{id})}
 function rClientDet(id){
   const c=S.clients.find(x=>x.id===id);if(!c){navigate('clients');return}
-  if(ctrActiveClientId!==id){ctrActiveId=null;ctrActiveClientId=id}   // changement de client : repartir sur son 1er contrat
-  const co=S.offers.filter(o=>o.clientId===id),cnotifs=computeNotifs(id);
+  if(ctrActiveClientId!==id){ctrActiveId=null;ctrActiveClientId=id}
+  const cnotifs=computeNotifs(id);
   const addrLine=c.address?`<div class="cld-addr cld-addr-link" onclick="routeOpen('${id}')" title="Voir l'itinéraire, le trafic et les alertes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>${esc(c.address).replace(/\n/g,'<br>')}</span><span class="cld-addr-go">🚗 Itinéraire</span></div>`:'';
   document.getElementById('vw-client-detail').innerHTML=`
   <div style="margin-bottom:20px"><button class="btn btn-g" style="font-size:1rem;padding:13px 24px" onclick="navigate('clients')">← Retour aux clients</button></div>
   <div class="cl-hero">
     <button class="btn btn-d btn-sm cld-del" onclick="del('client','${id}')" title="Supprimer ce client">🗑 Supprimer</button>
     <div class="cld-id">
-      <div class="cld-photo" role="button" tabindex="0" title="Cliquez pour modifier ou copier l'image" aria-label="Photo du client : modifier ou copier l'image" onclick="cldPhotoMenu(event,'${id}')" oncontextmenu="cldPhotoMenu(event,'${id}')" onkeydown="if(event.key==='Enter'||event.key===' ')cldPhotoMenu(event,'${id}')">${clientAvatar(c,68,17)}</div>
+      <div class="cld-photo">${clientAvatar(c,68,17)}</div>
       <div style="min-width:0">
         <div class="cl-cn">${esc(c.company)}</div>
         <div class="cld-badges">
@@ -2013,8 +1699,7 @@ function rClientDet(id){
       <button class="btn btn-s btn-sm" onclick="cl_form('${id}')">✏️ Modifier</button>
       ${c.contacts&&c.contacts.some(ct=>ct.email)?`<button class="btn btn-s btn-sm" onclick="clMailFromDetail('${id}')" title="${esc(clMailTitle(c))}">✉ Email</button>`:''}
       ${c.lat&&c.lon?`<button class="btn btn-g btn-sm" onclick="clShowOnMap('${id}')">🗺 Carte</button>`:''}
-      
-      
+
     </div>
   </div>
   ${(()=>{
@@ -2030,7 +1715,7 @@ function rClientDet(id){
     <div class="pb-head"><div class="pb-title"><div class="pb-ico ico-b">📄</div>Contrats ${c.contracts&&c.contracts.length?`<span class="tag">${c.contracts.length}</span>`:''}</div></div>
     <div class="cld-panel-body"><div id="client-ctr-sec">${clContractsHtml(c)}</div></div>
   </div>`,
-      
+
       `<div class="pb">
     <div class="pb-head"><div class="pb-title"><div class="pb-ico ico-g">🔔</div>Alertes / notifications <span class="tag">${cnotifs.length}</span></div></div>
     <div class="cld-panel-body">
@@ -2038,7 +1723,7 @@ function rClientDet(id){
     </div>
   </div>`
     ].filter(Boolean);
-    // Nombre impair de cartes : la dernière s'étire sur toute la largeur pour éviter un trou
+
     if(gridPanels.length%2===1)gridPanels[gridPanels.length-1]=gridPanels[gridPanels.length-1].replace('<div class="pb">','<div class="pb" style="grid-column:1/-1">');
     return `<div class="cl-cols">${gridPanels.join('')}</div>`;
   })()}
@@ -2087,7 +1772,7 @@ function clContractsHtml(c){
 function ctrSwitch(clientId,contractId){ctrActiveId=contractId;ctrRefresh(clientId)}
 function ctrDetailHtml(clientId,ct){
   const et=ctEtat(ct);
-  // ordre : Type · Hébergeur / Signature · Statut / [Début ·] Fin / [Système] — sans date de début, le système se place à côté de la date de fin
+
   const cell=(l,v,st)=>`<div><div class="fl">${l}</div><div style="margin-top:5px${st||''}">${v}</div></div>`;
  return `${et==='resilie'?`<div style="background:var(--danger-soft);border:1px solid var(--danger);color:var(--danger);border-radius:var(--rx-sm);padding:9px 13px;font-weight:700;margin-bottom:12px;text-align:center">⛔ Résilié</div>`:et==='saisi'?`<div style="background:var(--warning-soft);border:1px solid var(--warning);color:var(--warning);border-radius:var(--rx-sm);padding:9px 13px;font-weight:700;margin-bottom:12px;text-align:center">🕒 Saisi · pas encore activé</div>`:''}<div class="fsec" style="margin-top:12px">
     <div class="f3">
@@ -2099,7 +1784,7 @@ function ctrDetailHtml(clientId,ct){
  ${cell('Loyer mensuel',fmtLoyer(ct.loyerAnnuel))}
  ${cell('Date de début de contrat',ct.dateDebut?fd(ct.dateDebut):'—')}
  ${cell('Date de fin de contrat',ct.dateFin?fd(ct.dateFin):'—')}
- ${ct.statut&&!ctEtatFromText(ct.statut)?cell('Statut (import)',esc(ct.statut)):''}
+ ${ct.statut&&!ctEtatFromText(ct.statut)?cell('Statut',esc(ct.statut)):''}
  </div>
   </div>
   <div style="display:flex;gap:8px;margin-top:2px"><button class="btn btn-g btn-xs" onclick="ctr_form('${clientId}','${ct.id}')">✏️ Modifier</button><button class="btn btn-d btn-xs" onclick="ctr_delete('${clientId}','${ct.id}')">🗑 Supprimer</button></div>`;
@@ -2115,7 +1800,7 @@ function ctr_form(clientId,contractId=null){
   <div class="f2">
  <div class="fg"><label class="fl">Type de contrat</label><select id="ctr-type" class="fs">
  <option value="">—</option>
- ${(()=>{const cur=ct&&ct.type?String(ct.type):'',nm=cur?ctrTypeNorm(cur):'',known=CTR_TYPES.includes(nm);return CTR_TYPES.map(t=>`<option value="${t}" ${known&&nm===t?'selected':''}>${t}</option>`).join('')+(cur&&!known?`<option value="${esc(cur)}" selected>${esc(cur)}</option>`:'')})()} /* « SAAS », « saas »… retrouvent « Saas » ; un type inconnu est conservé */
+ ${(()=>{const cur=ct&&ct.type?String(ct.type):'',nm=cur?ctrTypeNorm(cur):'',known=CTR_TYPES.includes(nm);return CTR_TYPES.map(t=>`<option value="${t}" ${known&&nm===t?'selected':''}>${t}</option>`).join('')+(cur&&!known?`<option value="${esc(cur)}" selected>${esc(cur)}</option>`:'')})()}
  </select></div>
  <div class="fg"><label class="fl">Hébergeur</label><select id="ctr-heb" class="fs" title="Hébergeurs possibles : BLUE TELECOM, CELESTE ou AWS"><option value="">${clIsOnPrem(c)?'— OnPremise (si aucun)':'—'}</option>${HEB_OK.map(x=>`<option value="${x}" ${hebNorm(ct?.hebergeur)===x?'selected':''}>${x}</option>`).join('')}</select></div>
  <div class="fg"><label class="fl">Date de signature</label><input id="ctr-dsig" class="fi" type="date" value="${ct?.dateSignature||''}"></div>
@@ -2131,13 +1816,13 @@ function ctr_save(clientId,contractId){
   const label=document.getElementById('ctr-label').value.trim();
   if(!label){alert('Le libellé du contrat est obligatoire');return}
   const dDeb=document.getElementById('ctr-ddeb').value,dFin=document.getElementById('ctr-dfin').value,lyr=document.getElementById('ctr-loyer').value;
- if(lyr!==''&&impMoney(lyr)===null){alert('Le loyer mensuel doit être un montant positif');return}
+ if(lyr!==''&&parseMoney(lyr)===null){alert('Le loyer mensuel doit être un montant positif');return}
  if(dDeb&&dFin&&dFin<dDeb){alert('La date de fin de contrat ne peut pas être antérieure à la date de début');return}
- const data={label,hebergeur:hebNorm(document.getElementById('ctr-heb').value),type:document.getElementById('ctr-type').value,dateSignature:document.getElementById('ctr-dsig').value,dateDebut:dDeb,dateFin:dFin,systeme:sysClean(document.getElementById('ctr-sys').value),loyerAnnuel:impMoney(lyr)};
- if(!data.hebergeur&&clIsOnPrem(c))data.hebergeur=HEB_ONPREM; // client OnPremise : hébergeur vide → « OnPremise »
- const etat=document.getElementById('ctr-etat').value;data.etat=etat;data.resilie=etat==='resilie'; // « resilie » reste synchronisé (exports, anciennes données)
+ const data={label,hebergeur:hebNorm(document.getElementById('ctr-heb').value),type:document.getElementById('ctr-type').value,dateSignature:document.getElementById('ctr-dsig').value,dateDebut:dDeb,dateFin:dFin,systeme:sysClean(document.getElementById('ctr-sys').value),loyerAnnuel:parseMoney(lyr)};
+ if(!data.hebergeur&&clIsOnPrem(c))data.hebergeur=HEB_ONPREM;
+ const etat=document.getElementById('ctr-etat').value;data.etat=etat;data.resilie=etat==='resilie';
  const prev=contractId?(c.contracts||[]).find(x=>x.id===contractId):null;
- if(!prev||!prev.statut||ctEtatFromText(prev.statut))data.statut=ctEtatLabel(etat); // un texte de statut importé non reconnu est conservé
+ if(!prev||!prev.statut||ctEtatFromText(prev.statut))data.statut=ctEtatLabel(etat);
   if(!c.contracts)c.contracts=[];
   if(contractId){
     const i=c.contracts.findIndex(x=>x.id===contractId);
@@ -2162,15 +1847,14 @@ function ctr_delete(clientId,contractId){
   if(CV==='clients')rClients();
   toast('Contrat supprimé');
 }
-function cl_form(id=null,prefill=null){
+function cl_form(id=null){
   const ex=id?S.clients.find(x=>x.id===id):null;
-  const c=prefill?clMergePrefill(ex,prefill):ex;
+  const c=ex;
   const ap=clAddrParts(c);
-  pendingLogo=null;
   let cts=c?.contacts||[{name:'',email:'',phone:'',role:'',primary:true}];
   if(cts.length>0&&!cts.some(ct=>ct.primary)) cts=[{...cts[0],primary:true},...cts.slice(1)];
   const grpOpts=S.groups.map(g=>`<option value="${esc(g)}" ${c?.group===g?'selected':''}>${esc(g)}</option>`).join('');
-  const curPrio=c?.priority||'moyenne';   // nouveau client : priorité FAIBLE par défaut ; client existant : son réglage actuel, inchangé
+  const curPrio=c?.priority||'moyenne';
   omSticky(`<div class="mh"><h2 class="mt">${id?'Modifier le client':'Nouveau client'}</h2><button class="mc" onclick="cm()">✕</button></div>
   <div class="fsec"><div class="fst">Société</div>
     <div class="fg"><label class="fl">Nom de la société *</label><input id="cl-co" class="fi" value="${esc(c?.company||'')}" placeholder="Acme Corp"></div>
@@ -2183,26 +1867,10 @@ function cl_form(id=null,prefill=null){
       <div class="fg"><label class="fl">Effectif</label><input id="cl-eff" class="fi" value="${esc(c?.effectif||'')}" placeholder="ex : 50 ou 50-99"></div>
     </div>
     <div class="fg"><label class="fl">N° TVA intracommunautaire</label><input id="cl-tva" class="fi" value="${esc(c?.tva||'')}" placeholder="FR12345678901"></div>
-    <div class="fg"><label class="fl">Lien vers le serveur</label><input id="cl-server" class="fi" value="${esc(c?.serverUrl||'')}" placeholder="https://serveur-client.exemple.com"></div>
     <div class="fg"><label class="fl">Version</label><input id="cl-version" class="fi" value="${esc(c?.version||'')}" placeholder="Ex: 2024.3"></div>
     ${S.settings.rcr?`<div class="fg"><label class="fl">Commercial</label><input id="cl-commercial" class="fi" value="${esc(c?.commercial||'')}" placeholder="Nom du commercial"></div>`:''}
     <div class="fg"><label style="display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.9rem;font-weight:600"><input type="checkbox" id="cl-saas" style="accent-color:var(--accent);width:17px;height:17px;cursor:pointer" ${c?.saas!==false?'checked':''}>Client SAAS</label></div>
-    <div class="fg"><label class="fl">Logo</label>
-      <div style="display:flex;align-items:center;gap:14px">
-        ${c?.logo
-          ?`<div id="logo-preview-img" class="logo-thumb-wrap" onclick="document.getElementById('logo-file-inp').click()" title="Changer le logo">${logoBox(c.logo,72,'var(--rx-sm)')}</div>`
-          :`<div id="logo-preview-img" class="logo-placeholder" onclick="document.getElementById('logo-file-inp').click()">📷</div>`}
-        <div>
-          <input type="file" id="logo-file-inp" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
-          <button class="btn btn-g btn-sm" onclick="document.getElementById('logo-file-inp').click()">📷 Choisir</button>
-          <button id="logo-rm-btn" class="btn btn-g btn-sm" onclick="removeLogo('${id||''}')" style="margin-left:6px;${c?.logo?'':'display:none'}">✕ Retirer</button>
-          <div style="font-size:.72rem;color:var(--text-sub);margin-top:5px">PNG (transparence conservée), JPG, WebP, SVG · max 5 Mo</div>
-        </div>
-      </div>
-      <div id="logo-hint" style="font-size:.76rem;color:var(--warning);line-height:1.5;margin-top:8px"></div>
-      ${c?.logo?`<img src="${esc(c.logo)}" alt="" width="1" height="1" style="position:absolute;opacity:0;pointer-events:none" onload="logoHintFromImg(this)">`:''}
-    </div>
-        <div style="margin-bottom:13px">
+    <div style="margin-bottom:13px">
       <div class="fg"><label class="fl">Groupe</label>
         <select id="cl-gr" class="fs" onchange="onGrChange()">
           <option value="">— Aucun groupe —</option>
@@ -2248,7 +1916,7 @@ function ctr_html(ct,i){return`<div class="ctr" id="ctr${i}"><div class="ctr-h" 
 <div class="f2" style="margin-bottom:7px"><input class="fi" placeholder="Fonction" value="${esc(ct.role||'')}" data-ci="${i}" data-cf="role"><input class="fi" placeholder="Email" value="${esc(ct.email||'')}" data-ci="${i}" data-cf="email"></div>
 <div class="f2"><input class="fi" type="tel" placeholder="Téléphone" value="${esc(ct.phone||'')}" data-ci="${i}" data-cf="phone"></div>
 </div>`}
-function ctEditForm(clientId,idx){ // fenêtre dédiée : uniquement les champs de ce contact (idx null/undefined = nouveau contact, champs vierges)
+function ctEditForm(clientId,idx){
   const c=S.clients.find(x=>x.id===clientId);if(!c)return;
   const isNew=idx==null;
   const ct=isNew?{}:(c.contacts||[])[idx];
@@ -2292,35 +1960,16 @@ function ctEditSave(clientId,idx){
 function cl_add_contact(clientId){ ctEditForm(clientId,null); }
 function addct(){const c=document.getElementById('ctc');const i=c.children.length;const isPrimary=(i===0);const d=document.createElement('div');d.innerHTML=ctr_html({name:'',email:'',phone:'',role:'',primary:isPrimary},i);c.appendChild(d.firstElementChild)}
 function rmct(i){const r=document.getElementById(`ctr${i}`);if(r)r.remove();document.querySelectorAll('[id^="ctr"]').forEach((el,idx)=>{el.id=`ctr${idx}`;el.querySelector('.ctr-h').innerHTML=`Contact ${idx+1} <button class="ibt del btn-xs" onclick="rmct(${idx})">✕</button>`;el.querySelectorAll('[data-ci]').forEach(inp=>inp.setAttribute('data-ci',idx))})}
-function impNorm(s){return String(s==null?'':s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'')}
-function impEffectifClean(v){return String(v==null?'':v).replace(/^\s*[A-Za-z]{1,3}\s*[-–—]\s*(?=\S)/,'').trim()}
-function impClean(s){return String(s==null?'':s).replace(/[\s\u00a0\u2007\u202f\u200b]+/g,' ').trim()}
-function finopsOrEmpty(v){ // un FinOps à 0 (ou uniquement des 0) veut dire « pas de compte » -> champ vide (client = prospect)
+function normTxt(s){return String(s==null?'':s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'')}
+function cleanTxt(s){return String(s==null?'':s).replace(/[\s\u00a0\u2007\u202f\u200b]+/g,' ').trim()}
+function finopsOrEmpty(v){
   const s=String(v==null?'':v).trim();
   return /^0+$/.test(s)?'':s;
 }
 function isProspect(c){return !c.finops||!String(c.finops).trim()}
-function impDateOk(y,m,d){const dt=new Date(Date.UTC(y,m-1,d));return dt.getUTCFullYear()===y&&dt.getUTCMonth()===m-1&&dt.getUTCDate()===d}
-function impDateStr(v){
-  if(v==null||v==='')return '';
-  if(v instanceof Date)return isNaN(v)?'':`${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,'0')}-${String(v.getDate()).padStart(2,'0')}`;
-  if(typeof v==='number'&&isFinite(v)){ // numéro de série Excel (jours depuis 1899-12-30)
-    const d=new Date(Math.round((v-25569)*86400000));
-    if(isNaN(d))return '';
-    return d.toISOString().slice(0,10);
-  }
-  const s=impClean(v),P=n=>String(n).padStart(2,'0');
-  let m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);
-  if(m)return impDateOk(+m[3],+m[2],+m[1])?`${m[3]}-${P(m[2])}-${P(m[1])}`:'';
-  m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2})$/); // année sur 2 chiffres : 00-69 → 20xx, 70-99 → 19xx
-  if(m){const y=+m[3]<=69?2000+ +m[3]:1900+ +m[3];return impDateOk(y,+m[2],+m[1])?`${y}-${P(m[2])}-${P(m[1])}`:''}
-  m=s.match(/^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/);
-  if(m)return impDateOk(+m[1],+m[2],+m[3])?`${m[1]}-${P(m[2])}-${P(m[3])}`:'';
-  return '';
-}
 function addrNorm(s){return String(s||'').replace(/[\s,]+/g,' ').trim().toLowerCase()}
 function addrCompose(street,zip,city,street2=''){return [street,street2,[zip,city].filter(Boolean).join(' ')].filter(Boolean).join('\n')}
-function addrParse(addr){ // anciennes adresses en texte libre -> rue / CP / ville
+function addrParse(addr){
   const raw=String(addr||'').replace(/\r/g,'').trim();
   if(!raw)return{street:'',street2:'',zip:'',city:''};
   const m=raw.match(/\b\d{5}\b/);
@@ -2346,7 +1995,7 @@ function clAddrParts(c){
 }
 function telLink(p){const n=String(p||'').replace(/[^\d+]/g,'');return n?`<a class="tel-link" href="tel:${n}" tabindex="-1">📞 ${esc(p)}</a>`:''}
 function ctFullName(ct){ct=ct||{};return[ct.firstName,ct.name].filter(Boolean).join(' ')||ct.email||''}
-function clIdLine(c){ // SIREN/INSEE · N° FinOps · APE · Effectif · TVA, en puces distinctes
+function clIdLine(c){
   const it=[];
   if(c.siren)it.push(`<span class="cld-chip">${String(c.siren).length===5?'INSEE':'SIREN'} <b>${esc(fmtSiren(c.siren))}</b></span>`);
   if(c.finops)it.push(`<span class="cld-chip">FinOps <b>${esc(c.finops)}</b></span>`);
@@ -2355,15 +2004,15 @@ function clIdLine(c){ // SIREN/INSEE · N° FinOps · APE · Effectif · TVA, en
   if(c.tva)it.push(`<span class="cld-chip">TVA <b>${esc(c.tva)}</b></span>`);
   return it.length?`<div class="cld-chips">${it.join('')}</div>`:'';
 }
-function ctrTypeNorm(s){ // normalise l'affichage sur les libellés exacts attendus, sans perdre l'info si le fichier utilise une autre orthographe
-  const n=impNorm(s);
+function ctrTypeNorm(s){
+  const n=normTxt(s);
   if(n.includes('zen'))return 'ZEN SAAS';
   if(n.includes('performance')&&n.includes('licence'))return 'Performance licence';
   if(n.includes('performance')&&n.includes('saas'))return 'Performance saas';
   if(n.includes('excellence')&&n.includes('licence'))return 'Excellence licence';
   if(n.includes('excellence')&&n.includes('saas'))return 'Excellence saas';
   if(n==='saas')return 'Saas';
-  return impClean(s);
+  return cleanTxt(s);
 }
 const HEB_ONPREM='OnPremise';
 function hebIsOnPrem(s){return /^on[\s\-_]?prem(ise)?s?$/i.test(String(s==null?'':s).trim())}
@@ -2372,13 +2021,13 @@ function ctrFillHeb(c){if(!clIsOnPrem(c))return;(c.contracts||[]).forEach(ct=>{i
 function ctrHebAll(){(S.clients||[]).forEach(ctrFillHeb)}
 const HEB_OK=['BLUE TELECOM','CELESTE','AWS'],HEB_DROPPED=[];
 function hebTokens(s){let t=String(s==null?'':s);try{if(/[ÃÂ]/.test(t))t=decodeURIComponent(escape(t))}catch(e){}return t.replace(/\uFFFD+/g,'e').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/#.*$/,'').split(/[^a-z0-9]+/).filter(Boolean)}
-function hebDist(a,b){ // distance de Damerau-Levenshtein (fautes de frappe)
+function hebDist(a,b){
   const d=[];for(let i=0;i<=a.length;i++)d[i]=[i];for(let j=0;j<=b.length;j++)d[0][j]=j;
   for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c);if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1)}
   return d[a.length][b.length];
 }
-function hebNorm(s){ // blue, bt, Blue Telecom… → BLUE TELECOM ; celeste, oceanet, « qui ressemble à celeste » → CELESTE ; aws, amazon → AWS ; le reste → '' (non reconnu)
-  const raw=impClean(s);if(!raw)return '';
+function hebNorm(s){
+  const raw=cleanTxt(s);if(!raw)return '';
   if(hebIsOnPrem(raw))return HEB_ONPREM;
   const t=hebTokens(raw),c=t.join('');
   if(t.some(x=>/^blue/.test(x)||(x.length>=3&&hebDist(x,'blue')<=1&&x!=='bus'))||t.includes('bt')||/^bt\d*$/.test(c)||(t[0]==='b'&&t[1]==='t'))return 'BLUE TELECOM';
@@ -2386,7 +2035,7 @@ function hebNorm(s){ // blue, bt, Blue Telecom… → BLUE TELECOM ; celeste, oc
   if(t.some(x=>{x=x.replace(/\d+$/,'');return x.length>=4&&(/^cele/.test(x)||/^ocean/.test(x)||hebDist(x,'celeste')<=2)}))return 'CELESTE';
   return '';
 }
-function impMoney(v){ // « 12 000,50 € », « 12.000 », « 1,234.56 », 12000 → nombre ; sinon null
+function parseMoney(v){
   if(v==null||v==='')return null;
   if(typeof v==='number')return isFinite(v)&&v>=0?Math.round(v*100)/100:null;
   let t=String(v).replace(/[\u00a0\u202f\s]/g,'').replace(/€|eur(?:os?)?/ig,'').replace(/[^\d.,-]/g,'');
@@ -2397,8 +2046,8 @@ function impMoney(v){ // « 12 000,50 € », « 12.000 », « 1,234.56 », 1200
   else if(d){const p=t.split('.');if(p.length>2||(p.length===2&&/^\d{3}$/.test(p[1])&&p[0].length<=3))t=t.replace(/\./g,'')}
   const n=parseFloat(t);return isFinite(n)&&n>=0?Math.round(n*100)/100:null;
 }
-function fmtLoyer(n){const v=impMoney(n);return v===null?'—':v.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2})+' €'}
-function sanitizeNoteHtml(html){ // notes importées : on retire tout ce qui pourrait exécuter du code ou charger autre chose que du texte mis en forme
+function fmtLoyer(n){const v=parseMoney(n);return v===null?'—':v.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2})+' €'}
+function sanitizeNoteHtml(html){
   const doc=new DOMParser().parseFromString('<body>'+String(html||'')+'</body>','text/html');
   doc.body.querySelectorAll('script,style,iframe,frame,frameset,object,embed,applet,link,meta,base,form,input,button,textarea,select,svg,math,template,noscript,[data-import]').forEach(e=>e.remove());
   const bad=/^(?:javascript|vbscript|data):/i,img=/^data:image\/(?:png|jpe?g|gif|webp);base64,/i;
@@ -2406,28 +2055,18 @@ function sanitizeNoteHtml(html){ // notes importées : on retire tout ce qui pou
     const n=a.name.toLowerCase();
     if(n.startsWith('on')||n==='srcdoc'||n==='formaction'){e.removeAttribute(a.name);return}
     if(['href','src','xlink:href','action','background','poster','data'].includes(n)){
-      const v=a.value.replace(/[\u0000-\u0020\u007f-\u009f\u200b-\u200f\u2028\u2029\ufeff]/g,''); // les navigateurs ignorent tabulations, retours à la ligne et caractères invisibles dans le schéma
+      const v=a.value.replace(/[\u0000-\u0020\u007f-\u009f\u200b-\u200f\u2028\u2029\ufeff]/g,'');
       if(bad.test(v)&&!img.test(v))e.removeAttribute(a.name);
     }})});
   return doc.body.innerHTML;
 }
 const KEL_NAMES=['kelio','keliohr','keliohrpro'],KEL_LOW=['optima','prima'];
-function clKelioActive(c){return !!(c&&c.products&&(S.products||[]).some(p=>KEL_NAMES.includes(impNorm(p.name))&&c.products[p.id]))}
-function clKelioBlocked(c,p){return KEL_LOW.includes(impNorm(p.name))&&clKelioActive(c)}
-function clKelioPriority(c){ // désactive OPTIMA / PRIMA si le client a un KELIO ; renvoie true si quelque chose a été désactivé
+function clKelioActive(c){return !!(c&&c.products&&(S.products||[]).some(p=>KEL_NAMES.includes(normTxt(p.name))&&c.products[p.id]))}
+function clKelioBlocked(c,p){return KEL_LOW.includes(normTxt(p.name))&&clKelioActive(c)}
+function clKelioPriority(c){
   if(!clKelioActive(c))return false;let ch=false;
-  (S.products||[]).forEach(p=>{if(KEL_LOW.includes(impNorm(p.name))&&c.products[p.id]){c.products[p.id]=false;ch=true}});
+  (S.products||[]).forEach(p=>{if(KEL_LOW.includes(normTxt(p.name))&&c.products[p.id]){c.products[p.id]=false;ch=true}});
   return ch;
-}
-function clMergePrefill(ex,pre){
-  if(!ex)return pre;
-  const m={...ex,contacts:(ex.contacts||[]).map(x=>({...x}))};
-  ['company','siren','finops','ape','effectif','tva'].forEach(k=>{if(!m[k]&&pre[k])m[k]=pre[k]});
-  if(!(m.address||'').trim()&&pre.address){m.address=pre.address;m.street=pre.street;m.street2=pre.street2;m.zip=pre.zip;m.city=pre.city}
-  (pre.contacts||[]).forEach(ct=>{
-    if(ct.email&&!m.contacts.some(x=>(x.email||'').toLowerCase()===ct.email))m.contacts.push({...ct,primary:m.contacts.length===0});
-  });
-  return m;
 }
 function fmtSiren(s){const d=String(s||'').replace(/\D/g,'');return d.length===9?d.replace(/(\d{3})(\d{3})(\d{3})/,'$1 $2 $3'):(s||'')}
 function scl(id){
@@ -2452,35 +2091,27 @@ function scl(id){
   if(group&&grSel==='__new__'&&!S.groups.includes(group))S.groups.push(group);
   const priority=document.getElementById('cl-prio').value||'moyenne';
   const old=id?S.clients.find(x=>x.id===id):null;
-  // Logo
-  let logo=old?.logo||null;
-  if(pendingLogo==='__remove__'){ logo=null; toast('Logo retiré'); }
-  else if(pendingLogo){ logo=pendingLogo; toast('💾 Logo inclus dans la sauvegarde: '+Math.round(logo.length/1024)+'Ko'); }
-  
-  pendingLogo=null;
+  const logo=old?.logo||null;
   const street2=document.getElementById('cl-street2').value.trim(),tva=document.getElementById('cl-tva').value.trim();
-  let serverUrl=document.getElementById('cl-server').value.trim();
-  if(serverUrl&&!/^https?:\/\//i.test(serverUrl))serverUrl='https://'+serverUrl;   // lien simple : le schéma est ajouté automatiquement
   const version=document.getElementById('cl-version').value.trim();
   const commEl=document.getElementById('cl-commercial');
-  const commercial=commEl?commEl.value.trim():(old?.commercial||'');   // champ masqué hors mode RCR : on conserve la valeur existante
+  const commercial=commEl?commEl.value.trim():(old?.commercial||'');
   const street=document.getElementById('cl-street').value.trim(),zip=document.getElementById('cl-zip').value.trim(),city=document.getElementById('cl-city').value.trim();
   if(zip&&!/^\d{5}$/.test(zip)){alert('Le code postal doit comporter 5 chiffres');return}
   const newAddr=addrCompose(street,zip,city,street2);
-  const sameAddr=!!old&&addrNorm(old.address)===addrNorm(newAddr); // adresse changée => à relocaliser
-  const data={...(old||{}),id:id||uid(),company,siren:sirenRaw,finops,ape,effectif,saas:document.getElementById('cl-saas').checked,products:old?.products||{},contracts:old?.contracts||[],address:newAddr,street,street2,zip,city,tva,serverUrl,version,commercial,contacts,group:group||null,priority:priority||'moyenne',createdAt:old?.createdAt||today(),logo,lat:sameAddr?(old.lat??null):null,lon:sameAddr?(old.lon??null):null,geoLevel:sameAddr?(old.geoLevel||''):''};
-  if(old&&old.saas===false&&data.saas!==false)(data.contracts||[]).forEach(ct=>{if(hebIsOnPrem(ct.hebergeur))ct.hebergeur=''}); // le client repasse en SaaS : les « OnPremise » remplis automatiquement sont vidés
+  const sameAddr=!!old&&addrNorm(old.address)===addrNorm(newAddr);
+  const data={...(old||{}),id:id||uid(),company,siren:sirenRaw,finops,ape,effectif,saas:document.getElementById('cl-saas').checked,products:old?.products||{},contracts:old?.contracts||[],address:newAddr,street,street2,zip,city,tva,version,commercial,contacts,group:group||null,priority:priority||'moyenne',createdAt:old?.createdAt||today(),logo,lat:sameAddr?(old.lat??null):null,lon:sameAddr?(old.lon??null):null,geoLevel:sameAddr?(old.geoLevel||''):''};
+  if(old&&old.saas===false&&data.saas!==false)(data.contracts||[]).forEach(ct=>{if(hebIsOnPrem(ct.hebergeur))ct.hebergeur=''});
  if(id){const i=S.clients.findIndex(x=>x.id===id);if(i>=0)S.clients[i]=data}else S.clients.push(data);
   save();cm();updNC();
   if(CV==='clients')rClients();else if(CV==='client-detail')rClientDet(data.id);else if(CV==='home')rHome();
   toast('Client enregistré ✓');
-  // Geocode new/updated address
+
   if(data.address&&(!data.lat||!data.lon)) setTimeout(()=>geoAll(false),300);
 }
 let mapCluster=null,mapMarkers={},mapUserMoved=false,geoFailed=false,geoLastFetch=0;
 const GEO_KEY='crm-geocache2';
 const MAPTILER_STYLE='dataviz-v4';
-const GEO_VERSION=2;
 let geoCache={};
 try{geoCache=JSON.parse(mstore.getItem(GEO_KEY)||'{}');mstore.removeItem('crm-geocache')}catch(e){}
 function mapFocusClient(id,tries=0){
@@ -2565,9 +2196,7 @@ function initLeafletMap(){
   }
   leafletMap=L.map('map-container',{zoomControl:false,maxZoom:19}).setView([46.8,2.3],6);
   L.control.zoom({position:'bottomright'}).addTo(leafletMap);
-  // Fond « Plan » : carte vectorielle MapTiler (modèle dataviz-v4 par défaut), clé API personnelle saisie dans Paramètres.
-  // Rendu par MapLibre GL (les tuiles raster MapTiler sont en général réservées aux offres payantes).
-  // Sans clé, ou si MapTiler la refuse, repli automatique sur Esri World Street Map (sans clé). Vue Satellite : Esri.
+
   const ESRI='https://server.arcgisonline.com/ArcGIS/rest/services/';
   const esriPlan=()=>L.tileLayer(ESRI+'World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
     attribution:'Tiles © Esri — Esri, HERE, Garmin, © OpenStreetMap contributors',maxNativeZoom:18,maxZoom:19});
@@ -2579,7 +2208,7 @@ function initLeafletMap(){
     L.tileLayer(ESRI+'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxNativeZoom:18,maxZoom:19})]);
   let plan=null,ctl=null;
   const layersCtl=()=>L.control.layers({'Plan':plan,'Satellite':sat},null,{position:'bottomleft',collapsed:false}).addTo(leafletMap);
-  const toEsri=why=>{ // repli sur Esri
+  const toEsri=why=>{
     if(plan&&leafletMap.hasLayer(plan)){try{leafletMap.removeLayer(plan)}catch(e){}}
     plan=esriPlan();plan.addTo(leafletMap);
     if(ctl)ctl.remove();
@@ -2589,7 +2218,7 @@ function initLeafletMap(){
   if(mtKey&&window.maplibregl&&L.maplibreGL){
     try{
       plan=L.maplibreGL({style:`https://api.maptiler.com/maps/${encodeURIComponent(mtStyle)}/style.json?key=${encodeURIComponent(mtKey)}`});
-      plan.addTo(leafletMap);      // crée la carte vectorielle (peut échouer si WebGL est indisponible)
+      plan.addTo(leafletMap);
     }catch(e){plan=null}
   }
   if(plan){
@@ -2599,7 +2228,7 @@ function initLeafletMap(){
     const fail=why=>{if(failed)return;failed=true;clearTimeout(timer);toEsri(why)};
     gl.on('load',()=>{
       loaded=true;clearTimeout(timer);
-      // attribution MapTiler / OpenStreetMap exigée : ajoutée si le style ne la fournit pas
+
       setTimeout(()=>{const ac=leafletMap&&leafletMap.attributionControl;if(ac&&!/MapTiler/.test(ac._container.textContent))ac.addAttribution('<a href="https://www.maptiler.com/copyright/" target="_blank" rel="noopener">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>')},80);
     });
     gl.on('sourcedata',e=>{if(e.tile)tileOk++});
@@ -2607,13 +2236,13 @@ function initLeafletMap(){
       const st=e&&e.error&&e.error.status;
       if(e&&e.tile)tileErr++;
       const denied=st===401||st===403||st===404||st===429;
-      if(denied&&(!loaded||(tileErr>=3&&!tileOk)))fail('key');   // style refusé, ou tuiles refusées sans qu'aucune ne charge
+      if(denied&&(!loaded||(tileErr>=3&&!tileOk)))fail('key');
     });
     timer=setTimeout(()=>{if(!loaded)fail('timeout')},15000);
   }else{
-    toEsri(mtKey?'lib':null);     // clé saisie mais moteur de rendu indisponible -> Esri + message
+    toEsri(mtKey?'lib':null);
   }
-  // Plus on dézoome, plus les clients sont regroupés en paquets
+
   mapCluster=L.markerClusterGroup({
     showCoverageOnHover:false,spiderfyOnMaxZoom:true,
     maxClusterRadius:z=>z<=6?90:z<=9?70:z<=12?55:40,
@@ -2632,8 +2261,8 @@ function mapRemoveClient(id){
 }
 function mapAddClient(c){
   if(!leafletMap||!mapCluster)return;
-  if(mapVisibleIds&&!mapVisibleIds.has(c.id))return;   // hors recherche / filtres
-  mapRemoveClient(c.id);            // position recalculée : on remplace l'ancien marqueur
+  if(mapVisibleIds&&!mapVisibleIds.has(c.id))return;
+  mapRemoveClient(c.id);
   if(!c.lat||!c.lon)return;
   const m=L.marker([c.lat,c.lon],{icon:clientMarkerIcon(c),clientId:c.id,title:c.company});
   m.bindPopup(clientPopupHtml(c),{maxWidth:240,className:'map-popup'});
@@ -2656,7 +2285,7 @@ function clientPopupHtml(c){
   const firstContact=c.contacts&&c.contacts.length?c.contacts[0]:null;
   const approx=c.geoLevel&&c.geoLevel!=='adresse'?`<br><span style="opacity:.75">Position approximative (${c.geoLevel==='cp'?'code postal':'ville'})</span>`:'';
   const ap=clAddrParts(c);
-  const addrLines=[ap.street,[ap.zip,ap.city].filter(Boolean).join(' ')].filter(Boolean); // rue, puis CP + ville — l'adresse complète
+  const addrLines=[ap.street,[ap.zip,ap.city].filter(Boolean).join(' ')].filter(Boolean);
   const addrHtml=addrLines.length?`📍 ${addrLines.map(l=>esc(l)).join('<br>&nbsp;&nbsp;&nbsp;')}`:'';
   return `<div style="min-width:180px;font-family:'Figtree',sans-serif">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">${clientAvatar(c,40,8)}<div class="map-popup-name" style="margin-bottom:0">${esc(c.company)}</div></div>
@@ -2677,7 +2306,7 @@ function zipDept(z){
   return z.slice(0,2);
 }
 function geoCityKey(s){
-  return impNorm(String(s||'').replace(/\bcedex\b.*$/i,'').replace(/\s+\d{1,2}(er|e|eme)?\s*$/i,'').replace(/\bst\b/ig,'saint').replace(/\bste\b/ig,'sainte'));
+  return normTxt(String(s||'').replace(/\bcedex\b.*$/i,'').replace(/\s+\d{1,2}(er|e|eme)?\s*$/i,'').replace(/\bst\b/ig,'saint').replace(/\bste\b/ig,'sainte'));
 }
 function geoCityMatch(a,b){a=geoCityKey(a);b=geoCityKey(b);return a.length>=3&&b.length>=3&&(a===b||a.includes(b)||b.includes(a))}
 async function geoBAN(step,dept,city){
@@ -2687,19 +2316,19 @@ async function geoBAN(step,dept,city){
   if(step.postcode)u.searchParams.set('postcode',step.postcode);
   if(step.type)u.searchParams.set('type',step.type);
   const r=await fetch(u.toString());
-  if(r.status===400)return null;              // requête inexploitable : pas de résultat
+  if(r.status===400)return null;
   if(!r.ok)throw new Error('HTTP '+r.status);
   const j=await r.json();
   const feats=((j&&j.features)||[]).filter(f=>f&&f.geometry&&f.geometry.coordinates&&f.properties&&(f.properties.score||0)>=0.4);
   const inDept=f=>!dept||String(f.properties.context||'').split(',')[0].trim().toUpperCase()===dept;
-  const good=feats.filter(inDept);   // un homonyme situé dans un autre département est écarté
+  const good=feats.filter(inDept);
   const best=(city&&good.find(f=>geoCityMatch(f.properties.city,city)||geoCityMatch(f.properties.district,city)))||good[0];
   if(!best)return null;
   const t=best.properties.type;
   return{lat:best.geometry.coordinates[1],lon:best.geometry.coordinates[0],kind:(t==='housenumber'||t==='street')?'adresse':'ville'};
 }
 async function geoNominatim(step,dept,city){
-  const wait=1100-(Date.now()-geoLastFetch); // Nominatim : 1 requête / seconde
+  const wait=1100-(Date.now()-geoLastFetch);
   if(wait>0)await new Promise(r=>setTimeout(r,wait));
   geoLastFetch=Date.now();
   const q=[step.q,step.postcode&&!step.q.includes(step.postcode)?step.postcode:''].filter(Boolean).join(' ')+', France';
@@ -2711,7 +2340,7 @@ async function geoNominatim(step,dept,city){
     const a=x.address||{},iso=a['ISO3166-2-lvl6'];
     if(iso)return String(iso).toUpperCase()==='FR-'+dept;
     if(a.postcode)return zipDept(String(a.postcode).slice(0,5))===dept;
-    return false;   // impossible de vérifier : écarté
+    return false;
   };
   const best=(data||[]).filter(inDept)[0];
   if(!best)return null;
@@ -2722,7 +2351,7 @@ async function geoSearch(step,dept,city){
   if(key in geoCache)return geoCache[key]||null;
   let res=null;
   try{res=await geoBAN(step,dept,city)}
-  catch(e){res=await geoNominatim(step,dept,city)}   // service officiel injoignable : secours ; si lui aussi échoue, l'erreur remonte
+  catch(e){res=await geoNominatim(step,dept,city)}
   geoCache[key]=res||0;
   try{mstore.setItem(GEO_KEY,JSON.stringify(geoCache))}catch(e){}
   return res;
@@ -2732,7 +2361,7 @@ async function geoLocate(c){
   const dept=zipDept(p.zip);
   const cedex=/\bCEDEX\b/i.test(p.city);
   const city=String(p.city||'').replace(/\s*\bCEDEX\b\s*\d*\s*$/i,'').trim()||p.city;
-  const zipOk=p.zip&&!cedex;   // un code CEDEX est un code de distribution du courrier, pas un code géographique : il ne sert pas de filtre
+  const zipOk=p.zip&&!cedex;
   const steps=[];
   const add=s=>{if(s.q&&!steps.some(x=>x.q===s.q&&x.postcode===s.postcode&&x.type===s.type))steps.push(s)};
   if(p.street)add({level:'adresse',q:[p.street,zipOk?p.zip:'',city].filter(Boolean).join(' '),postcode:zipOk?p.zip:'',type:''});
@@ -2743,11 +2372,6 @@ async function geoLocate(c){
     if(r)return{lat:r.lat,lon:r.lon,level:s.level==='adresse'?r.kind:s.level};
   }
   return null;
-}
-function fixGeo(){
-  if(!S.settings||S.settings.geoVersion===GEO_VERSION)return;
-  (S.clients||[]).forEach(c=>{if((c.address||'').trim()){c.lat=null;c.lon=null;c.geoLevel=''}});
-  S.settings.geoVersion=GEO_VERSION;
 }
 async function geoAll(force=false){
   geoFailed=false;geoQueue=[];
@@ -2772,10 +2396,10 @@ async function geoNext(){
     try{
       const found=await geoLocate(c);
       if(found){c.lat=found.lat;c.lon=found.lon;c.geoLevel=found.level;if(clMapActive())mapAddClient(c)}
-      else{c.lat=0;c.lon=0;c.geoLevel='';if(clMapActive())mapRemoveClient(c.id)}   // introuvable : ne sera pas réessayé automatiquement
+      else{c.lat=0;c.lon=0;c.geoLevel='';if(clMapActive())mapRemoveClient(c.id)}
     }catch(e){
       console.warn('Géocodage impossible pour',c.company,e);
-      c.lat=null;c.lon=null;geoFailed=true;geoQueue=[]; // erreur réseau : on s'arrête
+      c.lat=null;c.lon=null;geoFailed=true;geoQueue=[];
     }
     const bar=document.getElementById('geo-status-bar');
     if(bar)bar.textContent=`📍 Localisation en cours — ${geoQueue.length} client(s) restant(s)…`;
@@ -2784,16 +2408,15 @@ async function geoNext(){
   }
   setTimeout(geoNext,0);
 }
-const DEFAULT_MODULES=['KELIO','KELIO HR','KELIO HR PRO','ESPACE COLLAB.','GTA','GTA PRO','SIGNATURE DEMAT.','PLANIFICATION','PLANIFICATION PRO','REPORT','DATA','ACTIVITÉS','ACTIVITÉS PRO','ANNUALISATION','MULTI SOCIÉTÉS','ENTRETIEN','FORMATION','EMPLOIS ET COMP','ATS','ATS PRO','NDF','ACTUS ET DOCS','INTERFACES PARTENAIRES','PAYLINK','RECETTE','123PAIE','COFFREO','ACCES','OPTIMA','PRIMA'];
 const PAYLINK_OPTS=['SILAE','123PAIE','SAGE','CEGID','ADP','CEGEDIM','NIBELIS','SIGMA RH'];
 const IP_OPTS=['SILAE EVP','SILAE ABS SECU','SILAE IMPORT SALARIE','SILAE EXPORT SALARIE','SILAE IMPORT SOLDES','SILAE IMPORT SALAIRES','SILAE IMPORT PRIMES'];
-const MOD_OPTION_SETS={ // clés = nom du module normalisé (impNorm)
+const MOD_OPTION_SETS={
   paylink:{title:'PAYLINK',opts:PAYLINK_OPTS,help:'Cochez le ou les logiciels de paie interfacés. Aucune option cochée ni renseignée = PAYLINK désactivé.',ph:'Autre logiciel de paie (plusieurs : séparés par une virgule)',tip:'Choisir les options PAYLINK'},
   interfacespartenaires:{title:'INTERFACES PARTENAIRES',opts:IP_OPTS,help:'Cochez la ou les interfaces mises en place. Aucune option cochée ni renseignée = module désactivé.',ph:'Autre interface (plusieurs : séparées par une virgule)',tip:'Choisir les interfaces partenaires'}
 };
 const MOD_QTY_SETS={ndf:{label:'Nombre associé',tip:'Activer NDF et indiquer le nombre associé'}};
-function modOptSet(p){return p?(MOD_OPTION_SETS[impNorm(p.name)]||null):null}
-function modQtySet(p){return p?(MOD_QTY_SETS[impNorm(p.name)]||null):null}
+function modOptSet(p){return p?(MOD_OPTION_SETS[normTxt(p.name)]||null):null}
+function modQtySet(p){return p?(MOD_QTY_SETS[normTxt(p.name)]||null):null}
 const MOD_SYN={actualites:'actus',actualite:'actus',documents:'docs',document:'docs',collaborateur:'collab',collaborateurs:'collab',competences:'comp',competence:'comp',entite:'societe',entites:'societe',societes:'societe',dematerialisation:'demat',dematerialisee:'demat'};
 const MOD_ALIAS={demat:'signaturedemat',dematerialisation:'signaturedemat',interfacepaie:'interfacepartenaire',interfacespaie:'interfacepartenaire',notedefrai:'ndf',notesdefrai:'ndf',notefrai:'ndf',notesfrai:'ndf'};
 function modCanon(s){
@@ -2805,7 +2428,7 @@ function modOptForm(clientId,prodId){
   const c=S.clients.find(x=>x.id===clientId),p=S.products.find(x=>x.id===prodId);if(!c||!p)return;
   const os=modOptSet(p);if(!os)return;
   const cur=(c.moduleOptions&&c.moduleOptions[prodId])||[];
-  const autres=cur.filter(o=>!os.opts.includes(o)).join(', '); // saisis dans « Autres »
+  const autres=cur.filter(o=>!os.opts.includes(o)).join(', ');
   omSticky(`<div class="mh"><h2 class="mt">${esc(os.title)} — options</h2><button class="mc" onclick="cm()">✕</button></div>
   <p style="font-size:.85rem;color:var(--text-sub);margin-bottom:12px">${esc(os.help)}</p>
   <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:16px">${os.opts.map(o=>`<label style="display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.9rem;font-weight:600"><input type="checkbox" class="pl-opt" value="${esc(o)}" style="accent-color:var(--accent);width:17px;height:17px;cursor:pointer" ${cur.includes(o)?'checked':''}>${esc(o)}</label>`).join('')}</div>
@@ -2816,7 +2439,7 @@ function modOptSave(clientId,prodId){
   const c=S.clients.find(x=>x.id===clientId),p=S.products.find(x=>x.id===prodId);if(!c||!p)return;
   const os=modOptSet(p);if(!os)return;
   const sel=[...document.querySelectorAll('#mi .pl-opt:checked')].map(i=>i.value);
-  // champ « Autres » : caractères réservés à l'export retirés (| [ ] ;), la virgule sépare plusieurs valeurs, pas de doublon
+
   String((document.getElementById('pl-autres')||{}).value||'').replace(/[\[\]|]/g,' ').split(/[;,]/).map(s=>s.replace(/\s+/g,' ').trim()).filter(Boolean).forEach(a=>{
     if(!sel.some(x=>x.toLowerCase()===a.toLowerCase())&&!os.opts.some(x=>x.toLowerCase()===a.toLowerCase()))sel.push(a);
   });
@@ -2852,34 +2475,13 @@ function modQtyOff(clientId,prodId){
   if(c.moduleQty)delete c.moduleQty[prodId];
   save();cm();refreshClientProds(clientId);
 }
-function seedDefaultModules(){
-  if(!S.products)S.products=[];
-  if((S.settings.defaultModulesV||0)<2){ // v2 : remet les modules par défaut supprimés (sans toucher à ceux qui existent déjà)
-    DEFAULT_MODULES.forEach(name=>{
-      if(!S.products.some(p=>impNorm(p.name)===impNorm(name)))S.products.push({id:'dm_'+impNorm(name),name});
-    });
-    S.settings.defaultModulesV=2;
-  }
-  if((S.settings.defaultModulesV||0)<3){ // v3 : ajout de ATS et ATS PRO (placés après EMPLOIS ET COMP) sans remettre les modules supprimés volontairement
-    ['ATS','ATS PRO'].forEach(name=>{
-      if(S.products.some(p=>impNorm(p.name)===impNorm(name)))return;
-      const np={id:'dm_'+impNorm(name),name},at=S.products.reduce((m,p,i)=>(impNorm(p.name)==='emploisetcomp'||impNorm(p.name)==='ats')?i:m,-1);
-      if(at>=0)S.products.splice(at+1,0,np);else S.products.push(np);
-    });
-    S.settings.defaultModulesV=3;
-  }
-  if((S.settings.defaultModulesV||0)<4){ // v4 : 123PAIE, COFFREO, ACCES et les anciens modules OPTIMA, PRIMA (ajoutés en fin de liste, sans toucher à l'existant)
-    ['123PAIE','COFFREO','ACCES','OPTIMA','PRIMA'].forEach(name=>{if(!S.products.some(p=>impNorm(p.name)===impNorm(name)))S.products.push({id:'dm_'+impNorm(name),name})});
-    S.settings.defaultModulesV=4;
-  }
-}
 const EXCLUSIVE_MODULES=[['kelio','keliohr','keliohrpro']];
 const PAIR_EXCLUDED=['keliohr'];
-function prodPairs(){ // modules qui existent en version PRO : {pairs: baseId -> {base,pro}, proIds}
-  const byName=new Map((S.products||[]).map(p=>[impNorm(p.name),p]));
+function prodPairs(){
+  const byName=new Map((S.products||[]).map(p=>[normTxt(p.name),p]));
   const pairs=new Map(),proIds=new Set();
   (S.products||[]).forEach(p=>{
-    const n=impNorm(p.name);
+    const n=normTxt(p.name);
     if(n.length>3&&n.endsWith('pro')){const bn=n.slice(0,-3);if(PAIR_EXCLUDED.includes(bn))return;const base=byName.get(bn);if(base&&base.id!==p.id){pairs.set(base.id,{base,pro:p});proIds.add(p.id)}}
   });
   return{pairs,proIds};
@@ -2911,7 +2513,7 @@ function buildClientProducts(clientId){
   const{pairs,proIds}=prodPairs();
   return `<div class="cprod-grid">${S.products.filter(p=>!proIds.has(p.id)).map(p=>{
     const pr=pairs.get(p.id);
-    if(pr){ // module existant en version PRO : une seule case, choix Normal / Pro au survol
+    if(pr){
       const hasBase=!!c.products[p.id],hasPro=!!c.products[pr.pro.id],has=hasBase||hasPro;
       return`<div class="cprod-item cprod-pair ${has?'has-it':''}" onclick="this.classList.toggle('open')" title="Survolez pour choisir Normal ou Pro">
         <span class="cprod-name" title="${esc(hasPro?pr.pro.name:p.name)}">${esc(hasPro?pr.pro.name:p.name)}</span>
@@ -2922,14 +2524,14 @@ function buildClientProducts(clientId){
         </div>
       </div>`;
     }
-    if(modOptSet(p)){ // modules à options : PAYLINK, INTERFACES PARTENAIRES
+    if(modOptSet(p)){
       const opts=(c.moduleOptions&&c.moduleOptions[p.id])||[];const has=!!c.products[p.id];
       return`<div class="cprod-item ${has?'has-it':''}" onclick="modOptForm('${clientId}','${p.id}')" title="${esc(modOptSet(p).tip)}">
         <span class="cprod-name">${esc(p.name)}</span>
         ${has?`<span class="cprod-status" style="color:var(--success)" title="${esc(opts.join(', '))}">✓ ${opts.length?esc(opts.join(', ')):'Possède'}</span>`:'<span class="cprod-status" style="color:var(--text-sub)">Non acquis</span>'}
       </div>`;
     }
- if(modQtySet(p)){ // module avec un nombre associé (NDF)
+ if(modQtySet(p)){
  const q=(c.moduleQty&&c.moduleQty[p.id])||0,has=!!c.products[p.id];
  return`<div class="cprod-item ${has?'has-it':''}" onclick="modQtyForm('${clientId}','${p.id}')" title="${esc(modQtySet(p).tip)}"><span class="cprod-name" title="${esc(p.name)}">${esc(p.name)}</span>${has?`<span class="cprod-status" style="color:var(--success)">✓ ${q?esc(String(q)):'Possède'}</span>`:'<span class="cprod-status" style="color:var(--text-sub)">Non acquis</span>'}</div>`;
  }
@@ -2941,7 +2543,7 @@ function buildClientProducts(clientId){
   }).join('')}${gestTile(c)}</div>`;
 }
 function refreshClientProds(clientId){const sec=document.getElementById('client-prods-sec');if(sec)sec.innerHTML=buildClientProducts(clientId)}
-function setClientProdVariant(clientId,baseId,proId,which){ // Normal ou Pro (exclusifs) ; re-cliquer sur le choix actif désactive le module
+function setClientProdVariant(clientId,baseId,proId,which){
   const c=S.clients.find(x=>x.id===clientId);if(!c)return;
   if(!c.products)c.products={};
   const cur=c.products[proId]?'pro':c.products[baseId]?'base':'';
@@ -2955,56 +2557,29 @@ function toggleClientProd(clientId,prodId){
   const me0=S.products.find(x=>x.id===prodId);
  if(me0&&!c.products[prodId]&&clKelioBlocked(c,me0)){toast('⚠ '+me0.name+' ne peut pas être activé : le client a KELIO, KELIO HR ou KELIO HR PRO (les KELIO priment).');return}
  c.products[prodId]=!c.products[prodId];
- if(c.products[prodId]){ // groupes exclusifs : un seul module actif parmi KELIO / KELIO HR / KELIO HR PRO
+ if(c.products[prodId]){
     const me=S.products.find(x=>x.id===prodId);
-    const grp=me&&EXCLUSIVE_MODULES.find(g=>g.includes(impNorm(me.name)));
-    if(grp)S.products.forEach(x=>{if(x.id!==prodId&&grp.includes(impNorm(x.name)))c.products[x.id]=false});
+    const grp=me&&EXCLUSIVE_MODULES.find(g=>g.includes(normTxt(me.name)));
+    if(grp)S.products.forEach(x=>{if(x.id!==prodId&&grp.includes(normTxt(x.name)))c.products[x.id]=false});
  if(clKelioPriority(c))toast('OPTIMA / PRIMA désactivé automatiquement : les KELIO priment.');
  }
  save();
- // Refresh just the product section
+
   const sec=document.getElementById('client-prods-sec');
   if(sec)sec.innerHTML=buildClientProducts(clientId);
 }
-function buildProdPicker(selectedIds){
-  if(!S.products||S.products.length===0)return`<div style="color:var(--text-sub);font-size:.82rem;font-style:italic">Aucun module configuré dans les paramètres.</div>`;
-  const sel=new Set(selectedIds||[]);
-  return`<div class="prod-pick-list" id="prod-pick-list">
-    ${S.products.map(p=>`
-      <div class="prod-pick-item ${sel.has(p.id)?'sel':''}" onclick="toggleProdPick('${p.id}')">
-        <input type="checkbox" ${sel.has(p.id)?'checked':''} onclick="event.stopPropagation();toggleProdPick('${p.id}')">
-        <span style="font-size:.86rem;font-weight:500">${esc(p.name)}</span>
-      </div>`).join('')}
-  </div>`;
-}
-function toggleProdPick(id){
-  const item=document.querySelector(`[onclick="toggleProdPick('${id}')"]`);
-  if(!item)return;
-  item.classList.toggle('sel');
-  const cb=item.querySelector('input[type=checkbox]');
-  if(cb)cb.checked=item.classList.contains('sel');
-}
-function getSelectedProds(){
-  const items=document.querySelectorAll('#prod-pick-list .prod-pick-item.sel');
-  return Array.from(items).map(el=>{
-    const onclick=el.getAttribute('onclick');
-    return onclick.match(/'([^']+)'/)?.[1];
-  }).filter(Boolean);
-}
 function clMailTitle(c){const m=clMainEmail(c);return m?'Écrire à '+(m.name||m.email)+' ('+m.email+')'+(m.primary?' — contact principal':' — premier contact avec e-mail'):'Aucun e-mail renseigné'}
-function clMailFromDetail(clientId){ // ouvre la messagerie (mailto:) vers le contact principal, à défaut le premier contact qui a un e-mail
+function clMailFromDetail(clientId){
   const c=S.clients.find(x=>x.id===clientId);if(!c)return;
   const m=clMainEmail(c);
   if(!m){toast('Aucun email renseigné dans les contacts');return}
   const a=document.createElement('a');a.href='mailto:'+m.email.trim();a.style.display='none';document.body.appendChild(a);a.click();a.remove();
 }
 function del(type,id){
- const lb={todo:'cette tâche',client:'ce client'};
- if(!confirm(`Supprimer ${lb[type]} ?`))return;
- if(type==='todo')S.todos=S.todos.filter(x=>x.id!==id);
- if(type==='client'){S.clients=S.clients.filter(x=>x.id!==id);(S.offers||[]).forEach(o=>{if(o.clientId===id)o.clientId=null});S.todos.forEach(t=>{if(t.clientId===id)t.clientId=null})}
+ if(type!=='client'||!confirm('Supprimer ce client ?'))return;
+ S.clients=S.clients.filter(x=>x.id!==id);
  save();updNC();
- if(CV==='todos')rTodos({filter:CF});else if(CV==='clients')rClients();else if(CV==='client-detail')navigate('clients');else if(CV==='home')rHome();
+ if(CV==='clients')rClients();else if(CV==='client-detail')navigate('clients');else if(CV==='home')rHome();
  toast('Supprimé ✓');
 }
 let tt=null;
@@ -3013,11 +2588,11 @@ let OB=null;
 const OB_FRESH=true;
 function obName(){return String(S.settings.name||'').trim()}
 function obId(id){return document.getElementById(id)}
-function obEl(){let e=obId('ob');if(!e){e=document.createElement('div');e.id='ob';e.setAttribute('role','dialog');e.setAttribute('aria-modal','true');e.setAttribute('aria-label','Assistant de démarrage');document.body.appendChild(e)}return e}
+function obEl(){let e=obId('ob');if(!e){e=document.createElement('div');e.id='ob';e.setAttribute('role','dialog');e.setAttribute('aria-modal','true');e.setAttribute('aria-label','Chargement de la base');document.body.appendChild(e)}return e}
 function obOpen(){document.body.style.overflow='hidden';obEl().classList.add('on')}
 function obClose(){const t=obId('ob-tour');if(t)t.classList.remove('on');const e=obId('ob');if(e){e.classList.remove('on');e.innerHTML=''}document.body.style.overflow='';OB=null}
 function obPre(){obOpen();obEl().innerHTML='<div class="ob-bg"></div>'}
-function obBoot(){ // appelé une fois les données chargées
+function obBoot(){
   if(OB)return;
   if(!S.settings.onboard&&!(S.clients||[]).length&&!obName()){obMobileLoad();return}
   obClose();
@@ -3031,27 +2606,10 @@ function obCard(o){
   obEl().innerHTML=`<div class="ob-bg"></div>${corner}<div class="ob-wrap">${brand}<div class="ob-card">${prog}${ico}<div class="ob-title">${o.title}</div>${o.lead?`<div class="ob-lead">${o.lead}</div>`:''}${o.help?`<div class="ob-help">${o.help}</div>`:''}${o.body||''}<div class="ob-actions">${o.actions||''}</div></div></div>`;
   const f=obId('ob-in')||obId('ob-street');if(f)setTimeout(()=>{try{f.focus({preventScroll:true});f.select&&f.select()}catch(e){}},80);
 }
-function xlsCheckBackup(wb){ // une sauvegarde contient les feuilles Clients, Produits et Journal ; sinon on ne remplace jamais les données
-  const n=(wb&&wb.SheetNames)||[];
-  if(n.includes('Clients')&&n.includes('Produits')&&n.includes('Journal'))return;
-  const ws=wb&&wb.Sheets&&wb.Sheets['Clients'];
-  const hd=ws?(XLSX.utils.sheet_to_json(ws,{header:1})[0]||[]).map(x=>String(x==null?'':x)):[];
-  if(hd.includes('Nom Site'))throw new Error('Ce fichier est un export RCR, pas une sauvegarde : il s\'importe depuis la page Clients (Importer base commercial).');
-  throw new Error('Ce fichier n\'est pas une sauvegarde Kelio CRM.');
-}
-function mobMinimize(){
-  if(!S||typeof S!=='object')return false;
-  const st=S.settings&&typeof S.settings==='object'?S.settings:null;
-  const had=!!(Object.keys(S.techCodes||{}).length||(S.offers||[]).length||(S.invoices||[]).length||Object.keys(S.journal||{}).length||(st&&('shortcuts' in st||'techId' in st)));
-  S.techCodes={};S.offers=[];S.invoices=[];S.journal={};
-  if(st){delete st.shortcuts;delete st.techId}
-  return had;
-}
 function obRestoreApply(data){
-  if(!data||!Array.isArray(data.clients))throw new Error('Ce fichier n\'est pas une sauvegarde Kelio CRM.');
-  S={...data};mobMinimize();ovd();applyTheme();updNC();
-  if(!S.settings)S.settings={};
-  S.settings.onboard={phase:'done',restored:true}; // base existante : aucun assistant imposé
+ if(!data||!Array.isArray(data.clients))throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile.');
+ S={...data};ovd();applyTheme();updNC();
+ S.settings.onboard={phase:'done',restored:true};
 }
 function obMobileLoad(err){
   OB={phase:'mobile-load',manual:false};obOpen();
@@ -3068,7 +2626,7 @@ function obMobileDone(name,n){
 }
 function mobPick(){
  let f=obId('mob-fi');
- if(!f){f=document.createElement('input');f.type='file';f.id='mob-fi';f.style.display='none';f.onchange=mobFileChosen;document.body.appendChild(f)} // aucun filtre d'extension : le fichier bdd-crm-mobile est reconnu à son contenu
+ if(!f){f=document.createElement('input');f.type='file';f.id='mob-fi';f.style.display='none';f.onchange=mobFileChosen;document.body.appendChild(f)}
  f.value='';f.click();
 }
 function mobReload(){mobPick()}
@@ -3077,31 +2635,22 @@ async function mobFileChosen(ev){
  const first=!!(OB&&OB.phase==='mobile-load');
  if(!first&&!confirm('Remplacer les données affichées par « '+f.name+' » ? (les modifications faites ici ne sont pas conservées)'))return;
  try{
-  const buf=await f.arrayBuffer(),u8=new Uint8Array(buf);let data;
-  if(u8[0]===75&&u8[1]===67&&u8[2]===77)data=await kcmOpen(u8); // fichier bdd-crm-mobile (export mobile du CRM)
-  else if(/\.json$/i.test(f.name))data=JSON.parse(new TextDecoder().decode(u8));
-  else{
-   if(typeof XLSX==='undefined')throw new Error('Le lecteur Excel n\'est pas disponible (connexion internet nécessaire la première fois). Réessayez en ligne.');
-   const wb=XLSX.read(buf,{type:'array'});
-   xlsCheckBackup(wb);
-   data=parseXlsWorkbook(wb);
-  }
-  obRestoreApply(data);save();
+  const u8=new Uint8Array(await f.arrayBuffer());
+  if(!(u8[0]===75&&u8[1]===67&&u8[2]===77))throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile : exportez-le depuis le CRM (Clients › Export › Export mobile).');
+  obRestoreApply(await kcmOpen(u8));save();
   const n=(S.clients||[]).length;
   if(first)obMobileDone(f.name,n);else{toast(`✅ Base rechargée : ${n} client${n>1?'s':''}`);navigate('home')}
  }catch(e){
   if(first)obMobileLoad(e.message||'Fichier illisible');else alert('Chargement impossible : '+(e.message||'fichier illisible'));
  }
 }
-function smartOn(){const v=S.settings&&S.settings.smartOn;if(v===undefined||v===null||v==='')return true;return v===true||v==='true'||v==='TRUE'||v===1||v==='1'}
-function applySmartMenu(){const n=document.getElementById('ni-smart');if(n)n.style.display=(smartOn()&&!mobOn())?'':'none'}
 const HW_TERMINALS=['VISIO X7','VISIO X4','XTREM'];
 const HW_OBSOLETE=['VISIO IP'];
 const HW_TECHS=['MIFARE','HID','EM STID'];
 const HW_BADGES=[{k:'BADGE CARTE',ico:'💳'},{k:'PORTE CLE',ico:'🔑'},{k:'VIRTUEL',ico:'📱'}];
 function hwAllModels(){return[...HW_TERMINALS,...HW_OBSOLETE]}
 function hwCleanName(n){return String(n==null?'':n).replace(/[\[\]|;,]/g,' ').replace(/\s+/g,' ').trim().slice(0,40)}
-function hwLines(c,m){ // lignes valides d'un modèle, toujours au format {name,qty,tech}
+function hwLines(c,m){
   const v=c&&c.hardware&&c.hardware[m];
   const arr=Array.isArray(v)?v:(v&&typeof v==='object'?[v]:[]);
   const out=[];
@@ -3111,17 +2660,11 @@ function hwLines(c,m){ // lignes valides d'un modèle, toujours au format {name,
     const tf=t=>t==='STID'?'EM STID':t;
     const ts=Array.isArray(l.techs)?HW_TECHS.filter(t=>l.techs.map(tf).includes(t)):(HW_TECHS.includes(tf(l.tech))?[tf(l.tech)]:[]);
     if(ts.length<=1){out.push({name,qty,tech:ts[0]||''});return}
-    // ancien format : plusieurs technologies sur une même ligne → une ligne par technologie, nombre réparti (à ajuster si besoin)
+
     const base=Math.floor(qty/ts.length),rest=qty%ts.length;
     ts.forEach((t,i)=>out.push({name,qty:Math.max(base+(i<rest?1:0),1),tech:t}));
   });
   return out;
-}
-function hwMigrate(){ // conversion des anciens formats en liste de lignes {name,qty,tech}
-  (S.clients||[]).forEach(c=>{if(c.hardware&&typeof c.hardware==='object')Object.keys(c.hardware).forEach(m=>{
-    const v=c.hardware[m];const std=Array.isArray(v)&&v.every(l=>l&&typeof l==='object'&&'tech' in l&&!('techs' in l)&&'name' in l&&l.tech!=='STID');
-    if(!std)c.hardware[m]=hwLines(c,m);
-  })});
 }
 function hwModelTotal(c,m){return hwLines(c,m).reduce((s,l)=>s+l.qty,0)}
 function hwTotal(c){return hwAllModels().reduce((s,m)=>s+hwModelTotal(c,m),0)}
@@ -3175,12 +2718,12 @@ function hwForm(clientId,model){
 function hwName(i,v){if(HWF&&HWF.lines[i])HWF.lines[i].name=v}
 function hwQty(i,v){if(HWF&&HWF.lines[i])HWF.lines[i].qty=parseInt(v,10)||0}
 function hwStep(i,d){const inp=document.querySelector('#hw-lines input[data-i="'+i+'"]');if(!inp||!HWF)return;const n=Math.max(1,Math.min(9999,(parseInt(inp.value,10)||0)+d));inp.value=n;HWF.lines[i].qty=n}
-function hwTech(i,t){ // une seule technologie par ligne (choix obligatoire)
+function hwTech(i,t){
   if(!HWF||!HWF.lines[i])return;HWF.lines[i].tech=t;
   const row=document.querySelectorAll('#hw-lines .hw-line-f')[i];
   if(row)row.querySelectorAll('.hw-chip').forEach(b=>{const on=b.textContent.trim()===t;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
 }
-function hwAddLine(){ // nouvelle ligne : la première technologie pas encore utilisée est sélectionnée (ex. HID après MIFARE)
+function hwAddLine(){
   if(!HWF)return;const used=new Set(HWF.lines.map(l=>l.tech)),nt=HW_TECHS.find(t=>!used.has(t))||HW_TECHS[0];
   HWF.lines.push({name:'',qty:1,tech:nt});
   document.getElementById('hw-lines').innerHTML=hwLinesHtml();
@@ -3207,102 +2750,9 @@ function hwRemove(){
   HWF=null;save();cm();refreshClientHw(f.clientId);
 }
 const SRV_ICON='<svg class="ic-srv" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2" y="2.2" width="12" height="4.8" rx="1.3"/><rect x="2" y="9" width="12" height="4.8" rx="1.3"/><path d="M4.6 4.6h.01M4.6 11.4h.01M8 4.6h4M8 11.4h4"/></svg>';
-function clMainEmail(c){ // e-mail du contact principal (à défaut : premier contact qui en a un)
+function clMainEmail(c){
   const l=c.contacts||[];const m=l.find(x=>x.primary&&x.email)||l.find(x=>x.email);
   return m?{email:m.email,name:ctFullName(m),primary:!!m.primary}:null;
-}
-function clCtxClose(){
-  const m=document.getElementById('cl-ctx');if(m)m.remove();
-  document.removeEventListener('mousedown',clCtxOut,true);document.removeEventListener('keydown',clCtxKey,true);
-  window.removeEventListener('scroll',clCtxClose,true);window.removeEventListener('resize',clCtxClose);
-}
-function clCtxOut(e){const m=document.getElementById('cl-ctx');if(m&&!m.contains(e.target))clCtxClose()}
-function clCtxKey(e){
-  if(e.key==='Escape'){e.preventDefault();e.stopPropagation();clCtxClose();return}
-  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
-    e.preventDefault();const b=[...document.querySelectorAll('#cl-ctx .cl-ctx-i:not(:disabled)')];if(!b.length)return;
-    const i=b.indexOf(document.activeElement);b[(i+(e.key==='ArrowDown'?1:-1)+b.length)%b.length].focus();
-  }
-}
-function clCtxShow(ev,title,aria,items){ // construit et positionne un menu contextuel (cartes clients, photo de la fiche)
- clCtxClose();
- const m=document.createElement('div');m.id='cl-ctx';m.setAttribute('role','menu');m.setAttribute('aria-label',aria);
-  const hd=document.createElement('div');hd.className='cl-ctx-h';hd.textContent=title;m.appendChild(hd);
-  items.forEach(it=>{
-    if(it.sep){const s=document.createElement('div');s.className='cl-ctx-sep';m.appendChild(s);return}
-    const b=document.createElement('button');b.type='button';b.className='cl-ctx-i';b.setAttribute('role','menuitem');
-    b.innerHTML='<span class="ci">'+it.ic+'</span><span><span>'+esc(it.t)+'</span>'+(it.sub?'<small>'+esc(it.sub)+'</small>':'')+'</span>';
-    if(!it.ok){b.disabled=true;b.title=it.why}
-    else b.onclick=()=>{clCtxClose();it.go()};
-    m.appendChild(b);
-  });
-  document.body.appendChild(m);
-  const w=m.offsetWidth,hh=m.offsetHeight;
-  m.style.left=Math.max(8,Math.min(ev.clientX,innerWidth-w-8))+'px';
-  m.style.top=Math.max(8,Math.min(ev.clientY,innerHeight-hh-8))+'px';
-  document.addEventListener('mousedown',clCtxOut,true);document.addEventListener('keydown',clCtxKey,true);
-  window.addEventListener('scroll',clCtxClose,true);window.addEventListener('resize',clCtxClose);
-}
-function cldPhotoMenu(ev,id){
-  const c=S.clients.find(x=>x.id===id);if(!c)return;
-  ev.preventDefault();if(ev.stopPropagation)ev.stopPropagation();
-  let at=ev;
-  if(ev.type==='keydown'){const r=(ev.currentTarget||ev.target).getBoundingClientRect();at={clientX:r.left+r.width/2,clientY:r.bottom-6}} // clavier : le menu s'ouvre sous la photo
-  const has=!!c.logo;
-  clCtxShow(at,c.company||'Client','Photo de '+(c.company||'le client'),[
-    {ic:'🖼️',t:'Modifier l\'image',sub:has?'Remplacer ou supprimer la photo':'Ajouter une photo',ok:true,go:()=>cldPhotoForm(id)},
-    {ic:'📋',t:'Copier l\'image',sub:has?'Dans le presse-papiers':'',ok:has,why:'Ce client n\'a pas encore de photo',go:()=>cldPhotoCopy(id)}
-  ]);
-}
-function cldPhotoForm(id){ // fenêtre : ajouter / modifier / supprimer la photo
-  const c=S.clients.find(x=>x.id===id);if(!c)return;
-  const has=!!c.logo;
-  om(`<div class="mh"><h2 class="mt">Photo du client</h2><button class="mc" onclick="cm()">✕</button></div>
-    <div style="display:flex;gap:16px;align-items:center;margin-bottom:18px">${clientAvatar(c,96,16)}<div style="min-width:0"><div class="cl-cn" style="font-size:1rem">${esc(c.company||'Client')}</div><div style="color:var(--text-sub);font-size:.82rem;margin-top:3px">${has?'Photo actuelle':'Aucune photo pour le moment'}</div></div></div>
-    <input type="file" id="cld-photo-file" accept="image/*" style="display:none" onchange="cldPhotoChosen('${id}',this)">
-    <div style="display:flex;flex-direction:column;gap:9px">
-      <button class="btn btn-p" onclick="document.getElementById('cld-photo-file').click()">${has?'📁 Modifier la photo…':'➕ Ajouter une photo…'}</button>
-      ${has?`<button class="btn btn-d" onclick="cldPhotoRemove('${id}')">🗑 Supprimer la photo</button>`:''}
-      <button class="btn btn-g" onclick="cm()">Annuler</button>
-    </div>
-    <div style="font-size:.74rem;color:var(--text-sub);margin-top:12px">PNG, JPG, WebP ou SVG · 5 Mo maximum · la transparence d'un PNG est conservée.</div>`);
-}
-function cldPhotoRefresh(id){if(CV==='client-detail')navigate('client-detail',{id});else if(CV==='clients')rClients()}
-async function cldPhotoChosen(id,inp){
-  const f=inp.files&&inp.files[0];if(!f)return;
-  const c=S.clients.find(x=>x.id===id);if(!c)return;
-  if(f.size>5*1024*1024){toast('Image trop grande (max 5 Mo)');inp.value='';return}
-  let data;try{data=await compressImage(f)}catch(e){toast('Image illisible : essayez un fichier PNG, JPG, WebP ou SVG');inp.value='';return}
-  const had=!!c.logo;c.logo=data;save();cm();cldPhotoRefresh(id);
-  toast((had?'✓ Photo modifiée':'✓ Photo ajoutée')+(/^data:image\/png/.test(data)?' (transparence conservée)':''));
-}
-function cldPhotoRemove(id){
-  const c=S.clients.find(x=>x.id===id);if(!c)return;
-  if(!confirm('Supprimer la photo de « '+(c.company||'ce client')+' » ?'))return;
-  c.logo=null;save();cm();cldPhotoRefresh(id);toast('🗑 Photo supprimée');
-}
-function cldPhotoPng(src){ // image du client → PNG (le presse-papiers n'accepte que le PNG) ; transparence conservée
-  return new Promise((res,rej)=>{
-    const img=new Image();if(!/^data:/i.test(src))img.crossOrigin='anonymous';
-    img.onload=()=>{try{
-      const w=img.naturalWidth||256,hh=img.naturalHeight||256,k=Math.min(1,2048/Math.max(w,hh)),cv=document.createElement('canvas');
-      cv.width=Math.max(1,Math.round(w*k));cv.height=Math.max(1,Math.round(hh*k));
-      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
-      cv.toBlob(b=>b?res(b):rej(new Error('png')),'image/png');
-    }catch(e){rej(e)}};
-    img.onerror=()=>rej(new Error('load'));img.src=src;
-  });
-}
-async function cldPhotoCopy(id){
-  const c=S.clients.find(x=>x.id===id);if(!c||!c.logo)return;
-  try{
-    if(!navigator.clipboard||typeof ClipboardItem==='undefined')throw new Error('clip');
-    await navigator.clipboard.write([new ClipboardItem({'image/png':cldPhotoPng(c.logo)})]); // promesse : le geste de l'utilisateur est conservé
-    toast('📋 Image de « '+(c.company||'client')+' » copiée');
-  }catch(e){
-    if(/^https?:/i.test(c.logo)){try{await navigator.clipboard.writeText(c.logo);toast('Image externe protégée : son adresse a été copiée à la place');return}catch(e2){}}
-    toast('Copie de l\'image impossible dans ce navigateur');
-  }
 }
 function mobOn(){return true}
 let clFiltOpen=false;
@@ -3310,12 +2760,12 @@ function clFiltCount(){const f=(typeof clFilter!=='undefined'&&clFilter)||{};ret
 function clFiltToggle(){clFiltOpen=!clFiltOpen;const t=document.querySelector('.cl-toolbar');if(t)t.classList.toggle('fo',clFiltOpen);const b=document.querySelector('.cl-fbtn');if(b)b.setAttribute('aria-expanded',clFiltOpen?'true':'false')}
 let mobTab='apercu',mobTabClient=null;
 function mobPaneKey(pb){
-  const t=((pb.querySelector('.pb-title')||{}).textContent||'').replace(/^[^A-Za-zÀ-ÿ]+/,'').trim(); // le titre commence par un émoji
+  const t=((pb.querySelector('.pb-title')||{}).textContent||'').replace(/^[^A-Za-zÀ-ÿ]+/,'').trim();
   if(/^Contacts/i.test(t))return 'contacts';if(/^Contrats/i.test(t))return 'contrats';if(/^Offres/i.test(t))return 'offres';
   if(/^Alertes/i.test(t))return 'apercu';if(/^Modules/i.test(t))return 'modules';if(/^Mat/i.test(t))return 'materiel';if(/^Notes/i.test(t))return 'notes';
   return 'apercu';
 }
-function mobFicheRollback(){ // en cas d'erreur : on revient à la fiche d'origine (boutons Modifier / Supprimer et blocs visibles)
+function mobFicheRollback(){
   const v=document.getElementById('vw-client-detail');if(!v)return;
   v.classList.remove('m-ok');
   v.querySelectorAll('#m-tabs,#m-tabs-anchor,.m-actions-wrap,.m-sum').forEach(e=>e.remove());
@@ -3329,12 +2779,12 @@ function mobFicheInit(id){
   const contacts=c.contacts||[],pc=contacts.find(x=>x.primary)||contacts[0]||null;
   const owned=S.products.filter(p=>c.products&&c.products[p.id]);
   const notifs=computeNotifs(id);
-  // — blocs → onglets
+
   const panes={};
   [...v.querySelectorAll('.pb')].forEach(pb=>{const k=mobPaneKey(pb);pb.dataset.pane=k;pb.classList.add('m-pane');(panes[k]=panes[k]||[]).push(pb)});
   const alertPb=(panes.apercu||[])[0];
   if(alertPb){if(!notifs.length)alertPb.classList.add('m-none');cols.insertAdjacentElement('beforebegin',alertPb)}
-  // — actions : Modifier et Supprimer toujours visibles en haut, puis appeler / email / itinéraire / carte
+
   const phone=((pc&&pc.phone)||contacts.map(x=>x.phone).find(Boolean)||'').toString();
   const act=[];
   if(phone)act.push(`<a class="m-act" href="tel:${esc(phone.replace(/[^\d+]/g,''))}"><span>📞</span>Appeler</a>`);
@@ -3344,13 +2794,13 @@ function mobFicheInit(id){
   const ab=document.createElement('div');ab.className='m-actions-wrap';
   ab.innerHTML=`<div class="m-main"><button type="button" class="btn btn-s" onclick="cl_form('${id}')">✏️ Modifier</button><button type="button" class="btn btn-d" onclick="del('client','${id}')">🗑 Supprimer</button></div>${act.length?`<div class="m-actions">${act.join('')}</div>`:''}`;
   hero.appendChild(ab);
-  // — onglets
+
   const defs=[['apercu','Aperçu',0],['contacts','Contacts',contacts.length],['contrats','Contrats',(c.contracts||[]).length],['modules','Modules',owned.length],['materiel','Matériel',hwTotal(c)],['notes','Notes',0]].filter(d=>d[0]==='apercu'||panes[d[0]]);
   const tabs=document.createElement('div');tabs.id='m-tabs';tabs.className='m-tabs';tabs.setAttribute('role','tablist');
   tabs.innerHTML=defs.map(d=>`<button type="button" role="tab" data-k="${d[0]}" onclick="mobSetTab('${d[0]}')">${d[1]}${d[2]?`<span class="m-n">${d[2]}</span>`:''}</button>`).join('');
   const anchor=document.createElement('div');anchor.id='m-tabs-anchor';
   hero.insertAdjacentElement('afterend',tabs);hero.insertAdjacentElement('afterend',anchor);
-  // — onglet Aperçu : résumé du client
+
   const today=new Date().toISOString().slice(0,10);
   const row=(ico,label,val,k)=>k?`<button type="button" class="m-row" onclick="mobSetTab('${k}')"><span class="m-ri">${ico}</span><span class="m-rt"><span class="m-rl">${label}</span><span class="m-rv">${val}</span></span><span class="m-rc">›</span></button>`:`<div class="m-row static"><span class="m-ri">${ico}</span><span class="m-rt"><span class="m-rl">${label}</span><span class="m-rv">${val}</span></span></div>`;
   const ctr=c.contracts||[],act2=ctr.filter(ct=>ctEtat(ct)==='active'),next=act2.map(ct=>ct.dateFin).filter(d=>d&&d>=today).sort()[0];
@@ -3364,7 +2814,7 @@ function mobFicheInit(id){
   const info=[],cells=[];
   if(c.address)info.push(`<button type="button" class="m-row" onclick="routeOpen('${id}')"><span class="m-ri">📍</span><span class="m-rt"><span class="m-rl">Adresse</span><span class="m-rv">${esc(c.address).replace(/\n/g,'<br>')}</span></span><span class="m-rc">🚗</span></button>`);
   const cell=(label,val)=>cells.push(`<div class="m-cell"><span class="m-rl">${label}</span><span class="m-rv">${val}</span></div>`);
-  hero.querySelectorAll('.cld-chip').forEach(ch=>{const t=ch.textContent.trim();if(/^(SIREN|INSEE|APE|TVA)/i.test(t)){const b=ch.querySelector('b');cell(esc(t.split(/\s+/)[0]),esc(b?b.textContent:''));ch.remove()}}); // l'en-tête ne garde que FinOps et l'effectif
+  hero.querySelectorAll('.cld-chip').forEach(ch=>{const t=ch.textContent.trim();if(/^(SIREN|INSEE|APE|TVA)/i.test(t)){const b=ch.querySelector('b');cell(esc(t.split(/\s+/)[0]),esc(b?b.textContent:''));ch.remove()}});
   if(c.version)cell('Version',esc(c.version));
   cell('Gestionnaires',String(c.gestionnaires||5));
   if(c.commercial)cell('Commercial',esc(c.commercial));
@@ -3374,7 +2824,7 @@ function mobFicheInit(id){
   sum.innerHTML=`<div class="m-card">${r.join('')}</div><div class="m-card">${info.join('')}</div>`;
   cols.insertAdjacentElement('beforebegin',sum);
   if(!defs.some(d=>d[0]===mobTab))mobTab='apercu';
-  v.classList.add('m-ok'); // tout est construit : seulement maintenant les éléments d'origine sont remplacés
+  v.classList.add('m-ok');
   mobSetTab(mobTab,true);
 }
 function mobSetTab(k,quiet){
@@ -3385,7 +2835,7 @@ function mobSetTab(k,quiet){
   if(bar){bar.querySelectorAll('button').forEach(b=>{const on=b.dataset.k===k;b.classList.toggle('on',on);b.setAttribute('aria-selected',on?'true':'false')});
     try{const on=bar.querySelector('button.on');if(on)bar.scrollTo({left:on.offsetLeft-(bar.clientWidth-on.clientWidth)/2,behavior:quiet?'auto':'smooth'})}catch(e){}}
   try{const a=document.getElementById('m-tabs-anchor');
-    if(!quiet&&a){const top=a.getBoundingClientRect().top+window.scrollY;if(window.scrollY>top)window.scrollTo(0,top)}}catch(e){} // le nouvel onglet démarre sous la barre
+    if(!quiet&&a){const top=a.getBoundingClientRect().top+window.scrollY;if(window.scrollY>top)window.scrollTo(0,top)}}catch(e){}
 }
 (function(){const orig=rClientDet;rClientDet=function(){const r=orig.apply(this,arguments);try{mobFicheInit(arguments[0])}catch(e){try{mobFicheRollback()}catch(e2){}}return r}})();
 function mobConfirm(title,msg,fn){
@@ -3394,14 +2844,14 @@ function mobConfirm(title,msg,fn){
 }
 (function(){
   const wrap=(name,info)=>{const orig=window[name];if(typeof orig!=='function')return;
-    window[name]=function(){const a=arguments;if(!mobOn())return orig.apply(this,a); // PC : boîte de confirmation d'origine, inchangée
+    window[name]=function(){const a=arguments;if(!mobOn())return orig.apply(this,a);
       const t=info.apply(null,a);
       mobConfirm(t[0],t[1],()=>{const nc=window.confirm;window.confirm=()=>true;try{orig.apply(null,a)}finally{window.confirm=nc}});};};
   wrap('del',(type,id)=>{const c=type==='client'?S.clients.find(x=>x.id===id):null;return type==='client'?['Supprimer ce client ?',`<strong>${esc(c?c.company:'Ce client')}</strong> et toutes ses données (contacts, contrats, modules, notes) seront supprimés. Cette action est définitive.`]:['Confirmer la suppression','Cet élément sera supprimé définitivement.']});
   wrap('ctDelete',(cid,i)=>{const c=S.clients.find(x=>x.id===cid),ct=c&&c.contacts&&c.contacts[i];return['Supprimer ce contact ?',`<strong>${esc(ct?(ctFullName(ct)||ct.email||'Sans nom'):'Ce contact')}</strong> sera supprimé de la fiche.`]});
   wrap('ctr_delete',()=>['Supprimer ce contrat ?','Ce contrat sera supprimé définitivement de la fiche du client.']);
 })();
-// ══ DÉMARRAGE (mobile) ══
+
 if(window.__CRM_MOBILE){
   if(OB_FRESH)obPre();
   load();
@@ -3410,8 +2860,6 @@ if(window.__CRM_MOBILE){
   navHistoryInit();
   navigate('home');
   obBoot();
-  setTimeout(checkAutoTasks,800);
-  setInterval(checkAutoTasks,3600000);
 }
 </script>
 </body>
