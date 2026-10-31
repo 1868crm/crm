@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-l17EktU6fMMztsI5sXsn+WBf8zWVbS2OUhxnIe6tV7Y=' 'sha256-5puXA4D4VBX2jXTT6QqDCDJfM6Ti2f/X8ZVxkY/K+zE=' 'sha256-F1t4msIor86c27g9rR72MOA1pps+JbzT7UCqGwguEPo=' 'sha256-6dn15JqtmD+69oJFxakIcFEv2ro3WQl8GO8ApMO1JW0=' 'sha256-kp2DNoY9GltaaAq01YhalOWqg9H4RZN5CKn6SxbA/HE=' https://unpkg.com https://cdn.jsdelivr.net; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; style-src-attr 'unsafe-inline'; font-src https://fonts.gstatic.com data:; img-src data: blob: https:; connect-src https://api-adresse.data.gouv.fr https://api.maptiler.com https://api.open-meteo.com https://api.tomtom.com https://nominatim.openstreetmap.org https://router.project-osrm.org https://data.geopf.fr https://server.arcgisonline.com https://unpkg.com https://cdn.jsdelivr.net data: blob:; worker-src blob:; child-src blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; manifest-src 'none'; media-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script>if(window.top!==window.self){try{window.top.location=window.self.location}catch(e){document.documentElement.innerHTML=''}}</script>
 <script>document.documentElement.setAttribute('data-theme','light')</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CRM mobile</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css'">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" integrity="sha384-pmjIAcz2bAn0xukfxADbZIb3t8oRT9Sv0rvO+BR5Csr6Dhqq+nZs59P0pPKQJkEV" crossorigin="anonymous" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css'">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" integrity="sha384-wgw+aLYNQ7dlhK47ZPK7FRACiq7ROZwgFNg0m04avm4CaXS+Z9Y7nMu8yNjBKYC+" crossorigin="anonymous" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css'">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" integrity="sha384-MinO0mNliZ3vwppuPOUnGa+iq619pfMhLVUXfC4LHwSCvF9H+6P/KO4Q7qBOYV5V" crossorigin="anonymous" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css'">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" integrity="sha384-eXVCORTRlv4FUUgS/xmOyr66XBVraen8ATNLMESp92FKXLAMiKkerixTiBvXriZr" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" integrity="sha384-SYKAG6cglRMN0RVvhNeBY0r3FYKNOJtznwA0v7B5Vp9tr31xAHsZC0DqkQ/pZDmj" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js" integrity="sha384-tXYNKOHx4T02jMP7YYCtBxPIv1B5gaA5mcVPBzqMp6d7VzWzxJgI2aWF/nJLrQdS" crossorigin="anonymous"></script>
   <link rel="icon" type="image/png" href="data:image/png;base64,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">
   <link rel="apple-touch-icon" href="data:image/png;base64,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">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
-
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js"></script>
   <script>
-
   (function(){
-    function load(u,cb){var s=document.createElement('script');s.src=u;s.onload=cb;document.head.appendChild(s)}
-    var plug='https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js';
-    if(!window.maplibregl)load('https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js',function(){if(!(window.L&&L.maplibreGL))load(plug)});
-    else if(!(window.L&&L.maplibreGL))load(plug);
+    var J='https://cdn.jsdelivr.net/npm/',I={l:'sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH',m:'sha384-eXVCORTRlv4FUUgS/xmOyr66XBVraen8ATNLMESp92FKXLAMiKkerixTiBvXriZr',g:'sha384-SYKAG6cglRMN0RVvhNeBY0r3FYKNOJtznwA0v7B5Vp9tr31xAHsZC0DqkQ/pZDmj',p:'sha384-tXYNKOHx4T02jMP7YYCtBxPIv1B5gaA5mcVPBzqMp6d7VzWzxJgI2aWF/nJLrQdS'};
+    function load(u,i,cb){var s=document.createElement('script');s.src=u;s.integrity=i;s.crossOrigin='anonymous';s.onload=cb;document.head.appendChild(s)}
+    function plug(){if(!(window.L&&L.maplibreGL))load(J+'@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js',I.p)}
+    function cluster(){if(window.L&&!L.markerClusterGroup)load(J+'leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js',I.m)}
+    if(!window.L)load(J+'leaflet@1.9.4/dist/leaflet.js',I.l,function(){cluster();plug()});else cluster();
+    if(!window.maplibregl)load(J+'maplibre-gl@4.7.1/dist/maplibre-gl.js',I.g,plug);else plug();
   })();
 </script>
   <style>
@@ -645,6 +642,7 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):
 #mi .f2{margin-bottom:13px;row-gap:0}
 
 #pc-gate{display:none}
+#mo{z-index:400}
 html.is-pc body{overflow:hidden}
 html.is-pc #layout,html.is-pc #mo,html.is-pc #toast{display:none!important}
 html.is-pc #pc-gate{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:32px;text-align:center;background:var(--bg);color:var(--text);font-family:'Figtree',sans-serif}
@@ -736,7 +734,7 @@ function ovdSanitize(){
   c.contracts=(Array.isArray(c.contracts)?c.contracts:[]).filter(obj);const cs=new Set();
   c.contracts.forEach(k=>{if(k.loyerAnnuel!=null){const v=Number(k.loyerAnnuel);k.loyerAnnuel=isFinite(v)?v:null}let i2=safeId(k.id);if(!i2||cs.has(i2))i2=uid();cs.add(i2);k.id=i2;['label','type','hebergeur','systeme','statut','dateSignature','dateDebut','dateFin'].forEach(f=>str(k,f))});
   c.products=remap(c.products);if(c.moduleOptions!==undefined)c.moduleOptions=remap(c.moduleOptions);if(c.moduleQty!==undefined)c.moduleQty=remap(c.moduleQty);
-  if(typeof c.clientNotes==='string'&&/<\s*(script|iframe|frame|object|embed|applet|svg|math|base|meta|link|style|form|template)\b|\son[a-z]+\s*=|javascript\s*:|vbscript\s*:|data\s*:\s*text\/html/i.test(c.clientNotes))c.clientNotes=sanitizeNoteHtml(c.clientNotes);
+  if(typeof c.clientNotes==='string')c.clientNotes=sanitizeNoteHtml(c.clientNotes);
  });
 }
 function ovd(){
@@ -764,24 +762,42 @@ async function kcmKey(salt,usage){
  const base=await crypto.subtle.importKey('raw',Uint8Array.from(KCM_A,(v,i)=>v^KCM_B[i]),'HKDF',false,['deriveKey']);
  return crypto.subtle.deriveKey({name:'HKDF',hash:'SHA-256',salt,info:new TextEncoder().encode('kelio-crm-mobile-v1')},base,{name:'AES-GCM',length:256},false,usage);
 }
-async function kcmOpen(u8){
+async function kcmKeyPw(pw,salt,usage){
+ const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+ return crypto.subtle.deriveKey({name:'PBKDF2',hash:'SHA-256',salt,iterations:250000},base,{name:'AES-GCM',length:256},false,usage);
+}
+const KCM_MAX=100*1024*1024;
+async function kcmInflate(pt){
+ const rd=new Blob([pt]).stream().pipeThrough(new DecompressionStream('gzip')).getReader(),parts=[];let n=0;
+ for(;;){const r=await rd.read();if(r.done)break;n+=r.value.length;if(n>KCM_MAX){try{await rd.cancel()}catch(e){}throw new Error('Fichier trop volumineux.')}parts.push(r.value)}
+ return new TextDecoder().decode(await new Blob(parts).arrayBuffer());
+}
+async function kcmOpen(u8,pw){
  if(!(window.crypto&&crypto.subtle))throw new Error('Le chiffrement n’est pas disponible dans ce navigateur : ouvrez cette page en https://.');
  if(u8.length<50||u8[0]!==75||u8[1]!==67||u8[2]!==77)throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile.');
+ if(u8.length>40*1024*1024)throw new Error('Fichier trop volumineux pour un fichier bdd-crm-mobile.');
  if(u8[3]!==1)throw new Error('Version de fichier non prise en charge : mettez à jour le CRM mobile.');
+ const prot=!!(u8[4]&2);
+ if(prot&&!pw){const e=new Error('Mot de passe requis.');e.needPw=true;throw e}
  let pt;
  try{
-  const salt=u8.slice(5,21),iv=u8.slice(21,33),head=u8.slice(0,33),key=await kcmKey(salt,['decrypt']);
+  const salt=u8.slice(5,21),iv=u8.slice(21,33),head=u8.slice(0,33),key=prot?await kcmKeyPw(pw,salt,['decrypt']):await kcmKey(salt,['decrypt']);
   pt=new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv,additionalData:head},key,u8.slice(33)));
- }catch(e){throw new Error('Fichier illisible ou modifié : exportez-le à nouveau depuis le CRM (Clients › Export › Export mobile).')}
+ }catch(e){const x=new Error(prot?'Mot de passe incorrect ou fichier modifié.':'Fichier illisible ou modifié : exportez-le à nouveau depuis le CRM (Clients › Export › Export mobile).');x.badPw=prot;throw x}
  let txt;
  if(u8[4]&1){
   if(typeof DecompressionStream==='undefined')throw new Error('Ce navigateur ne sait pas lire ce fichier (décompression indisponible).');
-  txt=await new Response(new Blob([pt]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
- }else txt=new TextDecoder().decode(pt);
+  txt=await kcmInflate(pt);
+ }else{if(pt.length>KCM_MAX)throw new Error('Fichier trop volumineux.');txt=new TextDecoder().decode(pt)}
  const o=JSON.parse(txt);
- if(!o||o.app!=='kelio-crm-mobile'||!o.data||!Array.isArray(o.data.clients))throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile.');
+ if(!o||o.app!=='kelio-crm-mobile'||!o.data||!Array.isArray(o.data.clients)||o.data.clients.length>50000)throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile.');
  return o.data;
 }
+function mobAskPw(msg){return new Promise(function(res){window.__pwRes=res;
+ omSticky('<div class="mh"><h2 class="mt">Fichier protégé</h2></div><p style="font-size:.85rem;color:var(--text-sub);margin-bottom:12px">'+(msg?esc(msg):'Saisissez le mot de passe choisi lors de l’export.')+'</p><div class="fg"><input id="mob-pw" class="fi" type="password" autocomplete="current-password" onkeydown="if(event.key===&quot;Enter&quot;)mobPwOk()"></div><div style="display:flex;gap:10px;margin-top:12px"><button class="btn btn-p" style="flex:1;justify-content:center" onclick="mobPwOk()">Ouvrir</button><button class="btn btn-g" style="flex:1;justify-content:center" onclick="mobPwCancel()">Annuler</button></div>');
+ setTimeout(function(){var e=document.getElementById('mob-pw');if(e)e.focus()},60)})}
+function mobPwOk(){const e=document.getElementById('mob-pw'),v=e?e.value:'',r=window.__pwRes;window.__pwRes=null;cm();if(r)r(v)}
+function mobPwCancel(){const r=window.__pwRes;window.__pwRes=null;cm();if(r)r(null)}
 function updNC(){
  const ta=computeNotifs().filter(n=>n.level==='alerte').length;
  const nt=document.getElementById('nc-t');
@@ -1442,7 +1458,7 @@ function clientAvatar(c, px=38, rx=10){
   if(c.logo){
     return logoBox(c.logo,px,rx+'px',border,esc(c.company));
   }
-  return`<div style="${style};background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:${Math.round(px*0.4)}px">${c.company.charAt(0).toUpperCase()}</div>`;
+  return`<div style="${style};background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:${Math.round(px*0.4)}px">${esc(String(c.company||'?').charAt(0).toUpperCase())}</div>`;
 }
 function clAlertClientIds(){return new Set(computeNotifs().filter(n=>n.level==='alerte').map(n=>n.clientId))}
 function srchNorm(s){return String(s==null?'':s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()}
@@ -1755,7 +1771,7 @@ function rClientDet(id){
   </div>
   <div class="pb" style="margin-top:16px">
     <div class="pb-head"><div class="pb-title"><div class="pb-ico ico-b">📝</div>Notes</div></div>
-    <div class="cld-panel-body"><div id="client-notes-ta" class="note-editor" contenteditable="true" data-placeholder="Notes sur ce client…" oninput="onClientNoteInput('${id}')">${c.clientNotes||''}</div></div>
+    <div class="cld-panel-body"><div id="client-notes-ta" class="note-editor" contenteditable="true" data-placeholder="Notes sur ce client…" oninput="onClientNoteInput('${id}')">${sanitizeNoteHtml(c.clientNotes)}</div></div>
   </div>`;
 }
 let clientNoteSaveQ=null;
@@ -2065,18 +2081,25 @@ function parseMoney(v){
   const n=parseFloat(t);return isFinite(n)&&n>=0?Math.round(n*100)/100:null;
 }
 function fmtLoyer(n){const v=parseMoney(n);return v===null?'—':v.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2})+' €'}
+const NOTE_TAGS=new Set(['p','div','span','br','b','strong','i','em','u','s','strike','ul','ol','li','h1','h2','h3','h4','blockquote','pre','code','hr','a','img','sub','sup']);
+const NOTE_DROP=new Set(['script','style','iframe','frame','frameset','object','embed','applet','link','meta','base','form','input','button','textarea','select','option','svg','math','template','noscript','title','head','audio','video','source','track','canvas','marquee','xmp','plaintext','noembed','noframes','dialog']);
 function sanitizeNoteHtml(html){
-  const doc=new DOMParser().parseFromString('<body>'+String(html||'')+'</body>','text/html');
-  doc.body.querySelectorAll('script,style,iframe,frame,frameset,object,embed,applet,link,meta,base,form,input,button,textarea,select,svg,math,template,noscript,[data-import]').forEach(e=>e.remove());
-  const bad=/^(?:javascript|vbscript|data):/i,img=/^data:image\/(?:png|jpe?g|gif|webp);base64,/i;
-  doc.body.querySelectorAll('*').forEach(e=>{[...e.attributes].forEach(a=>{
-    const n=a.name.toLowerCase();
-    if(n.startsWith('on')||n==='srcdoc'||n==='formaction'){e.removeAttribute(a.name);return}
-    if(['href','src','xlink:href','action','background','poster','data'].includes(n)){
-      const v=a.value.replace(/[\u0000-\u0020\u007f-\u009f\u200b-\u200f\u2028\u2029\ufeff]/g,'');
-      if(bad.test(v)&&!img.test(v))e.removeAttribute(a.name);
-    }})});
-  return doc.body.innerHTML;
+ const src=new DOMParser().parseFromString('<body>'+String(html==null?'':html)+'</body>','text/html').body,out=document.createElement('div');
+ const clean=v=>String(v||'').replace(/[\u0000-\u0020\u007f-\u009f\u200b-\u200f\u2028\u2029\ufeff]/g,'');
+ (function walk(from,to){
+  from.childNodes.forEach(n=>{
+   if(n.nodeType===3){to.appendChild(document.createTextNode(n.nodeValue));return}
+   if(n.nodeType!==1)return;
+   const t=n.tagName.toLowerCase();
+   if(NOTE_DROP.has(t))return;
+   if(!NOTE_TAGS.has(t)){walk(n,to);return}
+   const e=document.createElement(t);
+   if(t==='a'){const v=clean(n.getAttribute('href'));if(/^(?:https?:|mailto:|tel:)/i.test(v)){e.setAttribute('href',v);e.setAttribute('target','_blank');e.setAttribute('rel','noopener noreferrer')}}
+   else if(t==='img'){const v=clean(n.getAttribute('src'));if(!/^data:image\/(?:png|jpe?g|gif|webp);base64,[a-z0-9+\/=]+$/i.test(v))return;e.setAttribute('src',v);['width','height'].forEach(k=>{const w=parseInt(n.getAttribute(k),10);if(w>0&&w<5000)e.setAttribute(k,w)})}
+   walk(n,e);to.appendChild(e);
+  });
+ })(src,out);
+ return out.innerHTML;
 }
 const KEL_NAMES=['kelio','keliohr','keliohrpro'],KEL_LOW=['optima','prima'];
 function clKelioActive(c){return !!(c&&c.products&&(S.products||[]).some(p=>KEL_NAMES.includes(normTxt(p.name))&&c.products[p.id]))}
@@ -2655,7 +2678,16 @@ async function mobFileChosen(ev){
  try{
   const u8=new Uint8Array(await f.arrayBuffer());
   if(!(u8[0]===75&&u8[1]===67&&u8[2]===77))throw new Error('Ce fichier n’est pas un fichier bdd-crm-mobile : exportez-le depuis le CRM (Clients › Export › Export mobile).');
-  obRestoreApply(await kcmOpen(u8));save();
+  let data;
+  try{data=await kcmOpen(u8)}catch(e){
+   if(!(e&&e.needPw))throw e;
+   let pw=await mobAskPw();
+   for(;;){
+    if(pw===null)throw new Error('Ouverture annulée.');
+    try{data=await kcmOpen(u8,pw);break}catch(e2){if(e2&&e2.badPw)pw=await mobAskPw('Mot de passe incorrect. Réessayez.');else throw e2}
+   }
+  }
+  obRestoreApply(data);save();
   const n=(S.clients||[]).length;
   if(first)obMobileDone(f.name,n);else{toast(`✅ Base rechargée : ${n} client${n>1?'s':''}`);navigate('home')}
  }catch(e){
